@@ -771,9 +771,25 @@ intro.onclick=begin;$('aexit').onclick=leave;$('aback').onclick=leave;$('astay')
 const CFG={
  hisSkin:0xe3b595, herSkin:0xf2cbb0, coat:0x1d2c5e,           // his hand & her hand colours, his coat colour
  bouquets:[["Blush peonies",'p'],["White lilies",'l'],["Peonies & lilies ♡",'m']],   // her favourites
- order:['paris','shop','japan','home','finale'],
+ order:['paris','shop','rome','greece','japan','home','finale'],
  T:{
   open:["Hey, my pretty girl.","Come here, baby. Give me your hand.","Today, I'm taking you somewhere special.","And before we go anywhere, I just want you to know something.","You don't have to do anything to deserve this moment. You don't have to be happy every second or pretend that everything is perfect.","For a little while, it's just you and me.","Ready, my love?"],
+  rome1:["Okay, open your eyes, baby.","Welcome to Rome.","Golden hour. Warm stone under our feet, little lights strung across the street, and the whole city smelling like fresh bread and espresso.","I've been dreaming about walking down this exact street with you.","Hold my hand tighter. I never want to let go of it."],
+  rome2:["Look, someone left a little Vespa just for us. I'd drive, you'd laugh the whole way, and I'd feel your arms around me.","Honestly? That might be my favorite part of any trip. You, holding on to me."],
+  romeFood:["One plate of spaghetti, two forks. I'm absolutely stealing your meatballs.","A slice of pizza to share. I'm folding mine the wrong way on purpose, just to hear you laugh.","Gelato, two spoons. Fair warning, I'm eating from your side."],
+  romeTable:["Someone is playing an accordion somewhere. The candle is flickering. And you're right in front of me.","Do you know what I love most? Not the food, not the city. It's how your eyes catch the candlelight when you smile at me.","If this is what they call la dolce vita, the sweet life, then I've figured out the secret. It's you. It was always you."],
+  romeFountain1:["Come on, baby. There's one more place I want to show you.","See that, way out there, glowing? The Colosseum. Two thousand years of people falling in love in this city.","They say if you toss a coin into a fountain here, you'll always find your way back to Rome."],
+  romeFountain2:["Ready, my love? One coin. One wish."],
+  romeWish:["Shh. Don't say it out loud. Wishes work better that way.","I already made mine.","It had your name in it. It always does."],
+  romeLove:["Ti amo, my love. That's 'I love you' in Italian.","I'd kiss you right here, in front of the whole city, and I wouldn't care who was watching.","One day I will. Under these exact lights, with you in my arms.","Come here."],
+  greece1:["Close your eyes again, baby. Breathe in. Salt on the air, warm stone, and a little bit of jasmine.","Open them.","Welcome to Greece.","White walls, blue doors, and a sea that looks like someone painted it just for you.","There's no schedule here. No rush. Just us, and a very long sunset."],
+  greece2:["Look at all that pink. It's called bougainvillea. It reminds me of you. Bold, soft, and impossible to look away from."],
+  greeceFood:["Greek yogurt with warm honey. Sweet and simple, and I'm feeding you the first bite.","Two fresh lemonades. Cold glasses, and I'm already planning to steal your straw.","Two glasses of cold white wine, a quiet terrace, and you. I couldn't dream up anything better."],
+  greeceTable:["Look at the sea, baby. The sun is just starting to melt into it.","I never knew colors could feel this soft.","Every sunset I've ever watched alone, I wished you were next to me. And now you are.","I don't need to see the whole world. I just need to see it with you."],
+  greece3:["Come on, my love. Let's chase the sunset.","The Greeks have a word, agapi. It's the kind of love that never asks for anything back.","That's the kind of love I want to give you. Every single day."],
+  greeceBell1:["Do you hear that? A tiny chapel, just ahead."],
+  greeceBell2:["The old people say that whoever rings this bell together, stays together.","So I rang it for us. Loud, so the whole sea could hear."],
+  greeceLove:["Look at them rise, baby. Little lights, carrying little wishes up to the sky.","Do you want to know mine? I wish I could stand next to you for every sunset after this one.","Σ’ αγαπώ, my love. That's 'I love you' in Greek. I've been practicing for weeks.","I love you in every language. In every sky. In every life.","Come here. Let me hold you while the sky turns gold."],
   paris1:["Look at this place, baby."],
   cafe:["Imagine us actually being here one day. No worrying about anything, just walking around and discovering things together.","Honestly, I think I'd spend half the time looking at the scenery and the other half looking at you."],
   eyes:["Okay, close your eyes for a second, baby."],
@@ -783,9 +799,9 @@ const CFG={
   sakuraB:["Come on, love. I have more things to show you."],
   promise:["Hey, baby?","I know cherry blossoms don't stay forever.","And maybe that's part of what makes them so beautiful.","They remind me that even the smallest moments can become some of the most precious memories.","I don't know every place life will take us.","But I hope that, one day, we get to stand beneath real cherry blossoms together.","I hope I get to see your face when you look up at them.","I hope I get to hold your hand and hear you laugh.","And I hope that when we look back at this little world, we remember that it was one of the places where we dreamed about our future."],
   letter:"My love,\n\nI don't know exactly what our future will look like.\n\nI don't know every place we'll visit, every challenge we'll face, or every dream we'll achieve.\n\nBut I know I want to keep discovering those things with you.\n\nI want to celebrate your happiest moments, listen when things feel heavy, and keep finding little ways to make you smile.\n\nI don't want to promise you a perfect life.\n\nI want to promise that our relationship is something I will keep caring for, nurturing, and choosing.\n\nAnd if one day we find ourselves in a little home somewhere, with flowers on the table and absolutely nothing important to do, I hope we look at each other and realize that we built something beautiful.\n\nUntil then, let's keep dreaming.\n\nOne place, one memory, one day at a time.\n\nI love you.",
-  final:["Hey, pretty girl.","Thank you for coming on this little adventure with me.","I know it's only a little world inside a website.","But if it made you smile, if it made you feel a little less alone, or if it reminded you how much you mean to me, then I'm happy I made it.","One day, I hope we get to visit places like these for real.","I hope we get to walk beneath the cherry blossoms in Japan.","I hope we get to see the mountains in Switzerland.","I hope we get to watch the sunset in Italy.","And I hope we get to make memories in places we haven't even dreamed of yet.","But wherever we end up, I hope we remember that the most important part was never the place.","It was us.","Thank you for being you, baby.","Take my hand whenever you're ready.","There's always room for you in our little world.","All my love, always. ♡"]
+  final:["Hey, pretty girl.","Thank you for coming on this little adventure with me.","I know it's only a little world inside a website.","But if it made you smile, if it made you feel a little less alone, or if it reminded you how much you mean to me, then I'm happy I made it.","One day, I hope we get to visit places like these for real.","I hope we get to walk beneath the cherry blossoms in Japan.","I hope we get to see the mountains in Switzerland.","I hope we get to toss a coin into a fountain in Rome, and come back every year.","I hope we get to watch the sun melt into the sea in Greece, just like this.","And I hope we get to make memories in places we haven't even dreamed of yet.","But wherever we end up, I hope we remember that the most important part was never the place.","It was us.","Thank you for being you, baby.","Take my hand whenever you're ready.","There's always room for you in our little world.","All my love, always. ♡"]
  }};
-const NAMES={paris:'Paris',shop:'The flower shop',japan:'Kyoto in bloom',home:'Our little future',finale:'Our last little moment'};
+const NAMES={paris:'Paris',shop:'The flower shop',rome:'Rome at golden hour',greece:'Greece at sunset',japan:'Kyoto in bloom',home:'Our little future',finale:'Our last little moment'};
 /* ============================================================== */
 const D=$('date'),cv=$('dcv'),sayE=$('dsay'),actB=$('dact'),chE=$('dch'),fadeE=$('dfade'),menuE=$('dmenu'),loadE=$('dload'),letE=$('dletter'),fbE=$('dfb');
 const REDUCE=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -805,8 +821,8 @@ function aStop(){aN.forEach(n=>{try{n.stop()}catch(e){}});aN=[];aI.forEach(clear
 function nz(type,f,q,g,lfo){const s=dac.createBufferSource();s.buffer=nb;s.loop=true;const fl=dac.createBiquadFilter();fl.type=type;fl.frequency.value=f;fl.Q.value=q;const gn=dac.createGain();gn.gain.value=g;s.connect(fl);fl.connect(gn);gn.connect(dm);s.start();aN.push(s);if(lfo){const o=dac.createOscillator(),og=dac.createGain();o.frequency.value=lfo;og.gain.value=g*.6;o.connect(og);og.connect(gn.gain);o.start();aN.push(o)}}
 const mf=m=>440*Math.pow(2,(m-69)/12);
 function tn(m,d,v,ty,a){const t=dac.currentTime,o=dac.createOscillator(),g=dac.createGain();o.type=ty||'triangle';o.frequency.value=mf(m);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+(a||.01));g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(dm);o.start(t);o.stop(t+d+.1)}
-function amb(k){if(!dac)return;aStop();const P={paris:[[53,57,60,64],[50,53,57,60]],japan:[[50,57,62],[52,59,64]],home:[[48,55,60,64],[45,52,57,60]],finale:[[48,55,59,64],[50,57,62,66]]}[k],pent=k==='japan'?[62,64,67,69,71,74]:[72,74,76,79,81,84];
-if(k==='paris'){nz('lowpass',420,.5,.05,.2)}if(k==='japan'){nz('bandpass',700,.6,.025,.12);nz('highpass',2000,.5,.012,.3)}if(k==='home'||k==='finale'){nz('bandpass',500,.5,.012,.1)}
+function amb(k){if(!dac)return;aStop();const P={rome:[[53,57,60,65],[50,57,60,64]],greece:[[55,59,62,66],[52,59,64,67]],paris:[[53,57,60,64],[50,53,57,60]],japan:[[50,57,62],[52,59,64]],home:[[48,55,60,64],[45,52,57,60]],finale:[[48,55,59,64],[50,57,62,66]]}[k],pent=k==='japan'?[62,64,67,69,71,74]:[72,74,76,79,81,84];
+if(k==='paris'){nz('lowpass',420,.5,.05,.2)}if(k==='rome'){nz('bandpass',1100,.5,.016,.18)}if(k==='greece'){nz('lowpass',520,.6,.05,.1);nz('highpass',2500,.5,.008,.25)}if(k==='japan'){nz('bandpass',700,.6,.025,.12);nz('highpass',2000,.5,.012,.3)}if(k==='home'||k==='finale'){nz('bandpass',500,.5,.012,.1)}
 let pi=0;const pad=()=>{P[pi++%P.length].forEach(m=>tn(m,9,.03,'sine',3))};pad();aI.push(setInterval(pad,8000));
 aI.push(setInterval(()=>tn(pent[Math.random()*6|0],k==='japan'?2.4:3,.06,k==='japan'?'triangle':'sine'),k==='japan'?1700:2400))}
 /* ---------- scene helpers ---------- */
@@ -818,6 +834,11 @@ const sph=(r,c,x,y,z,sx,sy,sz,p)=>{const m=new T.Mesh(SGm,typeof c==='object'?c:
 const cyl=(rt,rb,h,c,x,y,z,p,s)=>{const m=new T.Mesh(new T.CylinderGeometry(rt,rb,h,s||10),typeof c==='object'?c:M(c));m.position.set(x,y,z);p&&p.add(m);return m};
 let glowT;const glow=(p,c,x,y,z,s,o)=>{const sp=new T.Sprite(new T.SpriteMaterial({map:glowT,color:c,blending:T.AdditiveBlending,depthWrite:false,transparent:true,opacity:o||1}));sp.scale.set(s,s,1);sp.position.set(x,y,z);p.add(sp);return sp};
 const ENV={
+ rome:{top:0x6f8fd0,mid:0xf0b98f,hor:0xffd29a,sd:[-.4,.18,-.9],sc:0xffb060,sI:1.15,hs:0xffe6c8,hg:0x8a6a50,hI:.75,fog:0xf2c9a0,fd:.0045,st:0},
+ rdusk:{top:0x1a2060,mid:0xc4668a,hor:0xff9a6a,sd:[-.3,.05,-.95],sc:0xff7a50,sI:.5,hs:0x8a8ad0,hg:0x3a2a3a,hI:.5,fog:0xb86a8a,fd:.0055,st:.5},
+ gday:{top:0x2f7fe0,mid:0x8ec5f2,hor:0xdff0fa,sd:[.5,.5,-.6],sc:0xfff4d8,sI:1.1,hs:0xeaf4ff,hg:0xbfc8cc,hI:.95,fog:0xd8ecfa,fd:.003,st:0},
+ gdusk:{top:0x30307e,mid:0xe27a96,hor:0xffa85c,sd:[.85,.07,-.5],sc:0xff8040,sI:.7,hs:0xb8a4d8,hg:0x6a5060,hI:.55,fog:0xe0a090,fd:.0045,st:.55},
+
  paris:{top:0x5b86c8,mid:0xe9b88a,hor:0xf7cf9a,sd:[-.5,.22,-.84],sc:0xffc070,sI:1.15,hs:0xfff0dd,hg:0x8a7a60,hI:.75,fog:0xf0c898,fd:.007,st:0},
  jday:{top:0x7fa4d8,mid:0xcfd9e6,hor:0xf3e4e0,sd:[-.3,.5,-.8],sc:0xfff2d0,sI:1,hs:0xf6eaf0,hg:0x8a8f80,hI:.8,fog:0xeadde0,fd:.014,st:0},
  jdusk:{top:0x2a3a78,mid:0xc98aa4,hor:0xffb48a,sd:[-.2,.07,-.97],sc:0xff9a60,sI:.55,hs:0x9aa6e0,hg:0x4a3a4a,hI:.5,fog:0xd8a0a0,fd:.016,st:.35},
@@ -889,10 +910,81 @@ const lp=new T.PointLight(0xffc98a,1.1,12,1.4);lp.position.set(0,2.6,-1);w.add(l
 function bFinal(w){const g=new T.Mesh(new T.PlaneGeometry(400,400),M(0x2a4a3a));g.rotation.x=-PI2;w.add(g);for(let i=0;i<14;i++){const c=new T.Mesh(new T.ConeGeometry(rnd(30,60),rnd(40,80),5),M(0x1a2440));const a=i/14*6.28;c.position.set(Math.cos(a)*150,15,Math.sin(a)*150);w.add(c)}
 for(let i=0;i<70;i++){const l=glow(w,0xffb060,rnd(-30,30),rnd(1,14),rnd(-40,10),rnd(.5,1),.8);l.userData.v=rnd(.15,.4)}
 for(let i=0;i<160;i++)sph(.07,[0xf2a6c0,0xfff6ee,0xc3b0f5][i%3],rnd(-16,16),.1,rnd(-26,6),1,1,1,w);box(2.4,.05,1.8,0xb23a5a,-.4,.03,-3.2,w)}
-const BUILD={paris:bParis,japan:bJapan,home:bHome,finale:bFinal};
+/* ===================== ROME + GREECE ===================== */
+function rfacade(s){return tex(128,256,(x,w,h)=>{x.fillStyle=['#d9a066','#e2b27c','#c98a56','#e9c694'][s%4];x.fillRect(0,0,w,h);for(let i=0;i<40;i++){x.fillStyle='rgba(90,50,20,.07)';x.fillRect(rnd(0,w),rnd(0,h),rnd(6,24),rnd(4,16))}
+for(let r=0;r<4;r++)for(let c=0;c<3;c++){const X=14+c*38,Y=18+r*58;x.fillStyle='#3d6a4a';x.fillRect(X-7,Y,6,38);x.fillRect(X+23,Y,6,38);x.fillStyle='#2a1c14';x.fillRect(X-2,Y-2,26,42);x.fillStyle='#ffcf8a';x.fillRect(X,Y,22,38);x.fillStyle='#b08a5e';x.fillRect(X-4,Y+40,30,4)}})}
+function bRome(w){
+ const lanM=new T.MeshBasicMaterial({color:0xffd9a0}),tm=M(0xb5532f),ST=0xd9d0be;
+ const cobT=tex(128,128,(x,W,H2)=>{x.fillStyle='#7d7060';x.fillRect(0,0,W,H2);for(let r=0;r<8;r++)for(let c=0;c<8;c++){x.fillStyle='hsl(32,'+(10+Math.random()*10)+'%,'+(36+Math.random()*16)+'%)';x.fillRect(c*16+(r%2)*8+1,r*16+1,14,14)}});cobT.repeat.set(16,40);
+ const gd=new T.Mesh(new T.PlaneGeometry(120,260),new T.MeshLambertMaterial({map:cobT}));gd.rotation.x=-PI2;gd.position.set(0,0,-90);w.add(gd);
+ const fm=[0,1,2,3].map(i=>new T.MeshLambertMaterial({map:rfacade(i),emissive:0xffffff,emissiveMap:winGlow(),emissiveIntensity:.5}));
+ const lantern=(x,y,z)=>{const l=new T.Mesh(SGm,lanM);l.scale.set(.18,.26,.18);l.position.set(x,y,z);w.add(l);const s=glow(w,0xffb060,x,y,z,1.9,.2);lamps.push({m:lanM,s})};
+ [-1,1].forEach(s=>{for(let z=16,i=0;z>-62;z-=7.6,i++){const h=rnd(10,14);box(7,h,7.4,fm[i%4],s*11.2,h/2,z,w);box(7.5,1.2,7.8,tm,s*11.2,h+.6,z,w);
+  box(2.4,.14,.9,0x2a2622,s*7.5,4.6,z,w);for(let k=0;k<5;k++)sph(.17,[0xe0405a,0xff7a8a,0xfff0f0][k%3],s*6.8,4.85,z-.8+k*.4,1,1,1,w);
+  sph(.6,0x4a7a3a,s*7.7,rnd(2,8),z+rnd(-3,3),.7,1.3,.7,w);if(i%2===0)lantern(s*7.3,3.4,z+3.8)}});
+ [-1,1].forEach(s=>{for(let z=-70,i=0;z>-150;z-=8,i++){const h=rnd(9,13);box(7,h,7.4,fm[i%4],s*27,h/2,z,w);box(7.5,1.2,7.8,tm,s*27,h+.6,z,w)}});
+ for(let z=8;z>-60;z-=10)for(let i=-6;i<=6;i++){const s=glow(w,0xffd9a0,i*1.1,7.6-1.2*(1-Math.pow(i/6,2)),z,.7,.9);lamps.push({m:lanM,s})}
+ const vs=new T.Group();box(.5,.35,1.2,0x7fd0c0,0,.55,0,vs);box(.4,.1,.6,0x3a2a22,0,.78,-.1,vs);box(.15,.5,.1,0xe8e8e8,0,.9,.55,vs);[-.6,.6].forEach(z=>{const wl=cyl(.22,.22,.12,0x222222,0,.22,z,vs,12);wl.rotation.z=PI2});vs.position.set(-5.4,0,-14);vs.rotation.y=.3;w.add(vs);
+ /* trattoria */
+ const cf=new T.Group();box(3.4,.1,3.4,0xb23a3a,6.4,3.1,-27,cf).rotation.z=.18;
+ for(let i=0;i<5;i++)box(.5,.11,3.45,[0x2f8a4a,0xf6efe0,0xc0392b][i%3],5+i*.7,3.05+(i-2)*-.1,-27,cf);
+ const mkT=z=>{const tb=new T.Group();cyl(.5,.5,.05,0xf6efe0,0,.78,0,tb,16);cyl(.05,.05,.78,0x222222,0,.39,0,tb,6);cyl(.03,.03,.16,0xfff3dc,0,.88,0,tb,8);glow(tb,0xffb060,0,1.0,0,.6,.9);tb.position.set(6.6,0,z);cf.add(tb);[5.75,7.45].forEach(xx=>box(.45,.05,.45,0x6a3a28,xx,.46,z,cf));return tb};
+ mkT(-24);mkT(-30);const tbl=mkT(-27);w.add(cf);w.userData.table=tbl;
+ /* the fountain in the piazza */
+ const fn=new T.Group();fn.position.set(0,0,-74);w.add(fn);
+ const wm=()=>new T.MeshBasicMaterial({color:0x8cc6e8,transparent:true,opacity:.85,polygonOffset:true,polygonOffsetFactor:-2,polygonOffsetUnits:-2});
+ cyl(6,6.3,1,ST,0,.5,0,fn,32);const rim=new T.Mesh(new T.TorusGeometry(5.9,.28,8,40),M(ST));rim.rotation.x=PI2;rim.position.y=1.02;fn.add(rim);
+ const disc=(r,y)=>{const d=new T.Mesh(new T.CylinderGeometry(r,r,.04,32),wm());d.position.y=y;fn.add(d);water.push(d)};
+ disc(5.6,1.04);cyl(3.2,3.5,.5,ST,0,1.25,0,fn,28);disc(2.9,1.52);cyl(.9,1.2,2.2,ST,0,2.6,0,fn,16);cyl(1.7,1.9,.4,ST,0,3.9,0,fn,24);disc(1.5,4.12);cyl(.35,.5,1,ST,0,4.6,0,fn,12);sph(.45,ST,0,5.3,0,1,1,1,fn);
+ glow(fn,0xffb060,0,3,0,14,.18);
+ const fj=w.userData.fj=[];const jets=(n,r,y,h,dy,o)=>{for(let i=0;i<n;i++){const a=i/n*6.283,s=glow(fn,0xcfe9ff,0,0,0,.45,.001);fj.push({s,x:Math.cos(a)*r,z:Math.sin(a)*r,y,h,dy,o,p:i/n})}};
+ jets(12,.3,5.2,.5,1.1,2.4);jets(18,1.7,4.1,.5,2.55,.7);jets(24,3.2,1.5,.4,.47,.7);
+ for(let i=0;i<8;i++){const a=i/8*6.283,lx=Math.cos(a)*7.2,lz=-74+Math.sin(a)*7.2;lantern(lx,1.5,lz);cyl(.06,.08,1.4,0x1a1a22,lx,.7,lz,w,6)}
+ /* umbrella pines */
+ const pine=(x,z)=>{const t=new T.Group();cyl(.25,.35,6,0x5a3f2a,0,3,0,t,7);[[0,6.4,0,3.4],[1.6,6,.8,2.4],[-1.5,6.1,-.7,2.5]].forEach(a=>sph(a[3],0x3f5f33,a[0],a[1],a[2],1,.4,1,t));t.position.set(x,0,z);w.add(t)};
+ [[-14,-62],[14,-64],[-17,-84],[17,-90],[-12,-105],[12,-110],[-22,-125],[21,-130]].forEach(a=>pine(a[0],a[1]));
+ /* the Colosseum, glowing in the distance */
+ const ct=tex(256,128,(x,W,H2)=>{x.fillStyle='#d8b78a';x.fillRect(0,0,W,H2);for(let r=0;r<3;r++)for(let c=0;c<16;c++){const X=c*16+3,Y=8+r*34;x.fillStyle='#e8c690';x.fillRect(c*16,Y-4,16,3);x.fillStyle='#3a2416';x.beginPath();x.arc(X+5,Y+8,5,Math.PI,0);x.lineTo(X+10,Y+28);x.lineTo(X,Y+28);x.closePath();x.fill();x.fillStyle='rgba(255,170,90,.55)';x.beginPath();x.arc(X+5,Y+8,3,Math.PI,0);x.lineTo(X+8,Y+24);x.lineTo(X+2,Y+24);x.closePath();x.fill()}x.fillStyle='#c9a574';x.fillRect(0,0,W,6)});ct.repeat.set(3,1);
+ const co=new T.Mesh(new T.CylinderGeometry(34,37,24,48,1,true),new T.MeshLambertMaterial({map:ct,emissive:0xffffff,emissiveMap:ct,emissiveIntensity:.55,side:T.DoubleSide}));co.position.set(0,12,-185);w.add(co);
+ glow(w,0xffb060,0,12,-150,90,.35)}
+function bGreece(w){
+ const WH=0xf6f1ea,BL=0x2a78d0,MG=[0xd9367a,0xe85a9a,0xc0287a],lanM=new T.MeshBasicMaterial({color:0xd8c4a8});
+ const lantern=(x,y,z)=>{const l=new T.Mesh(SGm,lanM);l.scale.set(.18,.26,.18);l.position.set(x,y,z);w.add(l);const s=glow(w,0xffb060,x,y,z,1.9,.2);lamps.push({m:lanM,s})};
+ const stn=tex(128,128,(x,W,H2)=>{x.fillStyle='#e6dfd2';x.fillRect(0,0,W,H2);for(let r=0;r<4;r++)for(let c=0;c<4;c++){x.fillStyle='hsl(35,12%,'+(78+Math.random()*10)+'%)';x.fillRect(c*32+1,r*32+1,30,30)}});stn.repeat.set(8,70);
+ const gr=new T.Mesh(new T.PlaneGeometry(30,260),new T.MeshLambertMaterial({map:stn}));gr.rotation.x=-PI2;gr.position.set(-5,0,-90);w.add(gr);
+ const sea=new T.Mesh(new T.PlaneGeometry(900,900),new T.MeshLambertMaterial({color:0x2a86d6}));sea.rotation.x=-PI2;sea.position.set(0,-14,-90);w.add(sea);box(.5,14,260,0xd8cdb8,10.2,-7,-90,w);
+ /* whitewashed houses, blue doors, domes, bougainvillea */
+ for(let z=18,i=0;z>-118;z-=rnd(5.5,7.5),i++){const h=rnd(3,6),d=rnd(5,7),hw=rnd(5,7),x=-3.6-d/2;box(d,h,hw,WH,x,h/2,z,w);box(d+.3,.25,hw+.3,0xfdfbf6,x,h+.12,z,w);
+  box(.1,1.9,1,BL,-3.55,.95,z+rnd(-1,1),w);box(.1,.9,.7,BL,-3.55,rnd(2,h-.6),z+rnd(-1.8,1.8),w);
+  if(i%3===1){cyl(1.3,1.5,.4,WH,x,h+.4,z,w,16);sph(1.35,BL,x,h+.6,z,1,.85,1,w)}
+  for(let k=0;k<7;k++)sph(rnd(.3,.55),MG[k%3],-3.45,rnd(1.2,h-.2),z+rnd(-2.4,2.4),1,1,.9,w);
+  if(i%2===0)lantern(-3.2,2.8,z+2.2)}
+ /* flowered arches */
+ [-32,-96].forEach(z=>{[-1,1].forEach(s=>box(.8,2.6,.8,WH,s*3,1.3,z,w));const ar=new T.Mesh(new T.TorusGeometry(3,.4,8,28,Math.PI),M(WH));ar.position.set(0,2.6,z);w.add(ar);
+  for(let a=0;a<=Math.PI+.01;a+=.24)sph(rnd(.3,.45),MG[(a*10|0)%3],Math.cos(a)*3,2.6+Math.sin(a)*3,z+rnd(-.2,.2),1,1,1,w)});
+ /* sea wall and the terrace above the sea */
+ box(.3,.9,38,WH,3.4,.45,1,w);box(.3,.9,100,WH,3.4,.45,-80,w);
+ const cf=new T.Group();box(6.4,.1,12,0xefe3cd,6.5,.05,-24,cf);box(.12,1,12,BL,9.8,.55,-24,cf);
+ [[4,-27.2],[4,-20.8],[9.2,-27.2],[9.2,-20.8]].forEach(a=>box(.15,3,.15,WH,a[0],1.5,a[1],cf));box(5.6,.1,6.8,WH,6.6,3.05,-24,cf);
+ for(let i=0;i<6;i++)box(.08,.12,6.8,BL,4.1+i*.9,3.12,-24,cf);for(let i=0;i<10;i++)sph(.4,MG[i%3],4+rnd(0,5.2),3.2,-24+rnd(-3.2,3.2),1,.6,1,cf);
+ const tbl=new T.Group();cyl(.5,.5,.05,0xffffff,0,.78,0,tbl,16);cyl(.05,.05,.78,0x2a78d0,0,.39,0,tbl,6);cyl(.03,.03,.16,0xfff3dc,0,.88,0,tbl,8);glow(tbl,0xffb060,0,1.0,0,.6,.9);tbl.position.set(6.6,0,-24);cf.add(tbl);
+ [5.75,7.45].forEach(xx=>box(.45,.05,.45,BL,xx,.46,-24,cf));w.add(cf);w.userData.table=tbl;
+ /* little chapel with a bell */
+ box(7,4.6,6,WH,-1,2.3,-132,w);box(7.4,.3,6.4,0xfdfbf6,-1,4.75,-132,w);cyl(2.2,2.4,.6,WH,-1,5.1,-132,w,20);sph(2.2,BL,-1,5.3,-132,1,.9,1,w);box(.12,1.3,.12,WH,-1,7.6,-132,w);box(.7,.12,.12,WH,-1,7.9,-132,w);
+ box(1.4,2.3,.12,BL,-1,1.15,-128.95,w);box(.9,.9,.12,BL,-3,2.4,-128.95,w);box(.9,.9,.12,BL,1,2.4,-128.95,w);lantern(-2.6,2.6,-128.5);lantern(.6,2.6,-128.5);
+ box(1.3,5.2,1.3,WH,3.4,2.6,-131,w);box(.7,.9,.2,0x2a2622,3.4,4.3,-130.3,w);sph(.28,0xe0b060,3.4,4.3,-130.2,1,1.1,1,w);
+ /* windmill on the cliff */
+ const ml=new T.Group();cyl(1.5,2,5,WH,0,2.5,0,ml,16);cyl(1.7,1.7,.3,0x8a6a40,0,5.1,0,ml,16);const rf=new T.Mesh(new T.ConeGeometry(1.9,1.8,16),M(0x8a6a40));rf.position.y=6.1;ml.add(rf);box(.8,1.5,.1,BL,0,.75,2.0,ml);ml.position.set(7.2,0,-76);w.add(ml);
+ const mw=new T.Group();mw.position.set(7.2,5.2,-74.3);w.add(mw);for(let i=0;i<4;i++){const h=new T.Group();box(.14,7,.12,0x7a5a3a,0,3.5,0,h);box(1,5,.04,0xf1e8d6,.55,3.9,0,h);h.rotation.z=i*PI2;mw.add(h)}w.userData.mill=mw;
+ /* sailboats and far islands */
+ for(let i=0;i<6;i++){const b=new T.Group();box(1.4,.35,.5,0xf6f1ea,0,0,0,b);const sl=new T.Mesh(new T.ConeGeometry(.5,2.2,3),M(0xffffff));sl.position.y=1.3;b.add(sl);b.position.set(rnd(25,90),-13.8,rnd(-170,-20));w.add(b)}
+ for(let i=0;i<3;i++){const m=new T.Mesh(new T.ConeGeometry(rnd(22,36),rnd(10,16),6),M(0x6a7aa0));m.position.set(rnd(90,160),-8,rnd(-200,-60));w.add(m)}
+ /* wish lanterns, hidden until she releases them */
+ const fl=w.userData.fl=[];for(let i=0;i<40;i++){const s=glow(w,0xffb060,rnd(-8,26),rnd(1,12),rnd(-170,-126),rnd(.7,1.2),.001);s.userData.v=rnd(.5,1.1);fl.push(s)}}
+const BUILD={paris:bParis,japan:bJapan,home:bHome,finale:bFinal,rome:bRome,greece:bGreece};
 /* ---------- engine ---------- */
-function setWorld(n){if(curW===n)return;curW=n;if(wg){sc.remove(wg)}wg=new T.Group();sc.add(wg);lamps=[];steam=[];water=[];BUILD[n](wg);const shadow=n==='paris'||n==='japan';wg.traverse(o=>{if(o.isMesh){o.castShadow=shadow;o.receiveShadow=shadow}});
-const e={paris:'paris',japan:'jday',home:'home',finale:'night'}[n];envA=e;envB=e;envK=0;applyEnv(e);petN=n==='paris'?70:n==='japan'?REDUCE?120:360:n==='finale'?40:0;if(petP)petP.geometry.setDrawRange(0,petN);sun.castShadow=shadow}
+function setWorld(n){if(curW===n)return;curW=n;if(wg){sc.remove(wg)}wg=new T.Group();sc.add(wg);lamps=[];steam=[];water=[];BUILD[n](wg);const shadow=n==='paris'||n==='japan'||n==='rome'||n==='greece';wg.traverse(o=>{if(o.isMesh){o.castShadow=shadow;o.receiveShadow=shadow}});
+const e={paris:'paris',japan:'jday',home:'home',finale:'night',rome:'rome',greece:'gday'}[n];envA=e;envB=e;envK=0;applyEnv(e);petN=n==='paris'?70:n==='japan'?(REDUCE?120:360):n==='rome'?30:n==='greece'?(REDUCE?40:100):n==='finale'?40:0;if(petP)petP.geometry.setDrawRange(0,petN);sun.castShadow=shadow}
 let petN=0;
 function place(x,y,z,yaw){rig.position.set(x,y,z);ly=yaw||0;lp=0}
 async function walk(z,spd){const g=gen;walking=true;spd=spd||1.25;const sgn=Math.sign(z-rig.position.z);let l=performance.now();while((z-rig.position.z)*sgn>.05){await fr();if(g!==gen)throw ABORT;const n=performance.now();if(!paused)rig.position.z+=sgn*spd*Math.min(.05,(n-l)/1000)*(REDUCE?.8:1);l=n}walking=false}
@@ -903,6 +995,27 @@ function holdPose(){vis(H.his,1);vis(H.her,1);H.his.g.position.set(.13,-.3,-.47)
 function unhold(){vis(H.his,0);vis(H.her,0);holding=false}
 let EH=null;
 async function embrace(){unhold();if(!EH){EH=[-1,1].map(s=>{const h=mkHand(CFG.hisSkin,CFG.coat,0xf5f1ea);h.r.rotation.z=s*PI2;h.g.rotation.set(0,0,0);HG.add(h.g);return h})}EH.forEach(h=>{h.g.visible=true;h.curl(.5)});const l0=lp;await tw(k=>{EH.forEach((h,i)=>{const s=i?1:-1;h.g.position.set(s*mix(.55,.13,k),mix(-.6,-.34,k),mix(-.15,-.4,k))});lp=mix(l0,.1,k)},2800);await sleep(2500);EH.forEach(h=>h.g.visible=false);lp=0}
+async function sit(tx,tz,mk,lines){const tb=wg.userData.table,cf=tb.parent;unhold();const x0=rig.position.x,z0=rig.position.z;
+ await tw(k=>{rig.position.set(mix(x0,tx-.85,k),mix(1.6,1.15,k),mix(z0,tz,k));ly=mix(0,-PI2,k)},2200);
+ const it=mk();it.position.set(tx-.3,.82,tz+.15);cf.add(it);
+ const th=[-1,1].map(s=>{const hd=mkHand(CFG.hisSkin,CFG.coat,0xf5f1ea);hd.g.visible=true;hd.g.rotation.set(0,0,0);hd.g.position.set(tx+.35,.84,tz+s*.28);hd.r.rotation.set(PI2,0,PI2);hd.curl(.25);cf.add(hd.g);return hd});
+ await say(lines);
+ await tw(k=>{rig.position.set(mix(tx-.85,0,k),mix(1.15,1.6,k),tz);ly=mix(-PI2,0,k)},1800);
+ cf.remove(it);th.forEach(h=>cf.remove(h.g));holdPose()}
+async function coinToss(){const c=new T.Mesh(new T.CylinderGeometry(.06,.06,.012,14),new T.MeshBasicMaterial({color:0xffd34d}));wg.add(c);
+ const sx=rig.position.x+.18,sy=1.25,sz=rig.position.z-.4,tx=.7,ty=1.06,tz=-69.8;
+ await tw(k=>{c.position.set(mix(sx,tx,k),mix(sy,ty,k)+Math.sin(k*Math.PI)*1.8,mix(sz,tz,k));c.rotation.x=k*20},1500);
+ wg.remove(c);if(dac){tn(88,1.6,.08,'sine');tn(95,1.2,.05,'sine')}
+ const sp=glow(wg,0xffffff,tx,ty+.1,tz,1.5,1);await tw(k=>{sp.scale.set(1.5+k*3,1.5+k*3,1);sp.material.opacity=1-k},1400);wg.remove(sp)}
+async function bellRing(){if(dac)[79,83,86,91].forEach((m,i)=>setTimeout(()=>tn(m,3,.09,'sine',.01),i*420));
+ const g=glow(wg,0xffe0a0,3.4,4.3,-130.2,2,1);await tw(k=>{g.scale.set(2+k*6,2+k*6,1);g.material.opacity=1-k},1800);wg.remove(g)}
+async function lanternsUp(){const fl=wg.userData.fl;if(dac)[72,76,79,84,88].forEach((m,i)=>setTimeout(()=>tn(m,2.5,.05,'sine',.4),i*250));await tw(k=>fl.forEach(c=>c.material.opacity=.95*k),3200)}
+const mkPasta=()=>{const g=new T.Group();cyl(.16,.14,.02,0xfdfdfd,0,0,0,g,14);sph(.1,0xf0cf70,0,.05,0,1,.55,1,g);sph(.045,0xc0392b,0,.09,0,1,.7,1,g);for(let i=0;i<4;i++)sph(.03,0x7a3a22,Math.cos(i*1.57)*.07,.07,Math.sin(i*1.57)*.07,1,1,1,g);return g};
+const mkPizza=()=>{const g=new T.Group();cyl(.2,.2,.012,0xfdfdfd,0,0,0,g,16);cyl(.16,.16,.016,0xe8b860,0,.012,0,g,16);cyl(.14,.14,.012,0xc0392b,0,.024,0,g,16);for(let i=0;i<6;i++)sph(.022,i%2?0xfff0d0:0x3f8a4a,Math.cos(i)*.08,.04,Math.sin(i)*.08,1,.5,1,g);return g};
+const mkGelato=()=>{const g=new T.Group();cyl(.07,.05,.07,0xfdfdfd,0,.035,0,g,12);sph(.065,0xf2a6c0,0,.1,0,1,1,1,g);sph(.055,0x9acd80,0,.16,0,1,1,1,g);sph(.014,0xc0392b,0,.215,0,1,1,1,g);return g};
+const mkYogurt=()=>{const g=new T.Group();cyl(.09,.06,.07,0xfdfdfd,0,.035,0,g,14);sph(.08,0xfff8ee,0,.07,0,1,.6,1,g);sph(.026,0xffc030,0,.11,0,1,.5,1,g);sph(.02,0x7a2a5a,.04,.1,.02,1,1,1,g);return g};
+const mkLemon=()=>{const g=new T.Group(),gm=new T.MeshLambertMaterial({color:0xf6e88a,transparent:true,opacity:.8});[-1,1].forEach(s=>{cyl(.042,.035,.12,gm,s*.12,.06,0,g,10);sph(.032,0xffe040,s*.12,.13,0,1,.35,1,g)});return g};
+const mkWine=()=>{const g=new T.Group(),gm=new T.MeshLambertMaterial({color:0xf3e6a0,transparent:true,opacity:.85});[-1,1].forEach(s=>{cyl(.04,.028,.07,gm,s*.12,.13,0,g,10);cyl(.005,.005,.09,0xffffff,s*.12,.065,0,g,6);cyl(.035,.035,.005,0xffffff,s*.12,.01,0,g,10)});return g};
 const CH={
 async paris(){setWorld('paris');if(bqG){HG.remove(bqG);bqG=null}place(0,1.6,8,0);HG.visible=true;unhold();await fade(0);await say(CFG.T.open);await reach();await Promise.all([walk(-12),say(CFG.T.paris1,{ms:3200})]);await walk(-24);
 const q=await ask("A little café table. What would you like?",["🥐 A buttery croissant","☕ A café crème","🍫 Hot chocolate","🍰 A little éclair"]);const col=[0xd9a05a,0xf3ece0,0x5a3622,0xe9c07a][q],tb=wg.userData.table,cf=tb.parent;unhold();const x0=rig.position.x,z0=rig.position.z;
@@ -921,6 +1034,28 @@ async japan(){await fade(1);setWorld('japan');place(0,1.6,10,0);HG.visible=true;
 const wp=walk(-44,.85);wp.catch(()=>{});await sleep(1500);await say(CFG.T.sakuraA.slice(0,3));await tw(k=>{lp=mix(0,.6,k)},1800);await say(CFG.T.sakuraA.slice(3,5));await sleep(4500);await tw(k=>{lp=mix(.6,0,k)},1600);await wp;await say(CFG.T.sakuraB);
 await walk(-96,1.1);const x0=rig.position.x;await tw(k=>{rig.position.set(mix(x0,1.2,k),mix(1.6,1.0,k),mix(-96,-100,k))},2600);await say(CFG.T.promise,{ms:4200,gap:900});await embrace();await fade(1,2.4)},
 async home(){await fade(1);setWorld('home');place(0,1.6,3.2,0);HG.visible=true;holdPose();await fade(0,1.6);await walk(-.4,.9);await sleep(1200);await btn("Open the letter 💌");letE.querySelector('.lt').textContent=CFG.T.letter;letE.classList.add('on');await new Promise(r=>{$('dlclose').onclick=()=>{letE.classList.remove('on');r()}});await sleep(800)},
+async rome(){await fade(1);setWorld('rome');place(0,1.6,12,0);HG.visible=true;holdPose();await fade(0,1.6);
+ await say(CFG.T.rome1);
+ await Promise.all([walk(-24,.9),say(CFG.T.rome2,{ms:3800})]);
+ const q=await ask("A candlelit trattoria table. What shall we share?",["🍝 One plate of spaghetti, two forks","🍕 A slice of pizza to share","🍨 Gelato, two spoons"]);
+ await sit(6.6,-27,[mkPasta,mkPizza,mkGelato][q],[CFG.T.romeFood[q]].concat(CFG.T.romeTable));
+ await Promise.all([walk(-61,1.05),say(CFG.T.romeFountain1,{ms:4200})]);
+ await say(CFG.T.romeFountain2);
+ await btn("Toss a coin 🪙");await coinToss();
+ await say(CFG.T.romeWish);
+ await say(CFG.T.romeLove,{ms:4200,gap:900});
+ await embrace();await fade(1,2.4)},
+async greece(){await fade(1);setWorld('greece');place(0,1.6,12,0);HG.visible=true;holdPose();await fade(0,1.6);
+ await say(CFG.T.greece1);
+ await Promise.all([walk(-21,.95),say(CFG.T.greece2,{ms:4200})]);
+ const q=await ask("A terrace table above the sea. What shall we share?",["🍯 Greek yogurt with warm honey","🍋 Two fresh lemonades","🥂 Two glasses of cold white wine"]);
+ await sit(6.6,-24,[mkYogurt,mkLemon,mkWine][q],[CFG.T.greeceFood[q]].concat(CFG.T.greeceTable));
+ await Promise.all([walk(-118,1.0),say(CFG.T.greece3,{ms:4400})]);
+ await say(CFG.T.greeceBell1);
+ await btn("Ring the bell 🔔");await bellRing();await say(CFG.T.greeceBell2);
+ await btn("Release a wish lantern 🏮");await lanternsUp();
+ await say(CFG.T.greeceLove,{ms:4400,gap:900});
+ await embrace();await fade(1,2.4)},
 async finale(){await fade(1);setWorld('finale');place(0,1.6,2,0);HG.visible=true;unhold();await fade(0,2);await reach();await say(CFG.T.final,{ms:4600,gap:900,keep:true});await sleep(3500);sayE.classList.remove('on');const a=await ask("Where would you like to go?",["Revisit a chapter","Back to our website"]);if(a===0)openMenu();else leave()}};
 async function play(i){const g=++gen;chE.innerHTML='';sayE.classList.remove('on');actB.style.display='none';letE.classList.remove('on');try{for(let k=i;k<CFG.order.length;k++){amb(CFG.order[k]==='shop'?'paris':CFG.order[k]);await CH[CFG.order[k]]()}}catch(e){if(e!==ABORT)console.error(e)}}
 function openMenu(){menuE.innerHTML='';CFG.order.forEach((c,i)=>{const b=document.createElement('button');b.textContent=NAMES[c];b.onclick=()=>{menuE.classList.remove('on');restart(i)};menuE.appendChild(b)});menuE.classList.add('on')}
@@ -942,7 +1077,10 @@ function frame(ts){if(!on)return;rid=requestAnimationFrame(frame);const dt=Math.
 const bob=walking&&!REDUCE?Math.sin(t*7)*.022:0,sw=REDUCE?0:Math.sin(t*1.3)*.004;cam.position.y=bob;rig.rotation.set(0,ly,0);cam.rotation.set(lp,0,0);
 HG.position.set(0,bob*.5+sw,0);if(holding){H.his.g.rotation.z=Math.sin(t*1.1)*.03;H.her.g.rotation.z=Math.sin(t*1.1)*.03}
 const rp=rig.position;sky.position.copy(rp);sun.position.set(rp.x+sky.material.uniforms.sd.value.x*40,rp.y+sky.material.uniforms.sd.value.y*40,rp.z+sky.material.uniforms.sd.value.z*40);sun.target.position.copy(rp);
-if(curW==='japan'){const k=ss(rp.z,-4,-78);if(Math.abs(k-envK)>.004){envK=k;applyEnv('jday','jdusk',k)}}
+if(curW==='japan'){const k=ss(rp.z,-4,-78);if(Math.abs(k-envK)>.004){envK=k;applyEnv('jday','jdusk',k)}} 
+if(curW==='rome'){const k=ss(rp.z,-6,-72);if(Math.abs(k-envK)>.004){envK=k;applyEnv('rome','rdusk',k)}}
+if(curW==='greece'){const k=ss(rp.z,-8,-112);if(Math.abs(k-envK)>.004){envK=k;applyEnv('gday','gdusk',k)}}
+if(wg){const u=wg.userData;if(u.fj)u.fj.forEach(j=>{const k=(t*.7+j.p)%1,s=Math.sin(k*Math.PI),f=1+k*j.o;j.s.position.set(j.x*f,j.y+4*j.h*k*(1-k)-j.dy*k,j.z*f);j.s.material.opacity=.85*s});if(u.mill)u.mill.rotation.z+=dt*.5;if(u.fl)u.fl.forEach(c=>{c.position.y+=c.userData.v*dt;if(c.position.y>36)c.position.y=2})}
 const pa=petP.geometry.attributes.position.array;for(let i=0;i<petN;i++){const p=petA[i];p.y-=p.v*dt;p.x+=Math.sin(t*.8+p.p)*dt*.6;if(p.y<0){p.y=12;p.x=rnd(-14,14);p.z=rnd(-30,6)}pa[i*3]=rp.x+p.x;pa[i*3+1]=p.y;pa[i*3+2]=rp.z+p.z-6}petP.geometry.attributes.position.needsUpdate=true;
 water.forEach(w=>{w.material.opacity=.8+Math.sin(t*1.5)*.05});steam.forEach(s=>{const k=(t*.4+s.p)%1;s.s.position.y=s.y+k*.5;s.s.material.opacity=.3*(1-k)});
 if(curW==='finale'&&wg)wg.children.forEach(c=>{if(c.userData.v){c.position.y+=c.userData.v*dt;if(c.position.y>16)c.position.y=1}});
