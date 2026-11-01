@@ -4052,7 +4052,7 @@ function specialCard(){
 /* ---------- welcome + secret word ---------- */
 const wl=$('wlc');
 if(wl){
- const gateOn=CFG.SECRET_WORDS.length>0&&(store.get('ouGateOK')!=='1'||location.hash==='#gate');
+ const gateOn=CFG.SECRET_WORDS.length>0; /* asked on every visit */
  const words=CFG.SECRET_WORDS.map(norm);
  const gate=$('wgate'),beg=$('wbegin'),inp=$('wword'),hint=$('whint'),sub=$('wsub');
  if(SP)sub.textContent=SP.title;
@@ -4062,7 +4062,7 @@ if(wl){
  const WRONG=["Hmm, not quite 🥺 try again","Close, but not that one 🤍","Nope, but I love that you're trying ♡","Think harder, pretty girl 🌷"];
  function tryWord(){
   const v=norm(inp.value);if(!v)return;
-  if(words.includes(v)){store.set('ouGateOK','1');sub.textContent=SP?SP.title:'you remembered 🤍';hint.textContent='';rain(['💗','🌸','✨'],12);ding();showBegin()}
+  if(words.includes(v)){sub.textContent=SP?SP.title:'you remembered 🤍';hint.textContent='';rain(['💗','🌸','✨'],12);ding();showBegin()}
   else{tries++;inp.classList.remove('bad');void inp.offsetWidth;inp.classList.add('bad');buzz();
    hint.textContent=tries>=3?CFG.HINT:WRONG[(tries-1)%WRONG.length];inp.select()}
  }
