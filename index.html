@@ -830,6 +830,30 @@ body.wl{overflow:hidden}
 .wlf{position:fixed;top:-8vh;z-index:9100;pointer-events:none;animation:wlFall linear forwards}
 @keyframes wlFall{to{transform:translateY(112vh) rotate(var(--r,200deg))}}
 @keyframes ouPopIn{from{opacity:0;transform:scale(.88) translateY(10px)}to{opacity:1;transform:none}}
+/* ===== unlock celebration ===== */
+#wlc .wbox{transition:opacity .35s}
+#wlc.unl .wbox{opacity:0;pointer-events:none}
+#wunl{position:absolute;inset:0;z-index:4;display:grid;place-items:center;overflow:hidden;cursor:pointer;animation:wuIn .35s both}
+@keyframes wuIn{from{opacity:0}to{opacity:1}}
+#wunl .wst{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;padding:0 22px}
+#wunl .wray{position:absolute;left:50%;top:38%;width:150vmax;height:150vmax;margin:-75vmax 0 0 -75vmax;border-radius:50%;background:repeating-conic-gradient(from 0deg,rgba(255,217,138,.34) 0 6deg,transparent 6deg 18deg);-webkit-mask-image:radial-gradient(circle,#000 0,transparent 42%);mask-image:radial-gradient(circle,#000 0,transparent 42%);opacity:0;transform:scale(.2) rotate(0);animation:wuRay 2.6s .75s ease-out forwards;pointer-events:none}
+@keyframes wuRay{0%{opacity:0;transform:scale(.2) rotate(0)}25%{opacity:1}100%{opacity:0;transform:scale(1) rotate(60deg)}}
+#wunl .wrg{position:absolute;left:50%;top:38%;width:120px;height:120px;margin:-60px 0 0 -60px;border-radius:50%;border:3px solid #f2a6c0;opacity:0;transform:scale(.3);animation:wuRing 1.5s ease-out forwards;pointer-events:none}
+#wunl .wrg.r1{animation-delay:.75s}#wunl .wrg.r2{animation-delay:.95s;border-color:#ffd98a}#wunl .wrg.r3{animation-delay:1.15s;border-color:#fff6ee}
+@keyframes wuRing{0%{opacity:.95;transform:scale(.3)}100%{opacity:0;transform:scale(4.6)}}
+#wunl .wlk{position:relative;width:120px;height:120px;font-size:96px;line-height:120px;filter:drop-shadow(0 0 22px rgba(255,217,138,.6))}
+#wunl .lk{position:absolute;inset:0;display:block}
+#wunl .lk.c{animation:wuShake .6s .1s both,wuHide .01s .72s forwards}
+#wunl .lk.o{opacity:0;animation:wuPop .9s .72s cubic-bezier(.2,1.5,.4,1) forwards}
+@keyframes wuShake{15%{transform:rotate(-14deg)}35%{transform:rotate(12deg)}55%{transform:rotate(-8deg)}75%{transform:rotate(5deg)}100%{transform:none}}
+@keyframes wuHide{to{opacity:0}}
+@keyframes wuPop{0%{opacity:0;transform:scale(.3) rotate(-25deg)}60%{opacity:1;transform:scale(1.3) rotate(8deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+#wunl .wut{font:italic 600 clamp(2.4rem,11vw,3.4rem)/1.05 "Cormorant Garamond",Georgia,serif;color:#ffd98a;opacity:0;animation:wuTxt .7s 1.05s cubic-bezier(.2,1.4,.4,1) forwards;text-shadow:0 0 24px rgba(255,217,138,.55)}
+#wunl .wus{font-size:1.08rem;color:#f4ecf3;opacity:0;animation:wuTxt .7s 1.4s ease-out forwards}
+@keyframes wuTxt{from{opacity:0;transform:translateY(14px) scale(.85)}to{opacity:1;transform:none}}
+#wlc.flash::after{content:"";position:absolute;inset:0;z-index:5;background:radial-gradient(circle at 50% 38%,rgba(255,246,238,.9),rgba(242,166,192,.35) 45%,transparent 70%);opacity:0;pointer-events:none;animation:wuFlash .8s .72s ease-out}
+@keyframes wuFlash{0%{opacity:0}18%{opacity:1}100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){#wunl .wray,#wunl .wrg{display:none}#wunl .lk.c{animation:none;opacity:0}#wunl .lk.o,#wunl .wut,#wunl .wus{animation-duration:.01s;animation-delay:0s}#wlc.flash::after{display:none}}
 /* date / night walks: the music player leaves so the ambience is untouched */
 body.inw #mus,body.inw #mpb,body.inw #mps,body.inw #mpfx,body.inw #mpg,body.inw #toast{display:none!important}
 @media (prefers-reduced-motion:reduce){#wlc .ws,#wlc .wfl,#wlc .wbig,.eggmoon,.eggmoon.tap{animation:none}.wlf{animation-duration:.01s}}
@@ -4062,12 +4086,32 @@ if(wl){
  const WRONG=["Hmm, not quite 🥺 try again","Close, but not that one 🤍","Nope, but I love that you're trying ♡","Think harder, pretty girl 🌷"];
  function tryWord(){
   const v=norm(inp.value);if(!v)return;
-  if(words.includes(v)){sub.textContent=SP?SP.title:'you remembered 🤍';hint.textContent='';rain(['💗','🌸','✨'],12);ding();showBegin()}
+  if(words.includes(v)){hint.textContent='';unlockFx()}
   else{tries++;inp.classList.remove('bad');void inp.offsetWidth;inp.classList.add('bad');buzz();
    hint.textContent=tries>=3?CFG.HINT:WRONG[(tries-1)%WRONG.length];inp.select()}
  }
  $('wgo').addEventListener('click',tryWord);
  inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();tryWord()}});
+
+ let unlocking=false;
+ function unlockFx(){
+  if(unlocking)return;unlocking=true;
+  try{inp.blur()}catch(e){}
+  wl.classList.add('unl','flash');
+  const u=document.createElement('div');u.id='wunl';u.setAttribute('role','status');
+  u.innerHTML='<div class="wray"></div><div class="wrg r1"></div><div class="wrg r2"></div><div class="wrg r3"></div><div class="wst"><div class="wlk" aria-hidden="true"><span class="lk c">🔒</span><span class="lk o">🔓</span></div><div class="wut">Unlocked</div><div class="wus">Welcome in, my love 🤍</div></div>';
+  wl.appendChild(u);
+  let done=false;
+  function finish(){
+   if(done)return;done=true;
+   u.style.transition='opacity .5s';u.style.opacity='0';
+   setTimeout(()=>{u.remove();wl.classList.remove('unl','flash');sub.textContent=SP?SP.title:'you remembered 🤍';showBegin()},520);
+  }
+  setTimeout(()=>{rain(['💗','🌸','✨','🌟','🤍','💖'],36);ding();buzz()},760);
+  setTimeout(()=>{rain(['💗','✨','🌷'],14)},1500);
+  setTimeout(finish,RM?900:3300);
+  u.addEventListener('click',()=>{if(done)return;setTimeout(finish,200)});
+ }
  function startMusic(){try{if(!(window.__mpNow&&window.__mpNow.p)){const b=$('mpp');b&&b.click()}}catch(e){}}
  function begin(music){
   if(music)startMusic();
