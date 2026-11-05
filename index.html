@@ -1135,7 +1135,7 @@ body.in .tdock{transform:translate(0,-50%);opacity:1}
 .tdock button{width:22px;height:22px;border-radius:50%;border:2px solid transparent;padding:0;cursor:pointer;transition:transform .3s var(--ease),border-color .3s;box-shadow:0 0 0 1px rgba(255,255,255,.25)}
 .tdock button:hover{transform:scale(1.3)}.tdock button[aria-pressed="true"]{border-color:var(--t-ink);transform:scale(1.2)}
 .inw .tdock{display:none}
-@media(max-width:560px){.tdock{flex-direction:row;top:auto;bottom:calc(10px + env(safe-area-inset-bottom,0px));right:50%;transform:translate(50%,90px)}body.in .tdock{transform:translate(50%,0)}}
+@media(max-width:560px){.tdock{right:6px;gap:7px;padding:8px 6px}.tdock button{width:19px;height:19px}}
 .spk{position:fixed;z-index:9;pointer-events:none;width:10px;height:10px;margin:-5px 0 0 -5px;background:var(--t-accent);clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);animation:spk .9s ease-out forwards}
 @keyframes spk{to{transform:translate(var(--dx),var(--dy)) scale(.1) rotate(160deg);opacity:0}}
 @media(prefers-reduced-motion:reduce){.aur i,section h2{animation:none}.spk{display:none}}
@@ -1148,7 +1148,7 @@ body.in .tdock{transform:translate(0,-50%);opacity:1}
 .cute .blk{animation:blk 5s infinite}
 @keyframes blk{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
 .cute .blk{transform-box:fill-box;transform-origin:center}
-@media(max-width:560px){.cute{width:150px;height:136px;left:-6px;bottom:calc(52px + env(safe-area-inset-bottom,0px))}}
+@media(max-width:560px){.cute{width:150px;height:136px;left:-6px;bottom:calc(4px + env(safe-area-inset-bottom,0px))}}
 .inw .cute,.inw .ffs{display:none}
 .ffs{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .ff{position:absolute;bottom:-14px;width:5px;height:5px;border-radius:50%;background:var(--t-gold);box-shadow:0 0 10px 3px var(--t-gold);opacity:0;animation:ffl linear infinite;will-change:transform,opacity}
@@ -1188,7 +1188,7 @@ body.in .tdock{transform:translate(0,-50%);opacity:1}
 @keyframes gin{from{opacity:0;transform:translateY(14px) scale(.96)}}
 .newpill{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:127;border:0;border-radius:30px;padding:11px 20px;font:700 .95rem var(--f-body);color:var(--t-btn-ink);background:var(--t-btn);cursor:pointer;box-shadow:0 0 0 0 var(--t-accent),0 14px 34px -12px var(--t-accent2);animation:npl 2.2s ease-in-out infinite}
 @keyframes npl{50%{box-shadow:0 0 0 14px transparent,0 14px 34px -12px var(--t-accent2)}}
-@media(max-width:560px){.newpill{bottom:calc(58px + env(safe-area-inset-bottom,0px))}}
+@media(max-width:560px){.newpill{bottom:calc(20px + env(safe-area-inset-bottom,0px))}}
 .inw .newpill{display:none}
 @media(prefers-reduced-motion:reduce){.gift.open .gbox,.newpill{animation:none}}
 </style>
