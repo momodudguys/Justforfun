@@ -1139,6 +1139,58 @@ body.in .tdock{transform:translate(0,-50%);opacity:1}
 .spk{position:fixed;z-index:9;pointer-events:none;width:10px;height:10px;margin:-5px 0 0 -5px;background:var(--t-accent);clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);animation:spk .9s ease-out forwards}
 @keyframes spk{to{transform:translate(var(--dx),var(--dy)) scale(.1) rotate(160deg);opacity:0}}
 @media(prefers-reduced-motion:reduce){.aur i,section h2{animation:none}.spk{display:none}}
+
+.cute{position:fixed;left:0;bottom:0;z-index:0;pointer-events:none;width:210px;height:190px;animation:cbob 6s ease-in-out infinite;will-change:transform}
+@keyframes cbob{50%{transform:translateY(-9px)}}
+.cute svg{width:100%;height:100%;overflow:visible}
+.cute .bal{transform-origin:105px 120px;animation:bsw 5s ease-in-out infinite}
+@keyframes bsw{50%{transform:rotate(5deg) translateY(-6px)}}
+.cute .blk{animation:blk 5s infinite}
+@keyframes blk{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+.cute .blk{transform-box:fill-box;transform-origin:center}
+@media(max-width:560px){.cute{width:150px;height:136px;left:-6px;bottom:calc(52px + env(safe-area-inset-bottom,0px))}}
+.inw .cute,.inw .ffs{display:none}
+.ffs{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.ff{position:absolute;bottom:-14px;width:5px;height:5px;border-radius:50%;background:var(--t-gold);box-shadow:0 0 10px 3px var(--t-gold);opacity:0;animation:ffl linear infinite;will-change:transform,opacity}
+@keyframes ffl{0%{opacity:0;transform:translate3d(0,0,0)}12%{opacity:.9}50%{opacity:.35;transform:translate3d(var(--sx),-55vh,0)}78%{opacity:.85}100%{opacity:0;transform:translate3d(calc(var(--sx)*-.6),-112vh,0)}}
+@media(prefers-reduced-motion:reduce){.cute,.cute .bal,.cute .blk{animation:none}.ffs{display:none}}
+.hero .stage{height:auto;min-height:0;display:block}
+.hero .flora{height:auto}
+.hero .sub{position:relative;z-index:2}
+.hero .us{position:relative;z-index:3;margin-top:36px}
+.petals{position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.shoot{position:fixed;z-index:1;pointer-events:none;width:110px;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,var(--t-ink));opacity:0;transform:rotate(28deg);animation:shoot 1.3s ease-out forwards}
+@keyframes shoot{0%{opacity:0;translate:0 0}12%{opacity:.95}100%{opacity:0;translate:360px 190px}}
+:root[data-theme="dawn"] .shoot,:root[data-theme="lily"] .shoot,:root[data-theme="cloud"] .shoot{display:none}
+@media(prefers-reduced-motion:reduce){.shoot,.petals{display:none}}
+</style>
+<style>
+#daysec{max-width:560px}
+.dus{margin:22px auto 8px;padding:26px 18px 18px;border-radius:28px;background:var(--t-glass);border:1px solid var(--t-glass-b);box-shadow:0 30px 60px -36px rgba(0,0,0,.5),0 0 50px -20px var(--t-o1)}
+.dbig b{display:block;font:italic 400 clamp(4.4rem,22vw,7.4rem)/1 var(--f-display);background:linear-gradient(120deg,var(--t-accent),var(--t-gold));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.dbig span,.dsm span{font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;color:var(--t-soft)}
+.dsm{display:flex;justify-content:center;gap:22px;margin-top:16px}
+.dsm b{display:block;font:400 2rem/1.1 var(--f-display);color:var(--t-ink);font-variant-numeric:tabular-nums}
+.dlong{margin:16px 0 0;font:600 1.35rem/1.2 var(--f-hand);color:var(--t-gold)}
+.gift{margin:26px auto 0;text-align:center}
+.gbox{width:130px;height:130px;border:0;border-radius:34px;background:var(--t-glass);border:1px solid var(--t-glass-b);cursor:pointer;display:grid;place-items:center;padding:0;transition:transform .35s var(--ease)}
+.gbox svg{width:100px;height:100px}
+.gbox:hover{transform:scale(1.06)}
+.gift.shk .gbox{animation:gshk .5s}
+@keyframes gshk{25%{transform:rotate(-7deg)}75%{transform:rotate(7deg)}}
+.gift.open .gbox{animation:gpulse 2.4s ease-in-out infinite}
+@keyframes gpulse{0%,100%{box-shadow:0 0 0 0 var(--t-accent)}50%{box-shadow:0 0 0 22px transparent,0 0 46px var(--t-accent)}}
+.gift.open #glk,.gift.done #glk{display:none}
+.gift.done .gbox{animation:none}
+.gt{margin:14px 0 0;font-weight:600;color:var(--t-soft)}
+.gift.open .gt{color:var(--t-gold)}
+.gmsg{margin:18px auto 0;max-width:36ch;padding:22px 22px;border-radius:24px;background:var(--t-glass);border:1px solid var(--t-glass-b);font:italic 400 1.5rem/1.35 var(--f-display);color:var(--t-ink);animation:gin .9s var(--ease) both}
+@keyframes gin{from{opacity:0;transform:translateY(14px) scale(.96)}}
+.newpill{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:127;border:0;border-radius:30px;padding:11px 20px;font:700 .95rem var(--f-body);color:var(--t-btn-ink);background:var(--t-btn);cursor:pointer;box-shadow:0 0 0 0 var(--t-accent),0 14px 34px -12px var(--t-accent2);animation:npl 2.2s ease-in-out infinite}
+@keyframes npl{50%{box-shadow:0 0 0 14px transparent,0 14px 34px -12px var(--t-accent2)}}
+@media(max-width:560px){.newpill{bottom:calc(58px + env(safe-area-inset-bottom,0px))}}
+.inw .newpill{display:none}
+@media(prefers-reduced-motion:reduce){.gift.open .gbox,.newpill{animation:none}}
 </style>
 </head>
 <body class="wl"><div id="wlc" role="dialog" aria-modal="true" aria-label="Welcome"><i class="ws" style="left:59%;top:73%;width:4px;height:4px;animation-delay:-1.4s;opacity:0.82"></i><i class="ws" style="left:26%;top:25%;width:4px;height:4px;animation-delay:-1.9s;opacity:0.79"></i><i class="ws" style="left:14%;top:59%;width:3px;height:3px;animation-delay:-0.4s;opacity:0.65"></i><i class="ws" style="left:90%;top:83%;width:2px;height:2px;animation-delay:-1.8s;opacity:0.57"></i><i class="ws" style="left:59%;top:85%;width:2px;height:2px;animation-delay:-1.9s;opacity:0.81"></i><i class="ws" style="left:10%;top:9%;width:2px;height:2px;animation-delay:-0.6s;opacity:0.48"></i><i class="ws" style="left:5%;top:61%;width:3px;height:3px;animation-delay:-1.3s;opacity:0.81"></i><i class="ws" style="left:68%;top:31%;width:3px;height:3px;animation-delay:-1.5s;opacity:0.71"></i><i class="ws" style="left:60%;top:85%;width:3px;height:3px;animation-delay:-1.2s;opacity:0.65"></i><i class="ws" style="left:12%;top:92%;width:3px;height:3px;animation-delay:-0.9s;opacity:0.48"></i><i class="ws" style="left:38%;top:5%;width:2px;height:2px;animation-delay:-1.7s;opacity:0.41"></i><i class="ws" style="left:15%;top:39%;width:4px;height:4px;animation-delay:-0.2s;opacity:0.36"></i><i class="ws" style="left:89%;top:2%;width:2px;height:2px;animation-delay:-0.6s;opacity:0.85"></i><i class="ws" style="left:62%;top:50%;width:4px;height:4px;animation-delay:-1.3s;opacity:0.66"></i><i class="ws" style="left:27%;top:88%;width:3px;height:3px;animation-delay:-1.0s;opacity:0.52"></i><i class="ws" style="left:3%;top:54%;width:2px;height:2px;animation-delay:-0.4s;opacity:0.74"></i><i class="ws" style="left:3%;top:9%;width:4px;height:4px;animation-delay:-2.4s;opacity:0.45"></i><i class="ws" style="left:73%;top:26%;width:4px;height:4px;animation-delay:-1.5s;opacity:0.89"></i><i class="ws" style="left:18%;top:55%;width:4px;height:4px;animation-delay:-0.3s;opacity:0.58"></i><i class="ws" style="left:29%;top:2%;width:3px;height:3px;animation-delay:-2.6s;opacity:0.89"></i><i class="ws" style="left:77%;top:40%;width:2px;height:2px;animation-delay:-0.6s;opacity:0.57"></i><i class="ws" style="left:79%;top:84%;width:2px;height:2px;animation-delay:-0.1s;opacity:0.43"></i><i class="ws" style="left:58%;top:35%;width:2px;height:2px;animation-delay:-2.3s;opacity:0.53"></i><i class="ws" style="left:39%;top:51%;width:2px;height:2px;animation-delay:-0.2s;opacity:0.46"></i><i class="ws" style="left:83%;top:33%;width:2px;height:2px;animation-delay:-1.8s;opacity:0.55"></i><i class="ws" style="left:60%;top:18%;width:4px;height:4px;animation-delay:-2.5s;opacity:0.42"></i><i class="ws" style="left:51%;top:25%;width:2px;height:2px;animation-delay:-0.9s;opacity:0.48"></i><i class="ws" style="left:80%;top:33%;width:2px;height:2px;animation-delay:-0.5s;opacity:0.70"></i><i class="ws" style="left:72%;top:27%;width:4px;height:4px;animation-delay:-2.6s;opacity:0.68"></i><i class="ws" style="left:55%;top:8%;width:2px;height:2px;animation-delay:-0.3s;opacity:0.63"></i><i class="ws" style="left:34%;top:32%;width:4px;height:4px;animation-delay:-0.8s;opacity:0.80"></i><i class="ws" style="left:78%;top:64%;width:3px;height:3px;animation-delay:-1.6s;opacity:0.86"></i><i class="ws" style="left:10%;top:18%;width:2px;height:2px;animation-delay:-1.4s;opacity:0.71"></i><i class="ws" style="left:80%;top:80%;width:2px;height:2px;animation-delay:-0.8s;opacity:0.85"></i>
@@ -1287,6 +1339,22 @@ body.in .tdock{transform:translate(0,-50%);opacity:1}
  <button class="scx-skip" id="scrskip" type="button">or just show me</button>
 </section>
 
+<section id="daysec" aria-labelledby="dush">
+<h2 id="dush">Days of us ♡</h2>
+<p>Every second since the day it all began.</p>
+<div class="dus" id="dus" role="timer" aria-live="off">
+ <div class="dbig"><b id="dd">0</b><span>days together</span></div>
+ <div class="dsm"><div><b id="dh">0</b><span>hours</span></div><div><b id="dm">0</b><span>min</span></div><div><b id="ds">0</b><span>sec</span></div></div>
+ <p class="dlong" id="dl"></p>
+</div>
+<div class="gift" id="gift">
+ <button class="gbox" id="gbox" type="button" aria-label="A sealed surprise">
+  <svg viewBox="0 0 120 120" aria-hidden="true"><rect x="16" y="52" width="88" height="56" rx="10" fill="var(--t-accent2)"/><rect x="10" y="38" width="100" height="22" rx="8" fill="var(--t-accent)"/><rect x="54" y="38" width="12" height="70" fill="var(--t-gold)"/><path d="M60 38C44 14 22 20 32 32c6 7 20 6 28 6zM60 38c16-24 38-18 28-6-6 7-20 6-28 6z" fill="var(--t-gold)"/><g id="glk"><rect x="48" y="70" width="24" height="20" rx="5" fill="var(--t-pill)"/><path d="M53 70v-6a7 7 0 0 1 14 0v6" stroke="var(--t-pill)" stroke-width="4" fill="none"/></g></svg>
+ </button>
+ <p class="gt" id="gt"></p>
+ <div class="gmsg" id="gmsg" hidden></div>
+</div>
+</section>
 <footer>
  <svg width="64" height="64" viewBox="-70 -70 140 140" aria-hidden="true"><use href="#peony"/></svg>
  <p>Made with all my love, only for you, A. <button id="secret" aria-label="Secret">✦</button></p>
@@ -4774,6 +4842,76 @@ document.addEventListener("visibilitychange",function(){a.style.display=document
 /* sparkle trail */
 var RM=matchMedia("(prefers-reduced-motion:reduce)").matches,fine=matchMedia("(hover:hover) and (pointer:fine)").matches,last=0;
 if(fine&&!RM)addEventListener("pointermove",function(e){var n=performance.now();if(n-last<110)return;last=n;var s=document.createElement("i");s.className="spk";s.style.left=e.clientX+"px";s.style.top=e.clientY+"px";s.style.setProperty("--dx",(Math.random()*50-25)+"px");s.style.setProperty("--dy",(Math.random()*50+10)+"px");document.body.appendChild(s);setTimeout(function(){s.remove()},900)},{passive:true});
+})();
+</script>
+
+<script>
+(function(){
+if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;
+var c=document.createElement("canvas");c.className="petals";c.setAttribute("aria-hidden","true");document.body.appendChild(c);
+var x=c.getContext("2d"),W=0,H=0,coarse=matchMedia("(pointer:coarse)").matches,N=coarse?12:20,P=[],col="#f2a6c0",run=true;
+function rs(){W=c.width=innerWidth;H=c.height=innerHeight}rs();addEventListener("resize",rs);
+function mk(i){return{x:Math.random()*W,y:i?-20:Math.random()*H,r:5+Math.random()*7,s:.35+Math.random()*.6,w:Math.random()*6.28,ws:.008+Math.random()*.014,a:Math.random()*6.28,as:(Math.random()-.5)*.03,o:.25+Math.random()*.4}}
+for(var i=0;i<N;i++)P.push(mk(0));
+function cc(){col=getComputedStyle(document.documentElement).getPropertyValue("--t-accent").trim()||col}cc();
+new MutationObserver(function(){setTimeout(cc,60)}).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+document.addEventListener("visibilitychange",function(){run=!document.hidden;if(run)requestAnimationFrame(f)});
+function f(){if(!run)return;x.clearRect(0,0,W,H);x.fillStyle=col;
+for(var i=0;i<N;i++){var p=P[i];p.y+=p.s;p.w+=p.ws;p.a+=p.as;p.x+=Math.sin(p.w)*.7;if(p.y>H+20||p.x<-30||p.x>W+30)P[i]=p=mk(1);
+x.globalAlpha=p.o;x.save();x.translate(p.x,p.y);x.rotate(p.a);x.scale(1,.6+Math.abs(Math.sin(p.w))*.4);x.beginPath();x.ellipse(0,0,p.r,p.r*.62,0,0,6.283);x.fill();x.restore()}
+requestAnimationFrame(f)}
+requestAnimationFrame(f);
+function sh(){if(!document.hidden){var e=document.createElement("i");e.className="shoot";e.style.left=(Math.random()*60)+"%";e.style.top=(Math.random()*35)+"%";document.body.appendChild(e);setTimeout(function(){e.remove()},1400)}setTimeout(sh,7000+Math.random()*9000)}
+setTimeout(sh,4000);
+})();
+</script>
+
+<script>
+(function(){
+function bear(cx,fur,ear,belly){return '<g transform="translate('+cx+' 0)"><ellipse cx="0" cy="158" rx="30" ry="9" fill="#000" opacity=".12"/><ellipse cx="0" cy="130" rx="26" ry="28" fill="'+fur+'"/><ellipse cx="0" cy="136" rx="15" ry="17" fill="'+belly+'"/><circle cx="-26" cy="116" r="10" fill="'+fur+'"/><circle cx="26" cy="116" r="10" fill="'+fur+'"/><circle cx="-17" cy="150" r="10" fill="'+fur+'"/><circle cx="17" cy="150" r="10" fill="'+fur+'"/><circle cx="-22" cy="76" r="12" fill="'+fur+'"/><circle cx="22" cy="76" r="12" fill="'+fur+'"/><circle cx="-22" cy="76" r="6.5" fill="'+ear+'"/><circle cx="22" cy="76" r="6.5" fill="'+ear+'"/><circle cx="0" cy="96" r="30" fill="'+fur+'"/><ellipse cx="0" cy="106" rx="13" ry="10" fill="'+belly+'"/><g class="blk"><circle cx="-11" cy="92" r="3.2" fill="#3a2a2f"/><circle cx="11" cy="92" r="3.2" fill="#3a2a2f"/></g><ellipse cx="0" cy="102" rx="4.4" ry="3.2" fill="#3a2a2f"/><path d="M-5 108q5 5 10 0" stroke="#3a2a2f" stroke-width="2" fill="none" stroke-linecap="round"/><ellipse cx="-20" cy="104" rx="5" ry="3.2" fill="#ff9ec7" opacity=".7"/><ellipse cx="20" cy="104" rx="5" ry="3.2" fill="#ff9ec7" opacity=".7"/></g>'}
+var d=document.createElement("div");d.className="cute";d.setAttribute("aria-hidden","true");
+d.innerHTML='<svg viewBox="0 0 210 190"><g class="bal"><path d="M105 62Q100 90 105 118" stroke="#fff" stroke-opacity=".55" stroke-width="1.6" fill="none"/><path d="M105 62c-18-14-30-26-20-38 7-8 17-4 20 4 3-8 13-12 20-4 10 12-2 24-20 38z" fill="#ff7fa8"/><path d="M92 30q3-6 9-5" stroke="#fff" stroke-opacity=".6" stroke-width="2.4" fill="none" stroke-linecap="round"/></g>'+bear(58,"#a9714b","#d9a77c","#e9c9a4")+bear(152,"#fff6ee","#f6c9d8","#ffffff")+'</svg>';
+document.body.appendChild(d);
+if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;
+var f=document.createElement("div");f.className="ffs";f.setAttribute("aria-hidden","true");
+var n=matchMedia("(pointer:coarse)").matches?9:14,h="";
+for(var i=0;i<n;i++)h+='<i class="ff" style="left:'+(Math.random()*100).toFixed(1)+'%;--sx:'+((Math.random()*120-60)|0)+'px;animation-duration:'+(14+Math.random()*14).toFixed(1)+'s;animation-delay:-'+(Math.random()*20).toFixed(1)+'s;transform:scale('+(.7+Math.random()*.9).toFixed(2)+')"></i>';
+f.innerHTML=h;document.body.insertBefore(f,document.body.firstChild.nextSibling);
+})();
+</script>
+
+<script>
+(function(){
+/* ---- EDIT THESE ---- */
+var START=new Date(2026,2,3,0,0,0);        /* together since: Mar 3, 2026 */
+var UNLOCK=new Date(2027,2,3,0,0,0);       /* gift opens: Mar 3, 2027 (1 year) */
+var TITLE="Happy one year, my favorite person ♡";
+var MSG="Put your real message here. Everything you want her to feel when this opens.";
+/* -------------------- */
+var $=function(i){return document.getElementById(i)};
+if(!$("dd"))return;
+if(/[?&]gift=now/.test(location.search))UNLOCK=new Date(Date.now()-1000);
+function p2(n){return n<10?"0"+n:""+n}
+function tick(){var n=new Date(),ms=Math.max(0,n-START),d=Math.floor(ms/864e5);
+$("dd").textContent=d.toLocaleString();$("dh").textContent=p2(Math.floor(ms/36e5)%24);$("dm").textContent=p2(Math.floor(ms/6e4)%60);$("ds").textContent=p2(Math.floor(ms/1e3)%60);
+var m=(n.getFullYear()-START.getFullYear())*12+n.getMonth()-START.getMonth(),a=new Date(START);a.setMonth(START.getMonth()+m);if(a>n){m--;a=new Date(START);a.setMonth(START.getMonth()+m)}
+var dd=Math.floor((n-a)/864e5);$("dl").textContent=(m?m+(m===1?" month":" months")+(dd?", ":""):"")+(dd||!m?dd+(dd===1?" day":" days"):"")+" of loving you";
+gstate()}
+var G=$("gift"),T=$("gt"),B=$("gbox"),M=$("gmsg"),pill=null,opened=false;
+try{opened=localStorage.getItem("ouGiftOpened")==="1"}catch(e){}
+function unlocked(){return Date.now()>=UNLOCK}
+function gstate(){var u=unlocked();
+if(opened&&u){G.classList.add("done");G.classList.remove("open");T.textContent="Your surprise ♡";return}
+if(u){G.classList.add("open");T.textContent="Something new is waiting for you ✨";showPill(true)}
+else{var left=UNLOCK-Date.now(),d=Math.floor(left/864e5),h=Math.floor(left/36e5)%24;T.textContent="Sealed with love · opens in "+d+"d "+h+"h";showPill(false)}}
+function showPill(on){if(on&&!pill&&!opened){pill=document.createElement("button");pill.className="newpill";pill.type="button";pill.textContent="✨ something new";pill.onclick=function(){$("daysec").scrollIntoView({behavior:"smooth",block:"center"})};document.body.appendChild(pill)}
+if(!on&&pill){pill.remove();pill=null}}
+function hearts(){for(var i=0;i<14;i++){var h=document.createElement("span");h.textContent=["💗","✨","🌸","💖"][i%4];h.style.cssText="position:fixed;left:"+(20+Math.random()*60)+"%;top:70%;font-size:"+(18+Math.random()*16)+"px;pointer-events:none;z-index:9400;transition:transform 1.8s ease-out,opacity 1.8s;opacity:1";document.body.appendChild(h);(function(h){requestAnimationFrame(function(){h.style.transform="translate("+((Math.random()-.5)*160)+"px,-"+(30+Math.random()*50)+"vh)";h.style.opacity="0"});setTimeout(function(){h.remove()},1900)})(h)}}
+B.addEventListener("click",function(){
+if(!unlocked()){G.classList.remove("shk");void G.offsetWidth;G.classList.add("shk");T.textContent="Not yet, my love… it opens on "+UNLOCK.toLocaleDateString(undefined,{month:"long",day:"numeric",year:"numeric"})+" ♡";try{navigator.vibrate&&navigator.vibrate(18)}catch(e){}return}
+M.hidden=false;M.textContent="";var t=document.createElement("div");t.style.cssText="font:600 .95rem var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--t-gold);margin-bottom:10px";t.textContent=TITLE;var b=document.createElement("div");b.textContent=MSG;M.appendChild(t);M.appendChild(b);
+hearts();opened=true;try{localStorage.setItem("ouGiftOpened","1")}catch(e){}showPill(false);G.classList.remove("open");G.classList.add("done");T.textContent="Your surprise ♡"});
+tick();setInterval(function(){if(!document.hidden)tick()},1000);
 })();
 </script>
 </body>
