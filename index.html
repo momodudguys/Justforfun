@@ -3142,6 +3142,41 @@ QT.push(
   { id: "const2", ev: "conDone", n: [2, 2], w: "hill", tier: "b", t: () => "Connect two constellations on the hill", d: "Tap the stars in order. ✦" },
   { id: "env2", ev: "envOpen", n: [2, 2], w: "quests", tier: "m", t: () => "Open two mystery envelopes", d: "Check the board for them. ✉️" }
 );
+const HP = (r, n) => ({ spots: shuf(HSPOTS.map((_, i) => i), r).slice(0, n), got: [] });
+QT.push(
+  { id: "pet3", ev: "pet", n: [4, 6], w: "cottage", tier: "s", t: q => `Give ${S.pet.name} a sleepy-time cuddle (${q.need} pats)`, d: "Soft and slow. ♡" },
+  { id: "pet4", ev: "pet", n: [10, 15], w: "cottage", tier: "b", t: q => `A big hug marathon with ${S.pet.name}: ${q.need} pats`, d: "All the cuddles. 🐰" },
+  { id: "feed3", ev: "feed", n: [1, 2], w: "cottage", tier: "s", t: () => `Surprise ${S.pet.name} with a midnight snack`, d: "Shh, don't wake anyone. 🌙" },
+  { id: "feed4", ev: "feed", n: [2, 3], w: "cottage", tier: "s", t: q => `Bring ${S.pet.name} a little treat tray (${q.need})`, d: "Something tasty. 🍓" },
+  { id: "water3", ev: "water", n: [1, 2], w: "garden", tier: "s", t: () => "Give the thirstiest flower a drink", d: "It's been waiting. 💧" },
+  { id: "water4", ev: "water", n: [3, 4], w: "garden", tier: "s", t: q => `Sprinkle some rain on ${q.need} flowers`, d: "Gentle taps. 🌧️" },
+  { id: "plant3", ev: "plant", n: [3, 5], w: "garden", tier: "m", t: q => `Start a tiny flower field: plant ${q.need} seeds`, d: "A little patch of color. 🌸" },
+  { id: "plant4", ev: "plant", n: [2, 2], w: "garden", tier: "s", t: () => "Plant a pair of seeds for good luck", d: "Two is lucky. 🍀" },
+  { id: "bloom2", ev: "bloom", n: [2, 2], w: "garden", tier: "b", t: () => "Bloom two flowers and read their messages", d: "Plant, water, wait. 🌷" },
+  { id: "dress3", ev: "dress", n: [1, 1], w: "cottage", tier: "s", t: () => `Pick a new accessory for ${S.pet.name}`, d: "Something cute. 🎀" },
+  { id: "dress4", ev: "dress", n: [3, 3], w: "cottage", tier: "b", t: () => `Fashion show! Three outfits for ${S.pet.name}`, d: "Strike a pose. 👗" },
+  { id: "note3", ev: "petNote", n: [3, 3], w: "cottage", tier: "b", t: () => `Collect three secret notes from ${S.pet.name}`, d: "Look in the cozy corners. 💌" },
+  { id: "place3", ev: "place", n: [1, 2], w: "cottage", tier: "s", t: () => "Add a little something to the cottage", d: "Make it yours. 🪴" },
+  { id: "fish3", ev: "fish", n: [1, 1], w: "pond", tier: "s", ok: () => S.un.pond, t: () => "Catch one little thing at the pond", d: "Be patient. 🎣" },
+  { id: "lantern3", ev: "lantern", n: [1, 1], w: "pond", tier: "s", ok: () => S.un.pond, t: () => "Send one quiet wish into the night", d: "Just for you. 🏮" },
+  { id: "lantern4", ev: "lantern", n: [4, 5], w: "pond", tier: "b", ok: () => S.un.pond, t: q => `Light up the whole pond: ${q.need} lanterns`, d: "A sky full of wishes. ✨" },
+  { id: "forest3", ev: "forestFind", n: [1, 2], w: "forest", tier: "s", ok: () => S.un.forest, t: () => "Peek under the leaves in the forest", d: "Something might be hiding. 🍃" },
+  { id: "forest4", ev: "forestFind", n: [2, 2], w: "forest", tier: "m", ok: () => S.un.forest, t: () => "Find two forest treasures", d: "Look for sparkles. 🍄" },
+  { id: "hearts3", ev: "heartFound", n: [2, 3], w: "world", tier: "s", p: HP, t: q => `Peek around for ${q.need} tiny hidden hearts`, d: "They like to hide. 💗" },
+  { id: "hearts4", ev: "heartFound", n: [4, 5], w: "world", tier: "m", p: HP, t: q => `Gather ${q.need} little hearts around the planet`, d: "Look closely. 💞" },
+  { id: "cafe3", ev: "cafeDate", n: [1, 1], w: "cafe", tier: "s", t: () => "Share a sweet imaginary treat at the café", d: "Pick something yummy. 🧁" },
+  { id: "date3", ev: "dateDone", n: [1, 1], w: "dates", tier: "b", t: () => "Take a little trip on an imaginary date", d: "Pick somewhere dreamy. 🌍" },
+  { id: "const3", ev: "conDone", n: [1, 1], w: "hill", tier: "s", t: () => "Trace a constellation under the stars", d: "Tap them in order. ✦" },
+  { id: "env3", ev: "envOpen", n: [1, 1], w: "quests", tier: "s", t: () => "Check the board for a mystery envelope", d: "Maybe a surprise. ✉️" },
+  { id: "play3", ev: q => "play:" + q.p.game, n: [1, 1], w: "arcade", tier: "s", p: r => ({ game: pr(r, Object.keys(GAMES)) }), t: q => `Treat yourself to a round of ${GAMES[q.p.game]}`, d: "Just for fun. 🎮" },
+  { id: "play4", ev: q => "play:" + q.p.game, n: [2, 2], w: "arcade", tier: "b", p: r => ({ game: pr(r, Object.keys(GAMES)) }), t: q => `Two rounds of ${GAMES[q.p.game]}`, d: "Back to back. 🎮" },
+  { id: "quizq2", ev: "play:quiz", n: [1, 1], w: "arcade", tier: "s", t: () => "See how well you know each other in the quiz", d: "No wrong answers. 💕" },
+  { id: "catch2", ev: "play:catch", n: [2, 2], w: "arcade", tier: "b", t: () => "Catch hearts twice at the arcade", d: "Basket ready? 💗" },
+  { id: "bub2", ev: "play:bub", n: [2, 2], w: "arcade", tier: "b", t: () => "Pop two rounds of bubbles", d: "So many bubbles. 🫧" },
+  { id: "echo2", ev: "play:echo", n: [2, 2], w: "arcade", tier: "b", t: () => "Two rounds of Twinkle Echo", d: "Watch and copy. 🌟" },
+  { id: "star2", ev: "play:star", n: [2, 2], w: "arcade", tier: "b", t: () => "Gather stars twice in Star Catcher", d: "Float up high. 🌌" },
+  { id: "mem2", ev: "play:memory", n: [2, 2], w: "arcade", tier: "b", t: () => "Flip the cards in two rounds of Memory Match", d: "Find the pairs. 🃏" }
+);
 function rwSpec(tier, r) {
   const T = { s: { st: [3, 5], h: [0, 2], xp: 8, it: .25, fl: .3 }, m: { st: [5, 8], h: [1, 3], xp: 14, it: .4, fl: .2, env: .15 }, b: { st: [8, 12], h: [2, 4], xp: 22, it: .7, fl: .2, box: .45 } }[tier];
   const o = { stars: T.st[0] + Math.floor(r() * (T.st[1] - T.st[0] + 1)), hearts: T.h[0] + Math.floor(r() * (T.h[1] - T.h[0] + 1)), xp: T.xp };
@@ -3887,10 +3922,11 @@ scenes.secret = function (sc) {
 const QI = { hearts: "💗", skystar: "🌟", play: "🎮", cafedate: "☕", water: "💧", bloomq: "🌷", forest: "🍄", toy: "🧸", env: "✉️", quizq: "💌", plant: "🌱", feed: "🍓", pet: "🐰", const: "✦", place: "🪴", date: "🎡", fish: "🎣", lantern: "🏮", dress: "🎀", note: "💌" };
 function rwText(rw) { const a = []; if (rw.stars) a.push("⭐" + rw.stars); if (rw.hearts) a.push("💗" + rw.hearts); if (rw.flowers) a.push("🌸" + rw.flowers); if (rw.env) a.push("✉️"); if (rw.box) a.push("🎁"); if (rw.item) a.push("+ a surprise ✨"); return a.join("  ") }
 scenes.quests = function (sc) {
+  let iv = 0;
   function draw() {
     const list = S.q.list, left = list.filter(q => !q.done).length;
     sc.innerHTML = `<div class="qb"><div class="qb-inv"><button type="button" id="qb-env"><span>✉️</span>Envelopes<b>${S.env}</b></button><button type="button" id="qb-box"><span>🎁</span>Mystery boxes<b>${S.box}</b></button></div>
-<h3 class="qb-h">Today's little quests</h3><p class="ou-sub">Pick whatever sounds fun. Anything unfinished stays with you, and new ones appear every day.</p>
+<h3 class="qb-h">Little quests</h3><div id="qb-tm" style="display:inline-block;margin:2px 0 8px;padding:6px 14px;border-radius:20px;background:rgba(255,255,255,.14);font-weight:800;font-variant-numeric:tabular-nums"></div><p class="ou-sub">Pick whatever sounds fun. Anything unfinished stays with you, and fresh quests arrive every hour.</p>
 <div class="qb-list">${list.map((q, i) => { const pc = Math.round(q.prog / q.need * 100); return `<div class="qc${q.done ? " done" : ""}"><div class="qc-i">${q.done ? "✓" : QI[q.tpl] || "✦"}</div><div class="qc-b"><b>${esc(q.t)}</b><small>${esc(q.d)}</small><div class="qc-p"><i style="width:${pc}%"></i></div><span class="qc-r">${q.need > 1 ? q.prog + "/" + q.need + " · " : ""}${rwText(q.rw || {})}</span></div><div class="qc-a">${q.done ? "" : `<button type="button" class="ou-btn s" data-go="${i}">Go ✨</button><button type="button" class="ou-ib s" data-re="${i}" aria-label="Swap this quest">↻</button>`}</div></div>` }).join("")}</div>
 ${left ? "" : `<div class="qb-done"><h3>You did it all! 🎉</h3><p>Everything's finished for today. Some cozy extras, whenever you like:</p><div class="qb-ex"><button type="button" class="ou-chip" data-x="arcade">🎮 Play the arcade</button><button type="button" class="ou-chip" data-x="garden">🌷 Tend the garden</button><button type="button" class="ou-chip" data-x="dates">🎡 Another date</button><button type="button" class="ou-chip" data-x="hill">✦ Stargaze</button>${S.un.secret ? `<button type="button" class="ou-chip" data-x="secret">☁️ Cloud garden</button>` : ""}<button type="button" class="ou-chip" data-x="cottage">🐰 Visit ${esc(S.pet.name)}</button></div></div>`}
 <p class="ou-sub">Quests done so far: <b>${S.q.hist}</b></p></div>`;
@@ -3898,6 +3934,7 @@ ${left ? "" : `<div class="qb-done"><h3>You did it all! 🎉</h3><p>Everything's
     $$("[data-re]", sc).forEach(b => b.onclick = () => { sfx("page"); rerollQuest(S.q.list[+b.dataset.re]); draw() });
     $$("[data-x]", sc).forEach(b => b.onclick = () => { sfx("tap"); go(b.dataset.x) });
     $("#qb-box", sc).onclick = () => { sfx("tap"); go("box") }; $("#qb-env", sc).onclick = openEnv;
+    clearInterval(iv); const tm = $("#qb-tm", sc), tick = () => { if (!sc.isConnected) { clearInterval(iv); return } if (S.q.day !== qkey()) { clearInterval(iv); dayCheck(); toast("Fresh quests have arrived ✨"); sfx("sparkle"); draw(); return } const n = new Date(), x = new Date(n); x.setHours(n.getHours() + 1, 0, 0, 0); const sec = Math.max(0, Math.round((x - n) / 1000)), m = Math.floor(sec / 60), z = sec % 60; tm.textContent = "⏳ New quests in " + m + ":" + (z < 10 ? "0" : "") + z }; iv = setInterval(tick, 1000); tick();
   }
   function openEnv() {
     if (S.env < 1) { toast("No envelopes right now. A fresh one arrives each day ✉️"); sfx("soft"); return }
