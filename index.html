@@ -1229,6 +1229,7 @@ body.in .rtab.show{transform:translate(0,-50%);opacity:1;pointer-events:auto}
 @media(max-width:560px){.rpan{width:162px}.rb{font-size:1.2rem}}
 @media(prefers-reduced-motion:reduce){.rtog{animation:none}}
 </style>
+<style>.pbond{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:5px;font-size:.78rem;font-weight:800}.pbond em{font-style:normal}.pbond u{display:block;width:90px;height:8px;border-radius:6px;background:rgba(255,255,255,.2);overflow:hidden;text-decoration:none}.pbond u i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff9ec7,#ffd98a);transition:width .6s}.pbond small{opacity:.85}.p-tear{animation:ptear 1.7s ease-in infinite}@keyframes ptear{0%{transform:translateY(0);opacity:0}15%{opacity:.95}100%{transform:translateY(24px);opacity:0}}.pbar2{margin-top:6px}</style>
 </head>
 <body class="wl"><div id="wlc" role="dialog" aria-modal="true" aria-label="Welcome"><i class="ws" style="left:59%;top:73%;width:4px;height:4px;animation-delay:-1.4s;opacity:0.82"></i><i class="ws" style="left:26%;top:25%;width:4px;height:4px;animation-delay:-1.9s;opacity:0.79"></i><i class="ws" style="left:14%;top:59%;width:3px;height:3px;animation-delay:-0.4s;opacity:0.65"></i><i class="ws" style="left:90%;top:83%;width:2px;height:2px;animation-delay:-1.8s;opacity:0.57"></i><i class="ws" style="left:59%;top:85%;width:2px;height:2px;animation-delay:-1.9s;opacity:0.81"></i><i class="ws" style="left:10%;top:9%;width:2px;height:2px;animation-delay:-0.6s;opacity:0.48"></i><i class="ws" style="left:5%;top:61%;width:3px;height:3px;animation-delay:-1.3s;opacity:0.81"></i><i class="ws" style="left:68%;top:31%;width:3px;height:3px;animation-delay:-1.5s;opacity:0.71"></i><i class="ws" style="left:60%;top:85%;width:3px;height:3px;animation-delay:-1.2s;opacity:0.65"></i><i class="ws" style="left:12%;top:92%;width:3px;height:3px;animation-delay:-0.9s;opacity:0.48"></i><i class="ws" style="left:38%;top:5%;width:2px;height:2px;animation-delay:-1.7s;opacity:0.41"></i><i class="ws" style="left:15%;top:39%;width:4px;height:4px;animation-delay:-0.2s;opacity:0.36"></i><i class="ws" style="left:89%;top:2%;width:2px;height:2px;animation-delay:-0.6s;opacity:0.85"></i><i class="ws" style="left:62%;top:50%;width:4px;height:4px;animation-delay:-1.3s;opacity:0.66"></i><i class="ws" style="left:27%;top:88%;width:3px;height:3px;animation-delay:-1.0s;opacity:0.52"></i><i class="ws" style="left:3%;top:54%;width:2px;height:2px;animation-delay:-0.4s;opacity:0.74"></i><i class="ws" style="left:3%;top:9%;width:4px;height:4px;animation-delay:-2.4s;opacity:0.45"></i><i class="ws" style="left:73%;top:26%;width:4px;height:4px;animation-delay:-1.5s;opacity:0.89"></i><i class="ws" style="left:18%;top:55%;width:4px;height:4px;animation-delay:-0.3s;opacity:0.58"></i><i class="ws" style="left:29%;top:2%;width:3px;height:3px;animation-delay:-2.6s;opacity:0.89"></i><i class="ws" style="left:77%;top:40%;width:2px;height:2px;animation-delay:-0.6s;opacity:0.57"></i><i class="ws" style="left:79%;top:84%;width:2px;height:2px;animation-delay:-0.1s;opacity:0.43"></i><i class="ws" style="left:58%;top:35%;width:2px;height:2px;animation-delay:-2.3s;opacity:0.53"></i><i class="ws" style="left:39%;top:51%;width:2px;height:2px;animation-delay:-0.2s;opacity:0.46"></i><i class="ws" style="left:83%;top:33%;width:2px;height:2px;animation-delay:-1.8s;opacity:0.55"></i><i class="ws" style="left:60%;top:18%;width:4px;height:4px;animation-delay:-2.5s;opacity:0.42"></i><i class="ws" style="left:51%;top:25%;width:2px;height:2px;animation-delay:-0.9s;opacity:0.48"></i><i class="ws" style="left:80%;top:33%;width:2px;height:2px;animation-delay:-0.5s;opacity:0.70"></i><i class="ws" style="left:72%;top:27%;width:4px;height:4px;animation-delay:-2.6s;opacity:0.68"></i><i class="ws" style="left:55%;top:8%;width:2px;height:2px;animation-delay:-0.3s;opacity:0.63"></i><i class="ws" style="left:34%;top:32%;width:4px;height:4px;animation-delay:-0.8s;opacity:0.80"></i><i class="ws" style="left:78%;top:64%;width:3px;height:3px;animation-delay:-1.6s;opacity:0.86"></i><i class="ws" style="left:10%;top:18%;width:2px;height:2px;animation-delay:-1.4s;opacity:0.71"></i><i class="ws" style="left:80%;top:80%;width:2px;height:2px;animation-delay:-0.8s;opacity:0.85"></i>
  <div class="wbox">
@@ -3223,7 +3224,7 @@ function go(name, arg) {
   $("#ou-tt", root).textContent = LOCS[name] || ""; const bk = $("#ou-bk", root);
   bk.textContent = name === "world" ? "✕" : "‹"; bk.setAttribute("aria-label", name === "world" ? "Back to the website" : "Back");
   $$(".ou-nav button", root).forEach(b => b.classList.toggle("on", b.dataset.go === name || (b.dataset.go === "world" && name !== "quests" && name !== "journal" && name !== "settings")));
-  dayCheck(); hud(); musicScene(name); scenes[name](sc, arg);
+  dayCheck(); hud(); musicScene(name); if (name === "world") puddHello(); scenes[name](sc, arg);
   setTimeout(flush, 200);
 }
 function back() { if (cur === "world") closeGame(); else go(PARENT[cur] || "world") }
@@ -3509,9 +3510,11 @@ function petInner(mood, acc) {
   if (mood === "happy" || mood === "blush") eyes = `<path d="M74 100q8-10 16 0M110 100q8-10 16 0" stroke="${ink}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
   else if (mood === "sleep") eyes = `<path d="M74 99q8 6 16 0M110 99q8 6 16 0" stroke="${ink}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
   else if (mood === "spark") eyes = `<g fill="${ink}"><circle cx="82" cy="98" r="10"/><circle cx="118" cy="98" r="10"/></g><g fill="#fff"><circle cx="85" cy="94" r="4"/><circle cx="121" cy="94" r="4"/><circle cx="79" cy="102" r="2"/><circle cx="115" cy="102" r="2"/></g>`;
+  else if (mood === "sad" || mood === "cry" || mood === "lonely") eyes = `<g><ellipse cx="82" cy="101" rx="6" ry="8" fill="${ink}"/><ellipse cx="118" cy="101" rx="6" ry="8" fill="${ink}"/><circle cx="84" cy="98" r="3" fill="#fff"/><circle cx="120" cy="98" r="3" fill="#fff"/><path d="M71 92L88 85M129 92L112 85" stroke="${ink}" stroke-width="3.2" stroke-linecap="round" fill="none"/></g>` + (mood === "cry" ? `<g class="p-tear"><path d="M78 110q-5 9 0 12q5-3 0-12z" fill="#8fd3ff"/><path d="M122 110q-5 9 0 12q5-3 0-12z" fill="#8fd3ff"/></g>` : mood === "sad" ? `<g class="p-tear"><path d="M78 110q-5 9 0 12q5-3 0-12z" fill="#8fd3ff"/></g>` : "");
   else eyes = `<g class="p-eyes"><ellipse cx="82" cy="98" rx="6" ry="8" fill="${ink}"/><ellipse cx="118" cy="98" rx="6" ry="8" fill="${ink}"/><circle cx="84" cy="95" r="2.4" fill="#fff"/><circle cx="120" cy="95" r="2.4" fill="#fff"/></g>`;
   if (mood === "eat") { eyes = `<path d="M74 100q8-10 16 0M110 100q8-10 16 0" stroke="${ink}" stroke-width="4" fill="none" stroke-linecap="round"/>`; mouth = `<ellipse cx="100" cy="119" rx="7" ry="6" fill="#c76b8f"/>` }
   else if (mood === "sleep") mouth = `<path d="M95 118h10" stroke="#c76b8f" stroke-width="3" stroke-linecap="round"/>`;
+  else if (mood === "sad" || mood === "cry" || mood === "lonely") mouth = `<path d="M92 122q8-8 16 0" stroke="#c76b8f" stroke-width="3" fill="none" stroke-linecap="round"/>`;
   else mouth = `<path d="M92 114q4 6 8 0q4 6 8 0" stroke="#c76b8f" stroke-width="3" fill="none" stroke-linecap="round"/>`;
   const ck = mood === "blush" ? .95 : .55;
   return `<ellipse cx="100" cy="212" rx="52" ry="7" fill="#000" opacity=".18"/>
@@ -3526,6 +3529,11 @@ ${eyes}<path d="M96 106q4 4 8 0z" fill="#ff8fb4"/>${mouth}
 ${A.neck ? ACC_SVG[A.neck] || "" : ""}${A.face ? ACC_SVG[A.face] || "" : ""}${A.head ? ACC_SVG[A.head] || "" : ""}`;
 }
 const petSVG = (mood, acc) => `<svg class="pet-svg" viewBox="0 0 200 220" aria-hidden="true" focusable="false">${petInner(mood || "normal", acc)}</svg>`;
+function puddGap() { const l = S && S.pet && S.pet.last; return l ? (Date.now() - l) / 36e5 : -1 }
+function puddHello() {
+  if (window.__puddHi || !S) return; window.__puddHi = 1; const g = puddGap(), n = S.pet.name;
+  setTimeout(() => toast(g < 0 ? "🐰 Something fluffy is peeking out of the cottage…" : g < 6 ? "🐰 " + n + " heard you come in! ♡" : g < 24 ? "🐰 " + n + "'s ears perked up. It missed you." : g < 72 ? "🐰 " + n + " has been waiting by the door… 🥺" : "🐰 " + n + " is crying happy tears. You're finally here 😭💗"), 900);
+}
 
 /* ===================== WORLD ===================== */
 const W_HINT = { pond: 15, forest: 25 };
@@ -3609,13 +3617,13 @@ const RS = [
   { k: "lamp", x: 82, y: 42, w: 14, h: 18, l: "lamp" }, { k: "plant", x: 3, y: 42, w: 17, h: 22, l: "plant" }
 ];
 scenes.cottage = function (sc) {
-  let night = false, mood = "normal", moodT = 0, playing = 0, balls = 0, dressed = 0;
+  let night = false, mood = "normal", moodT = 0, playing = 0, balls = 0, dressed = 0, hurt = false;
   sc.innerHTML = `<div class="rm" id="rm"><div class="rm-win"><i></i><i></i><i></i><b>🌙</b></div><div class="rm-slots" id="rm-slots"></div><button type="button" class="rug" id="rm-rug" aria-label="Change the rug"></button><button type="button" class="bed" id="rm-bed" aria-label="Change the bed"></button><div class="pet" id="pet"><div class="pbub" id="pbub"></div><button type="button" class="pet-b" id="pet-b" aria-label="Pet ${esc(S.pet.name)}"></button><div class="zzz" aria-hidden="true">z<i>z</i><i>Z</i></div></div><button type="button" class="toy" id="toy" hidden aria-label="A toy!">${OU.toyEmoji}</button><button type="button" class="ball" id="ball" hidden aria-label="Ball">🎾</button></div>
-<div class="pname"><b id="pnm"></b><span>${esc(OU.petBio)}</span></div>
+<div class="pname"><b id="pnm"></b><span>${esc(OU.petBio)}</span><div class="pbond"><em id="pmoodl"></em><u><i id="pbfill"></i></u><small id="pblv"></small></div></div>
 <div class="pbar"><button type="button" data-a="feed"><span>🍓</span>Feed</button><button type="button" data-a="play"><span>🎾</span>Play</button><button type="button" data-a="dress"><span>👗</span>Dress</button><button type="button" data-a="note"><span>💌</span>Note</button><button type="button" data-a="name"><span>✏️</span>Name</button><button type="button" data-a="sleep"><span>🌙</span>Sleep</button></div>`;
   const rmEl = $("#rm", sc), pb = $("#pet-b", sc), bub = $("#pbub", sc);
   const say = (t, ms) => { bub.textContent = t; bub.classList.add("on"); clearTimeout(bub._t); bub._t = setTimeout(() => bub.classList.remove("on"), ms || 2200) }; onLeave(() => clearTimeout(bub._t));
-  const setMood = (m, ms) => { mood = m; pb.innerHTML = petSVG(m); clearTimeout(moodT); if (ms) moodT = setTimeout(() => setMood(night ? "sleep" : "normal"), ms) }; onLeave(() => clearTimeout(moodT));
+  const setMood = (m, ms) => { mood = m; pb.innerHTML = petSVG(m); moodLabel(m); clearTimeout(moodT); if (ms) moodT = setTimeout(() => setMood(night ? "sleep" : "normal"), ms) }; onLeave(() => clearTimeout(moodT));
   const anim = c => { pb.classList.remove("jump", "wig"); void pb.offsetWidth; pb.classList.add(c) };
   function slots() {
     const bx = $("#rm-slots", sc); bx.innerHTML = RS.map(s => { const it = IT[S.room[s.k]]; return `<button type="button" class="slot ${it ? "has" : ""} sl-${s.k}" data-k="${s.k}" style="left:${s.x}%;top:${s.y}%;width:${s.w}%;height:${s.h}%" aria-label="Change ${s.l}">${it ? `<span>${it.e}</span>` : `<i>＋</i>`}</button>` }).join("");
@@ -3695,6 +3703,47 @@ scenes.cottage = function (sc) {
   }
   $$(".pbar button", sc).forEach(b => b.onclick = () => { sfx("tap"); acts[b.dataset.a]() });
   itv(() => { if (night) sfx("snore") }, 4800);
+
+  /* ---- Pudding remembers you ---- */
+  function moodLabel(m) { const el = $("#pmoodl", sc); if (el) el.textContent = { normal: "😊 content", happy: "🥰 happy", spark: "🤩 excited", blush: "😳 blushing", sleep: "😴 sleepy", eat: "😋 yummy", lonely: "🥺 lonely", sad: "😢 sad", cry: "😭 so sad" }[m] || "" }
+  function bondUI() { const P = S.pet, b = P.bond || 0, f = $("#pbfill", sc), l = $("#pblv", sc); if (f) f.style.width = b + "%"; if (l) l.textContent = ["New friends", "Buddies", "Besties", "Soulmates", "Inseparable ♡"][Math.min(4, Math.floor(b / 20))] + ((P.streak || 0) > 1 ? " · " + P.streak + "-day streak 🔥" : "") }
+  function bondUp(n) { const P = S.pet; P.bond = Math.max(0, Math.min(100, (P.bond || 0) + n)); bondUI(); saveSoon() }
+  const COMFORT = ["*sniff* …okay. I forgive you. Hug me? ♡", "You're here now. That's all that matters. 🥹", "I'm not sad anymore. You make everything better.", "*snuggles in* please don't be away so long again…", "Thank you for coming back to me. ♡"];
+  const SADIDLE = ["*looks at the door*", "*sniffles quietly*", "It was so quiet…", "I kept your spot warm. Just in case.", "*hugs a tiny pillow*", "Do you still like me? 🥺", "I counted the stars. Every night. Alone."];
+  const TIERS = [
+    [.5, "happy", ["Oh! You came right back! I was still glowing 🥹", "AGAIN?! Best day ever!", "*happy zoomies*"]],
+    [6, "happy", ["You're back! I missed you a little bit ♡", "Welcome back! Your spot is still warm 🐰", "*runs in a circle*"]],
+    [24, "spark", ["I counted the clouds while you were gone ☁️", "There you are! I waited all day ♡", "I missed you today! Did you eat? 🍓"]],
+    [48, "lonely", ["You were gone a whole day… I kept looking at the door 🥺", "Oh. You're here. *sniff* I just… missed you a lot.", "I made a little spot for you, but you didn't come…"]],
+    [96, "sad", ["I thought you forgot about me… 😢", "It was so quiet. I told the stars about you every night.", "Please don't leave for so long again… ♡"]],
+    [1e9, "cry", ["You came back?? *tears* I waited every single day… 😭", "I thought maybe you didn't love me anymore…", "I'll be okay if you stay a little. Please stay? 🥹"]]
+  ];
+  (function greet() {
+    const now = Date.now(), P = S.pet, gap = P.last ? (now - P.last) / 36e5 : -1;
+    P.vis = (P.vis || 0) + 1; const day = today();
+    if (P.sd !== day) { const y = new Date(now - 864e5), yk = y.getFullYear() + "-" + (y.getMonth() + 1) + "-" + y.getDate(); P.streak = P.sd === yk ? (P.streak || 0) + 1 : 1; P.sd = day }
+    if (gap > 24) P.bond = Math.max(0, (P.bond || 0) - Math.min(45, Math.floor((gap - 24) / 24) * 6 + 4));
+    if (gap < 0 || gap > .5) P.bond = Math.min(100, (P.bond || 0) + 3);
+    P.last = now; save(); bondUI();
+    let m = "spark", lines = ["Hi!! Is this my home? I love it already ♡", "You're here! Hello hello hello!"];
+    if (gap >= 0) { const t = TIERS.find(x => gap < x[0]); m = t[1]; lines = t[2] }
+    hurt = m === "lonely" || m === "sad" || m === "cry";
+    setTimeout(() => { if (!sc.isConnected) return; setMood(m, hurt ? 0 : 2600); say(pick(lines), hurt ? 4200 : 3000); sfx(hurt ? "soft" : "happy"); if (!hurt) { anim("jump"); burstEl(pb, ["💗", "✨"], 6) } }, 500);
+    if (P.streak >= 3 && !hurt) setTimeout(() => { if (sc.isConnected) say(P.streak + " days in a row! You're my favorite 🥰", 2800) }, 3800);
+  })();
+  itv(() => { if (hurt && !night && !rm()) { say(pick(SADIDLE), 2600); anim("wig") } }, 9000);
+  const rows = [["hug", "🤗", "Hug"], ["tickle", "🪶", "Tickle"], ["sing", "🎵", "Sing"], ["boo", "🙈", "Peek-a-boo"], ["gift", "🌷", "Gift"], ["ask", "💭", "Chat"]];
+  $(".pbar", sc).insertAdjacentHTML("afterend", '<div class="pbar pbar2">' + rows.map(r => `<button type="button" data-x="${r[0]}"><span>${r[1]}</span>${r[2]}</button>`).join("") + "</div>");
+  const X = {
+    hug() { setMood("blush", 2200); say(pick(["*squeezes you back* ♡", "Your hugs are my favorite thing!", "Stay like this forever? 🥹"]), 2400); burstEl(pb, ["🤗", "💗", "💕"], 8); sfx("aww"); bondUp(3); ev("pet") },
+    tickle() { anim("wig"); setMood("happy", 1200); say(pick(["Hehehe stop!! …don't stop", "*giggles uncontrollably*", "Not the belly!! 😆"]), 2000); sfx("squeak"); setTimeout(() => sfx("happy"), 150); burstEl(pb, ["😆", "✨"], 5); bondUp(1.5); ev("pet") },
+    sing() { anim("jump"); setMood("spark", 2000); say(pick(["La la la~ ♪", "*sings off-key but proud*", "This one's about you ♡", "doo doo doo~ 🎶"]), 2400); sfx("happy"); burstEl(pb, ["🎵", "🎶", "💗"], 8); bondUp(2) },
+    boo() { setMood("sleep"); say("…", 900); setTimeout(() => { if (!sc.isConnected) return; setMood("spark", 1400); anim("jump"); say("BOO!! hehe 🙈", 1800); sfx("boing"); burstEl(pb, ["🙈", "✨"], 5) }, 900); bondUp(1.5) },
+    gift() { if (!(S.flowers > 0)) { say("Flowers grow in the garden 🌷 bring me one!", 2600); sfx("soft"); return } S.flowers--; hud(); setMood("blush", 2600); say(pick(["A FLOWER?! For me?? 🥹🌷", "It's the prettiest one I've ever seen!", "*puts it behind my ear* how do I look?"]), 2800); burstEl(pb, ["🌷", "💗", "✨"], 9); sfx("sparkle"); bondUp(6); save() },
+    ask() { const b = S.pet.bond || 0, g = puddGap(); say(hurt ? "I'm sad, but better now that you're here…" : b < 20 ? "I'm good! We're still getting to know each other ♡" : b < 60 ? "I'm happy. You always come back to me ♡" : "I'm the happiest bunny in the whole universe. 🥰", 3200); bondUp(1) }
+  };
+  $$(".pbar2 button", sc).forEach(b => b.onclick = () => { sfx("tap"); if (hurt) { hurt = false; setMood("happy", 1500); say(pick(COMFORT), 2800); bondUp(3) } X[b.dataset.x]() });
+  const _pc = pb.onclick; pb.onclick = e => { if (hurt) { hurt = false; S.pet.taps++; ev("pet"); say(pick(COMFORT), 3200); setMood("happy", 2200); sfx("aww"); burstEv(e, ["💗", "🥹", "✨"], 7); bondUp(4); saveSoon(); return } bondUp(.4); _pc(e) };
 };
 
 /* ===================== GARDEN ===================== */
