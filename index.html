@@ -2588,6 +2588,16 @@ items: [
  {id:"acc_ribbon", cat:"acc", slot:"neck", name:"Satin Ribbon", e:"🎗️", rar:"c", d:"A little ribbon, tied with care.", start:1},
  {id:"acc_scarf", cat:"acc", slot:"neck", name:"Strawberry Scarf", e:"🧣", rar:"c", d:"Warm and berry-coloured.", roll:1},
  {id:"acc_bell", cat:"acc", slot:"neck", name:"Jingle Bell", e:"🔔", rar:"r", d:"Jingles when it hops. Sneaking is impossible.", roll:1},
+{id:"acc_basket", cat:"acc", slot:"head", name:"Heart Basket Hat", e:"🧺", rar:"c", d:"A basket full of catches. Unlocked by playing Catch My Hearts 3 times."},
+{id:"acc_bubbles", cat:"acc", slot:"head", name:"Bubble Crown", e:"🫧", rar:"c", d:"Floaty and shiny. Unlocked by playing Bubble Pop 3 times."},
+{id:"acc_stargoggles", cat:"acc", slot:"face", name:"Twinkle Shades", e:"🌟", rar:"r", d:"Everything sparkles. Unlocked by playing Twinkle Echo 3 times."},
+{id:"acc_pearls", cat:"acc", slot:"neck", name:"Pearl Necklace", e:"🦪", rar:"r", d:"Elegant and a little posh. Unlocked by playing Memory Match 3 times."},
+{id:"acc_moonband", cat:"acc", slot:"head", name:"Moon Headband", e:"🌙", rar:"r", d:"A little night sky. Unlocked by playing Star Catcher 3 times."},
+{id:"acc_giftbow", cat:"acc", slot:"neck", name:"Gift Ribbon Bow", e:"🎁", rar:"c", d:"Wrapped with love. Unlocked by opening Mystery Boxes 3 times."},
+{id:"acc_monocle", cat:"acc", slot:"face", name:"Thinking Monocle", e:"🧐", rar:"r", d:"For very important decisions. Unlocked by playing the Quiz 3 times."},
+{id:"acc_rainbow", cat:"acc", slot:"head", name:"Rainbow Band", e:"🌈", rar:"r", d:"All the colors at once. Unlocked after 10 games in total."},
+{id:"acc_gempendant", cat:"acc", slot:"neck", name:"Sparkle Gem Pendant", e:"💎", rar:"l", d:"Catches every bit of light. Unlocked after 25 games in total."},
+{id:"acc_tiara", cat:"acc", slot:"head", name:"Diamond Tiara", e:"👸", rar:"l", d:"For the queen of the universe. Unlocked after 50 games in total."},
  {id:"acc_bowtie", cat:"acc", slot:"neck", name:"Fancy Bowtie", e:"🤵", rar:"r", d:"For dinner parties on clouds.", roll:1},
 
  /* cottage decorations (slot = room slot) */
@@ -3207,6 +3217,7 @@ function rerollQuest(q) {
 }
 function ev(name, n) {
   if (!S) return; let hit = 0;
+  if (name.indexOf("play:") === 0) gameUnlock(name.slice(5));
   S.q.list.forEach(q => { if (!q.done && q.ev === name) { q.prog = Math.min(q.need, q.prog + (n || 1)); hit = 1; if (q.prog >= q.need) { q.done = 1; S.q.hist++; setTimeout(() => finishQuest(q), 350) } } });
   if (hit) { hud(); saveSoon() }
 }
@@ -3528,11 +3539,33 @@ function petInner(mood, acc) {
 ${eyes}<path d="M96 106q4 4 8 0z" fill="#ff8fb4"/>${mouth}
 ${A.neck ? ACC_SVG[A.neck] || "" : ""}${A.face ? ACC_SVG[A.face] || "" : ""}${A.head ? ACC_SVG[A.head] || "" : ""}`;
 }
+Object.assign(ACC_SVG, {
+  acc_basket: `<path d="M70 74h60l-7 15H77z" fill="#e0b070" stroke="#b8864a" stroke-width="2"/><path d="M76 74Q100 40 124 74" stroke="#b8864a" stroke-width="4" fill="none"/><path d="M92 66c-6-6-3-12 2-12 3 0 5 2 6 4 1-2 3-4 6-4 5 0 8 6 2 12l-8 7z" fill="#ff6fa7"/>`,
+  acc_bubbles: `<g fill="rgba(180,225,255,.45)" stroke="#fff" stroke-width="2"><circle cx="84" cy="56" r="11"/><circle cx="104" cy="46" r="14"/><circle cx="125" cy="58" r="9"/></g><circle cx="99" cy="41" r="3" fill="#fff" opacity=".85"/>`,
+  acc_stargoggles: `<g fill="#ffe27a" fill-opacity=".85" stroke="#e6a93a" stroke-width="2"><path d="M82 85l4 9.5 10 .8-7.7 6.4 2.5 9.8-8.8-5.4-8.8 5.4 2.5-9.8-7.7-6.4 10-.8z"/><path d="M118 85l4 9.5 10 .8-7.7 6.4 2.5 9.8-8.8-5.4-8.8 5.4 2.5-9.8-7.7-6.4 10-.8z"/></g><path d="M94 99h12" stroke="#e6a93a" stroke-width="2.5"/>`,
+  acc_pearls: `<g fill="#fff" stroke="#e7d9ef" stroke-width="1.5">${[[64, 137], [73, 144], [84, 149], [100, 152], [116, 149], [127, 144], [136, 137]].map(p => `<circle cx="${p[0]}" cy="${p[1]}" r="4.6"/>`).join("")}</g>`,
+  acc_moonband: `<path d="M72 72Q100 40 128 72" stroke="#7a6bd1" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M106 42a12 12 0 1 0 9 21 10 10 0 1 1-9-21z" fill="#ffe27a"/><path d="M124 52l2 4 4 .6-3 3 .8 4-3.8-2-3.8 2 .8-4-3-3 4-.6z" fill="#fff"/>`,
+  acc_giftbow: `<path d="M62 138Q100 156 138 138" stroke="#e8505b" stroke-width="7" fill="none" stroke-linecap="round"/><g transform="translate(100 152)"><path d="M0 0L-17-11V11Z" fill="#e8505b"/><path d="M0 0L17-11V11Z" fill="#e8505b"/><circle r="5" fill="#b83a44"/></g>`,
+  acc_monocle: `<circle cx="118" cy="99" r="14" fill="rgba(255,255,255,.2)" stroke="#d9a02f" stroke-width="3"/><path d="M130 109q10 20 0 40" stroke="#d9a02f" stroke-width="2" fill="none"/>`,
+  acc_rainbow: `<g fill="none" stroke-width="3.6" stroke-linecap="round"><path d="M64 74Q100 28 136 74" stroke="#ff6b8a"/><path d="M70 74Q100 36 130 74" stroke="#ffd166"/><path d="M76 74Q100 44 124 74" stroke="#7be0c3"/><path d="M82 74Q100 52 118 74" stroke="#8fb6ff"/></g>`,
+  acc_gempendant: `<path d="M64 138Q100 158 136 138" stroke="#c9b5ff" stroke-width="3" fill="none"/><path d="M100 150l-10 7 10 15 10-15z" fill="#8fd3ff" stroke="#fff" stroke-width="1.6"/><path d="M90 157h20M100 150v22" stroke="#fff" stroke-width="1" opacity=".6"/>`,
+  acc_tiara: `<path d="M68 70Q100 52 132 70" stroke="#e6e6f5" stroke-width="4" fill="none"/><g fill="#c9e8ff" stroke="#fff" stroke-width="1.6"><path d="M100 36l7 18H93z"/><path d="M82 46l6 16h-11z"/><path d="M118 46l6 16h-11z"/></g><circle cx="100" cy="34" r="3" fill="#ff9ec7"/>`
+});
+const GAME_UNLOCK = { catch: ["acc_basket", "Catch My Hearts"], bub: ["acc_bubbles", "Bubble Pop"], echo: ["acc_stargoggles", "Twinkle Echo"], memory: ["acc_pearls", "Memory Match"], star: ["acc_moonband", "Star Catcher"], box: ["acc_giftbow", "Mystery Box"], quiz: ["acc_monocle", "the Quiz"] };
+const TOTAL_UNLOCK = [[10, "acc_rainbow"], [25, "acc_gempendant"], [50, "acc_tiara"]];
+function gameUnlock(k) {
+  if (!S) return; S.rec.pc = S.rec.pc || {}; S.rec.pc[k] = (S.rec.pc[k] || 0) + 1;
+  const total = Object.keys(S.rec.pc).reduce((a, x) => a + S.rec.pc[x], 0), out = [], g = GAME_UNLOCK[k];
+  if (g && S.rec.pc[k] === 3 && !S.inv[g[0]]) out.push(g[0]);
+  TOTAL_UNLOCK.forEach(t => { if (total === t[0] && !S.inv[t[1]]) out.push(t[1]) });
+  if (!out.length) return; const names = out.map(id => { const r = giveItem(id); return r && r.it ? r.it.e + " " + r.it.name : "" }).filter(Boolean).join(" + "); save();
+  setTimeout(() => { toast("🎁 New accessory unlocked: " + names + "! Dress " + S.pet.name + " in the cottage ♡", 5200); sfx("sparkle") }, 3200);
+}
 const petSVG = (mood, acc) => `<svg class="pet-svg" viewBox="0 0 200 220" aria-hidden="true" focusable="false">${petInner(mood || "normal", acc)}</svg>`;
 function puddGap() { const l = S && S.pet && S.pet.last; return l ? (Date.now() - l) / 36e5 : -1 }
 function puddHello() {
   if (window.__puddHi || !S) return; window.__puddHi = 1; const g = puddGap(), n = S.pet.name;
-  setTimeout(() => toast(g < 0 ? "🐰 Something fluffy is peeking out of the cottage…" : g < 6 ? "🐰 " + n + " heard you come in! ♡" : g < 24 ? "🐰 " + n + "'s ears perked up. It missed you." : g < 72 ? "🐰 " + n + " has been waiting by the door… 🥺" : "🐰 " + n + " is crying happy tears. You're finally here 😭💗"), 900);
+  setTimeout(() => toast(g < 0 ? "🐰 Something fluffy is peeking out of the cottage…" : g < 2 ? "🐰 " + n + " heard you come in! ♡" : g < 4 ? "🐰 " + n + "'s ears perked up. It missed you." : g < 8 ? "🐰 " + n + " has been waiting by the door… 🥺" : g < 16 ? "🐰 " + n + " looks up with teary eyes… 😢" : "🐰 " + n + " is crying happy tears. You're finally here 😭💗"), 900);
 }
 
 /* ===================== WORLD ===================== */
@@ -3709,20 +3742,20 @@ scenes.cottage = function (sc) {
   function bondUI() { const P = S.pet, b = P.bond || 0, f = $("#pbfill", sc), l = $("#pblv", sc); if (f) f.style.width = b + "%"; if (l) l.textContent = ["New friends", "Buddies", "Besties", "Soulmates", "Inseparable ♡"][Math.min(4, Math.floor(b / 20))] + ((P.streak || 0) > 1 ? " · " + P.streak + "-day streak 🔥" : "") }
   function bondUp(n) { const P = S.pet; P.bond = Math.max(0, Math.min(100, (P.bond || 0) + n)); bondUI(); saveSoon() }
   const COMFORT = ["*sniff* …okay. I forgive you. Hug me? ♡", "You're here now. That's all that matters. 🥹", "I'm not sad anymore. You make everything better.", "*snuggles in* please don't be away so long again…", "Thank you for coming back to me. ♡"];
-  const SADIDLE = ["*looks at the door*", "*sniffles quietly*", "It was so quiet…", "I kept your spot warm. Just in case.", "*hugs a tiny pillow*", "Do you still like me? 🥺", "I counted the stars. Every night. Alone."];
+  const SADIDLE = ["*looks at the door*", "*sniffles quietly*", "It was so quiet…", "I kept your spot warm. Just in case.", "*hugs a tiny pillow*", "Do you still like me? 🥺", "I counted the stars. Every night. Alone.", "I don't want to be alone anymore…", "My chest feels so tight when you're gone.", "*wipes a tear with a tiny paw*", "Please don't go again… 🥺"];
   const TIERS = [
     [.5, "happy", ["Oh! You came right back! I was still glowing 🥹", "AGAIN?! Best day ever!", "*happy zoomies*"]],
-    [6, "happy", ["You're back! I missed you a little bit ♡", "Welcome back! Your spot is still warm 🐰", "*runs in a circle*"]],
-    [24, "spark", ["I counted the clouds while you were gone ☁️", "There you are! I waited all day ♡", "I missed you today! Did you eat? 🍓"]],
-    [48, "lonely", ["You were gone a whole day… I kept looking at the door 🥺", "Oh. You're here. *sniff* I just… missed you a lot.", "I made a little spot for you, but you didn't come…"]],
-    [96, "sad", ["I thought you forgot about me… 😢", "It was so quiet. I told the stars about you every night.", "Please don't leave for so long again… ♡"]],
-    [1e9, "cry", ["You came back?? *tears* I waited every single day… 😭", "I thought maybe you didn't love me anymore…", "I'll be okay if you stay a little. Please stay? 🥹"]]
+    [2, "happy", ["You're back! I missed you a little bit ♡", "Welcome back! Your spot is still warm 🐰", "*runs in a circle*"]],
+    [4, "spark", ["There you are! I was listening for your footsteps ♡", "I missed you today! Did you eat? 🍓", "I told the clouds you'd come back."]],
+    [8, "lonely", ["It got so quiet in here… I kept looking at the door 🥺", "Oh. You're here. *sniff* I missed you more than I can say.", "I tried to be brave while you were gone… I wasn't very good at it."]],
+    [16, "sad", ["I thought you forgot about me… my heart felt so heavy 😢", "I waited and waited. Every little sound, I hoped it was you.", "Please don't leave me alone that long again… ♡"]],
+    [1e9, "cry", ["You came back?? *tears* I waited every single day… 😭", "I thought maybe you stopped loving me… it hurt so much.", "I'm so happy and so sad at the same time. Please stay? 🥹"]]
   ];
   (function greet() {
     const now = Date.now(), P = S.pet, gap = P.last ? (now - P.last) / 36e5 : -1;
     P.vis = (P.vis || 0) + 1; const day = today();
     if (P.sd !== day) { const y = new Date(now - 864e5), yk = y.getFullYear() + "-" + (y.getMonth() + 1) + "-" + y.getDate(); P.streak = P.sd === yk ? (P.streak || 0) + 1 : 1; P.sd = day }
-    if (gap > 24) P.bond = Math.max(0, (P.bond || 0) - Math.min(45, Math.floor((gap - 24) / 24) * 6 + 4));
+    if (gap > 4) P.bond = Math.max(0, (P.bond || 0) - Math.min(45, Math.floor((gap - 4) / 6) * 3 + 3));
     if (gap < 0 || gap > .5) P.bond = Math.min(100, (P.bond || 0) + 3);
     P.last = now; save(); bondUI();
     let m = "spark", lines = ["Hi!! Is this my home? I love it already ♡", "You're here! Hello hello hello!"];
