@@ -2414,22 +2414,22 @@ build();paintList();paintNow();paintCtl();
    Optional: db = a Firebase address, only if you ever want to use your own database instead. */
 const US={topic:"us-xg7qkkx5t2csmr",db:"",
  her:{name:"Aaradhya",emoji:"🌷"},
- him:{name:"Him",emoji:"🧸"}};
+ him:{name:"Pratik",emoji:"🧸"}};
 /* ===================================================================== */
 const $=id=>document.getElementById(id);let me='her';
 try{const q=new URLSearchParams(location.search).get('me');if(q==='him'||q==='her')localStorage.setItem('usRole',q);me=localStorage.getItem('usRole')||'her'}catch(e){me=/[?&]me=him/.test(location.search)?'him':'her'}
 const other=me==='him'?'her':'him',NT='https://ntfy.sh/',FB=US.db?US.db.replace(/\/$/,'')+'/'+US.topic:'';
-let data={},fails=0,loaded=false;
+let data={},fails=0,loaded=false;const BEAT=60000,WIN=150000;
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const seenKey='usSeen-'+other,getSeen=()=>{try{return +localStorage.getItem(seenKey)||0}catch(e){return 0}},setSeen=t=>{try{if(t>getSeen())localStorage.setItem(seenKey,String(t))}catch(e){}};
 function ago(ms){const m=Math.floor(ms/60000);if(m<1)return 'just now';if(m<60)return m+(m===1?' minute':' minutes')+' ago';const h=Math.floor(m/60);if(h<24)return h+(h===1?' hour':' hours')+' ago';const d=Math.floor(h/24);return d===1?'yesterday':d+' days ago'}
 function status(r){const d=data[r],isMe=r===me;let on,txt;
  if(isMe){on=!document.hidden;txt=on?'online now':'last seen just now'}
- else{const last=Math.max(d&&d.t||0,getSeen());on=!!(d&&d.on&&Date.now()-d.t<75000);txt=on?'online now':last?'last seen '+ago(Date.now()-last):(loaded?'not online yet':'checking…')}
+ else{const last=Math.max(d&&d.t||0,getSeen());on=!!(d&&d.on&&Date.now()-d.t<WIN);txt=on?'online now':last?'last seen '+ago(Date.now()-last):(loaded?'not online yet':'checking…')}
  const song=on&&!isMe&&d&&d.s?'🎧 '+esc(String(d.s).slice(0,24)):'';return{on,txt,song}}
 function card(r){const p=US[r],s=status(r);return '<div class="ub '+r+(s.on?' on':'')+'"><span class="av" aria-hidden="true">'+p.emoji+'<i class="dot"></i></span><b>'+esc(p.name)+(r===me?' <em>(you)</em>':'')+'</b><small>'+s.txt+'</small>'+(s.song?'<small>'+s.song+'</small>':'')+'</div>'}
 function render(){const el=$('us');if(!el)return;el.innerHTML=card('her')+'<span class="uh" aria-hidden="true">💗</span>'+card('him');
- el.setAttribute('aria-label','Her status: '+status('her').txt+'. His status: '+status('him').txt);
+ el.setAttribute('aria-label',US.her.name+': '+status('her').txt+'. '+US.him.name+': '+status('him').txt);
  const h=$('ushint');if(h){if(me==='him'&&fails>2){h.hidden=false;h.textContent='Only you see this: can’t reach the status service right now.'}else h.hidden=true}}
 async function put(on){try{const n=window.__mpNow,pay={on:on?1:0,s:on&&n&&n.p?n.t:''};
  if(FB)await fetch(FB+'/'+me+'.json',{method:'PUT',keepalive:true,body:JSON.stringify({t:{'.sv':'timestamp'},on:pay.on,s:pay.s})});
@@ -2438,11 +2438,19 @@ async function get(){try{
  if(FB){const r=await fetch(FB+'/'+other+'.json'),j=await r.json();data[other]=j?{t:j.t,on:!!j.on,s:j.s||''}:null}
  else{const r=await fetch(NT+US.topic+'-'+other+'/json?poll=1&since=latest'),tx=await r.text(),ls=tx.split('\n').map(x=>x.trim()).filter(Boolean).map(x=>{try{return JSON.parse(x)}catch(e){return null}}).filter(x=>x&&x.event==='message'),l=ls[ls.length-1];
   if(l){let m={};try{m=JSON.parse(l.message)}catch(e){}data[other]={t:l.time*1000,on:!!m.on,s:m.s||''}}else data[other]=null}
- fails=0;loaded=true;const d=data[other];if(d)setSeen(d.on&&Date.now()-d.t<75000?Date.now():d.t)}catch(e){fails++}render()}
-render();put(!document.hidden);get();setInterval(()=>{if(!document.hidden){put(true);get()}},15000);setInterval(render,30000);
-document.addEventListener('visibilitychange',()=>{if(document.hidden)put(false);else{put(true);get()}render()});addEventListener('pagehide',()=>put(false));
+ fails=0;loaded=true;const d=data[other];if(d)setSeen(d.on&&Date.now()-d.t<WIN?Date.now():d.t)}catch(e){fails++}render()}
+/* live connection to the other phone's status (no constant polling, so the free ntfy service never rate-limits us) */
+let sse=null,sseT=0,sseD=3000;
+function applyMsg(l){let m={};try{m=JSON.parse(l.message)}catch(e){}data[other]={t:l.time*1000,on:!!m.on,s:m.s||''};fails=0;loaded=true;const d=data[other];setSeen(d.on&&Date.now()-d.t<WIN?Date.now():d.t);render()}
+function live(){if(sse||FB||!window.EventSource)return;try{sse=new EventSource(NT+US.topic+'-'+other+'/sse?since=latest');
+ sse.onopen=()=>{sseD=3000;fails=0;loaded=true;render()};
+ sse.onmessage=e=>{try{const l=JSON.parse(e.data);if(l.event==='message')applyMsg(l)}catch(x){}};
+ sse.onerror=()=>{try{sse.close()}catch(x){}sse=null;fails++;clearTimeout(sseT);sseT=setTimeout(live,sseD);sseD=Math.min(sseD*2,60000);render()}}catch(x){sse=null}}
+render();put(!document.hidden);live();if(!sse)get();
+setInterval(()=>{if(!document.hidden){put(true);if(!sse)get()}},BEAT);setInterval(render,20000);
+document.addEventListener('visibilitychange',()=>{if(document.hidden)put(false);else{put(true);try{sse&&sse.close()}catch(e){}sse=null;live();if(!sse)get()}render()});addEventListener('pagehide',()=>put(false));
 /* easy way to say "this phone is Him": tap his little circle 5 times (tap hers 5 times to switch back) */
-let taps=0,tt=0;document.addEventListener('click',e=>{const av=e.target.closest&&e.target.closest('#us .av');if(!av)return;const who=av.parentNode.classList.contains('him')?'him':'her';clearTimeout(tt);tt=setTimeout(()=>taps=0,1500);if(++taps>=5){taps=0;try{localStorage.setItem('usRole',who)}catch(x){}if(who!==me){window.toast&&toast(who==='him'?'Okay, this phone is Him 💙':'Okay, this phone is Her 🌷');setTimeout(()=>location.reload(),900)}}});
+let taps=0,tt=0;document.addEventListener('click',e=>{const av=e.target.closest&&e.target.closest('#us .av');if(!av)return;const who=av.parentNode.classList.contains('him')?'him':'her';clearTimeout(tt);tt=setTimeout(()=>taps=0,1500);if(++taps>=5){taps=0;try{localStorage.setItem('usRole',who)}catch(x){}if(who!==me){window.toast&&toast(who==='him'?'Okay, this phone is '+US.him.name+' 💙':'Okay, this phone is '+US.her.name+' 🌷');setTimeout(()=>location.reload(),900)}}});
 })();
 </script>
 <script>
@@ -5379,7 +5387,7 @@ window.__bq={load:load,t:function(){return T0===null?-1:performance.now()-T0}};
 <script>
 (function(){
 /* ---- EDIT THESE: names shown to each other ---- */
-var TOPIC="us-xg7qkkx5t2csmr-rx",HER="Aaradhya",HIM="Him";
+var TOPIC="us-xg7qkkx5t2csmr-rx",HER="Aaradhya",HIM="Pratik";
 /* ----------------------------------------------- */
 var me="her";
 try{var qm=new URLSearchParams(location.search).get("me");if(qm==="him"||qm==="her")localStorage.setItem("usRole",qm);me=localStorage.getItem("usRole")==="him"?"him":"her"}catch(e){me=/[?&]me=him/.test(location.search)?"him":"her"}
@@ -5388,16 +5396,17 @@ var LAB={"💗":"love","🥰":"adores you","😘":"kisses","🤗":"hugs","🥺":
 var st={ids:[],log:[],tot:{},unseen:0,out:[],last:""};
 try{var raw=JSON.parse(localStorage.getItem("ouRx2")||"null");if(raw)st=Object.assign(st,raw)}catch(e){}
 function save(){try{localStorage.setItem("ouRx2",JSON.stringify(st))}catch(e){}}
-function fmt(t){var d=new Date(t),n=new Date(),tm=d.toLocaleTimeString([],{hour:"numeric",minute:"2-digit",second:"2-digit"});
-return d.toDateString()===n.toDateString()?"Today "+tm:new Date(n-864e5).toDateString()===d.toDateString()?"Yesterday "+tm:d.toLocaleDateString([],{month:"short",day:"numeric"})+", "+tm}
+function t12(d){var h=d.getHours(),m=d.getMinutes(),x=d.getSeconds(),ap=h>=12?"PM":"AM";h=h%12||12;return h+":"+(m<10?"0":"")+m+":"+(x<10?"0":"")+x+" "+ap}
+function fmt(t){var d=new Date(t),n=new Date(),tm=t12(d),MO=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+return d.toDateString()===n.toDateString()?"Today "+tm:new Date(n-864e5).toDateString()===d.toDateString()?"Yesterday "+tm:MO[d.getMonth()]+" "+d.getDate()+", "+tm}
 function ago(t){var s=Math.max(0,Math.round((Date.now()-t)/1000));if(s<5)return"just now";if(s<60)return s+"s ago";var m=Math.round(s/60);if(m<60)return m+" min ago";var h=Math.round(m/60);return h<24?h+" h ago":Math.round(h/24)+" d ago"}
 function sum(o){var n=0;for(var k in o)n+=o[k];return n}
 var rs=document.getElementById("rsend"),rh=document.querySelector(".rhd");
-if(rh)rh.textContent="Tap to send a feeling to "+(TO==="her"?"her":"him")+" 💌";
+if(rh)rh.textContent="Tap to send a feeling to "+OT+" 💌";
 function stat(t){if(rs)rs.textContent=t}
 /* ---------- UI ---------- */
 var btn=document.createElement("button");btn.className="rxin";btn.type="button";btn.setAttribute("aria-label","Inbox");btn.innerHTML='💌<b id="rxbd" hidden></b>';document.body.appendChild(btn);
-var sh=document.createElement("div");sh.className="rxsh";sh.hidden=true;sh.innerHTML='<div class="rxsc" role="dialog" aria-label="Inbox"><h3>'+OT+' ↔ '+MY+' 💌</h3><div class="rxbig" id="rxbig"></div><p class="rxsub" id="rxsub"></p><div class="rxgrid" id="rxgrid"></div><ul class="rxlog" id="rxlog"></ul><div class="rxrow"><button class="bq2" id="rxcl" type="button">Close</button></div></div>';document.body.appendChild(sh);
+var sh=document.createElement("div");sh.className="rxsh";sh.hidden=true;sh.innerHTML='<div class="rxsc" role="dialog" aria-label="Inbox"><h3>'+OT+' ↔ '+MY+' 💌</h3><div class="rxbig" id="rxbig"></div><p class="rxsub" id="rxsub"></p><div class="rxgrid" id="rxgrid"></div><ul class="rxlog" id="rxlog"></ul><p class="rxsub" id="rxme"></p><div class="rxrow"><button class="bq2" id="rxsw" type="button">Switch phone</button><button class="bq2" id="rxcl" type="button">Close</button></div></div>';document.body.appendChild(sh);
 var bd=document.getElementById("rxbd");
 function badge(){bd.hidden=!st.unseen;bd.textContent=st.unseen}
 function render(){var miss=st.tot["🥺"]||0,all=sum(st.tot);
@@ -5407,9 +5416,10 @@ document.getElementById("rxgrid").innerHTML=Object.keys(LAB).map(function(k){ret
 var L=st.log.slice().sort(function(a,b){return b.t-a.t}).slice(0,60);
 document.getElementById("rxlog").innerHTML=L.map(function(e){var n=e.n>1?"×"+e.n:"";
 return e.d==="i"?'<li><span class="e">'+e.k+n+'</span><div><strong>'+OT+' sent you '+(LAB[e.k]?'<span style="font-weight:600;opacity:.7">('+LAB[e.k]+')</span>':"")+'</strong><small>'+fmt(e.t)+' · '+ago(e.t)+'</small></div></li>'
-:'<li class="o"><span class="e">'+e.k+n+'</span><div><strong>You sent '+(TO==="her"?"her":"him")+'</strong><small>'+fmt(e.t)+' · '+(e.s==="ok"?"delivered ✓":"⏳ sending…")+'</small></div></li>'}).join("")}
+:'<li class="o"><span class="e">'+e.k+n+'</span><div><strong>You sent '+OT+'</strong><small>'+fmt(e.t)+' · '+(e.s==="ok"?"delivered ✓":"⏳ sending…")+'</small></div></li>'}).join("")}
 function toast(t){var e=document.createElement("div");e.className="rxtoast";e.textContent=t;document.body.appendChild(e);setTimeout(function(){e.remove()},6000)}
 function openSh(){sh.hidden=false;st.unseen=0;save();badge();render();poll()}
+document.getElementById("rxme").textContent="This phone is "+MY+" · messages go to "+OT;document.getElementById("rxsw").onclick=function(){try{localStorage.setItem("usRole",me==="him"?"her":"him")}catch(e){}location.reload()};
 btn.onclick=openSh;document.getElementById("rxcl").onclick=function(){sh.hidden=true};sh.addEventListener("click",function(e){if(e.target===sh)sh.hidden=true});
 setInterval(function(){if(!sh.hidden)render()},15000);
 /* ---------- receive: live + polling fallback ---------- */
@@ -5421,25 +5431,27 @@ var c=parse(m.message),tm=/@(\d{10,13})/.exec(m.message),t=tm?+tm[1]:m.time*1000
 var first="";for(var k in c){if(!first)first=k;st.tot[k]=(st.tot[k]||0)+c[k];st.log.push({d:"i",k:k,n:c[k],t:t,id:m.id+k})}
 if(st.log.length>300)st.log=st.log.slice(-200);st.unseen+=n;save();badge();
 if(sh.hidden){toast("💌 "+OT+" sent you "+Object.keys(c).map(function(k){return k+(c[k]>1?"×"+c[k]:"")}).join(" ")+" · "+fmt(t));try{navigator.vibrate&&navigator.vibrate(30)}catch(e){}}else render();return n}
-var es=null,esT=0;
+var es=null,esT=0,esD=3000;
 function live(){if(es||!window.EventSource)return;try{es=new EventSource("https://ntfy.sh/"+TOPIC+"/sse?since="+(st.last||"all"));
 es.onmessage=function(e){try{handle(JSON.parse(e.data))}catch(x){}};
-es.onerror=function(){try{es.close()}catch(x){}es=null;clearTimeout(esT);esT=setTimeout(live,3000)}}catch(x){es=null}}
+es.onopen=function(){esD=3000};es.onerror=function(){try{es.close()}catch(x){}es=null;clearTimeout(esT);esT=setTimeout(live,esD);esD=Math.min(esD*2,60000)}}catch(x){es=null}}
 var polling=false;
 function poll(){if(polling)return Promise.resolve();polling=true;return fetch("https://ntfy.sh/"+TOPIC+"/json?poll=1&since=all").then(function(r){if(!r.ok)throw 0;return r.text()}).then(function(t){t.split("\n").forEach(function(l){if(!l.trim())return;try{handle(JSON.parse(l))}catch(e){}})}).catch(function(){}).then(function(){polling=false})}
 /* ---------- send: instantly, every tap, with its own exact time ---------- */
 var fly={};
 function send(k){var ev={k:k,t:Date.now(),id:"o"+Date.now().toString(36)+Math.random().toString(36).slice(2,5)};
-st.out.push(ev);st.log.push({d:"o",k:k,n:1,t:ev.t,id:ev.id,s:"p"});save();stat("Sending to "+(TO==="her"?"her":"him")+"… 💌");if(!sh.hidden)render();post(ev)}
+st.out.push(ev);st.log.push({d:"o",k:k,n:1,t:ev.t,id:ev.id,s:"p"});save();stat("Sending to "+OT+"… 💌");if(!sh.hidden)render();post(ev)}
 function post(ev){if(fly[ev.id])return;fly[ev.id]=1;
-fetch("https://ntfy.sh/"+TOPIC,{method:"POST",body:MY+" sent you: "+ev.k+"×1 @"+ev.t+" ~"+me,keepalive:true}).then(function(r){if(!r.ok)throw 0;
-st.out=st.out.filter(function(x){return x.id!==ev.id});st.log.forEach(function(e){if(e.id===ev.id)e.s="ok"});delete fly[ev.id];save();stat("Sent to "+(TO==="her"?"her":"him")+" 💌 · "+fmt(ev.t));if(!sh.hidden)render()})
+var late=Date.now()-ev.t>20000;
+fetch("https://ntfy.sh/"+TOPIC,{method:"POST",body:MY+" sent you: "+ev.k+"×1"+(late?" @"+ev.t:"")+" ~"+me,keepalive:true}).then(function(r){if(!r.ok)throw 0;return r.json().catch(function(){return null})}).then(function(j){
+if(j&&j.time&&!late)ev.t=j.time*1000;
+st.out=st.out.filter(function(x){return x.id!==ev.id});st.log.forEach(function(e){if(e.id===ev.id){e.s="ok";e.t=ev.t}});delete fly[ev.id];save();stat("Sent to "+OT+" 💌 · "+fmt(ev.t));if(!sh.hidden)render()})
 .catch(function(){delete fly[ev.id];stat("Saved. I’ll send it as soon as you’re online ♡");setTimeout(flush,4000)})}
 function flush(){if(navigator.onLine===false)return;st.out.slice().forEach(post)}
 addEventListener("online",function(){flush();poll();live()});
 document.addEventListener("visibilitychange",function(){if(!document.hidden){flush();poll();live()}});
 addEventListener("pagehide",function(){flush()});
-badge();live();poll();flush();setInterval(function(){if(!document.hidden){poll();flush()}},10000);
+badge();live();poll();flush();setInterval(function(){if(!document.hidden)flush()},10000);setInterval(function(){if(!document.hidden)poll()},60000);
 window.__rx={send:send,st:function(){return st},handle:handle,me:me};
 })();
 </script>
