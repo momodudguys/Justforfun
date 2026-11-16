@@ -861,18 +861,6 @@ body.inw #mus,body.inw #mpb,body.inw #mps,body.inw #mpfx,body.inw #mpg,body.inw 
 @media (prefers-reduced-motion:reduce){#wlc .ws,#wlc .wfl,#wlc .wbig,.eggmoon,.eggmoon.tap{animation:none}.wlf{animation-duration:.01s}}
 </style>
 <style>
-/* ===== scratch-off ===== */
-#scrsec{text-align:center}
-.scx{position:relative;width:min(340px,100%);min-height:230px;margin:18px auto 0;border-radius:22px;overflow:hidden;background:linear-gradient(160deg,#2c2470,#1a1a52);border:1.5px solid rgba(255,158,199,.5);box-shadow:0 0 46px rgba(255,200,140,.18),0 14px 40px rgba(0,0,0,.4)}
-.scx-un{min-height:230px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:22px 22px;color:#fff3e8}
-.scx-un .e{font-size:2.6rem;line-height:1}
-.scx-un h3{margin:2px 0 4px;font:italic 600 1.7rem/1.1 "Cormorant Garamond",Georgia,serif;color:#ffd98a}
-.scx-un p{margin:0 0 6px;font-size:1rem;line-height:1.5}
-.scx-un img{display:block;max-width:100%;max-height:200px;border-radius:14px;margin:4px auto 8px;border:3px solid #fff6ee;box-shadow:0 6px 18px rgba(0,0,0,.4);transform:rotate(-1.5deg)}
-.scx canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab;transition:opacity .9s;-webkit-user-select:none;user-select:none}
-.scx.done canvas{opacity:0;pointer-events:none}
-.scx-skip{display:block;margin:12px auto 0;background:none;border:0;color:#b9c3e6;font:inherit;font-size:.86rem;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:8px}
-.scx.done+.scx-skip{display:none}
 /* ===== the real-world moment ===== */
 #mom{position:fixed;inset:0;z-index:9050;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;color:#fff3e8;background:radial-gradient(90% 70% at 50% 40%,#1d2250,#05091c);opacity:0;transition:opacity .7s;overflow:auto}
 #mom.on{opacity:1}
@@ -1063,9 +1051,6 @@ section.pane.date{--ico:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.o
 #coupons button.done{background:linear-gradient(90deg,color-mix(in srgb,var(--t-accent) 48%,transparent) 0 78px,color-mix(in srgb,var(--t-accent) 14%,var(--t-glass)) 78px)}
 #coupons button.done::after{content:"\2665";color:var(--t-btn-ink)}
 
-/* ---------- scratch + footer ---------- */
-.scx{border-color:var(--t-glass-b);box-shadow:0 40px 80px -40px rgba(0,0,0,.55)}
-.scx-skip{color:var(--t-soft)}
 footer{position:relative;overflow:hidden;padding:110px 24px 150px;color:var(--t-soft)}
 footer::before{content:"Aaradhya";position:absolute;left:50%;top:50%;transform:translate(-50%,-52%);font:italic 400 clamp(5rem,26vw,12rem)/1 var(--f-display);white-space:nowrap;color:transparent;-webkit-text-stroke:1px color-mix(in srgb,var(--t-accent) 50%,transparent);opacity:.28;pointer-events:none;z-index:-1}
 footer svg{filter:drop-shadow(0 0 22px color-mix(in srgb,var(--t-accent) 60%,transparent))}
@@ -1231,8 +1216,8 @@ body.in .rtab.show{transform:translate(0,-50%);opacity:1;pointer-events:auto}
 </style>
 <style>.pbond{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:5px;font-size:.78rem;font-weight:800}.pbond em{font-style:normal}.pbond u{display:block;width:90px;height:8px;border-radius:6px;background:rgba(255,255,255,.2);overflow:hidden;text-decoration:none}.pbond u i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff9ec7,#ffd98a);transition:width .6s}.pbond small{opacity:.85}.p-tear{animation:ptear 1.7s ease-in infinite}@keyframes ptear{0%{transform:translateY(0);opacity:0}15%{opacity:.95}100%{transform:translateY(24px);opacity:0}}.pbar2{margin-top:6px}</style>
 <style>
-#lovesec{max-width:520px}
-.lmw{width:min(340px,86vw);margin:20px auto 0;border-radius:14px;overflow:hidden;box-shadow:0 30px 60px -30px rgba(0,0,0,.65),0 0 60px -20px var(--t-o1),0 0 0 1px var(--t-glass-b)}
+#lovesec,#lmsec{max-width:520px}
+.lmw{width:min(340px,100%);margin:20px auto 0;border-radius:14px;overflow:hidden;box-shadow:0 30px 60px -30px rgba(0,0,0,.65),0 0 60px -20px var(--t-o1),0 0 0 1px var(--t-glass-b)}
 .lmb{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#e7eefc;color:#2a3560;font:600 .78rem var(--f-body);text-align:left}
 .lmb b{flex:1;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lmb i{font-style:normal;opacity:.55;padding:0 4px}
@@ -1241,7 +1226,7 @@ body.in .rtab.show{transform:translate(0,-50%);opacity:1;pointer-events:auto}
 </style>
 <style>
 #bqsec{max-width:520px}
-.bqw{width:min(400px,92vw);margin:18px auto 0;border-radius:18px;overflow:hidden;background:#05050a;box-shadow:0 30px 60px -30px rgba(0,0,0,.7),0 0 70px -22px var(--t-o1),0 0 0 1px var(--t-glass-b)}
+.bqw{width:min(400px,100%);margin:18px auto 0;border-radius:18px;overflow:hidden;background:#05050a;box-shadow:0 30px 60px -30px rgba(0,0,0,.7),0 0 70px -22px var(--t-o1),0 0 0 1px var(--t-glass-b)}
 #bqc{display:block;width:100%;height:auto;touch-action:manipulation;cursor:pointer}
 .bqtm{margin:14px auto 0;display:inline-block;padding:7px 16px;border-radius:20px;background:var(--t-glass);border:1px solid var(--t-glass-b);font:800 .85rem var(--f-body);font-variant-numeric:tabular-nums;color:var(--t-gold)}
 .bqname{margin:10px 0 2px;font:italic 400 1.8rem/1.2 var(--f-display);color:var(--t-ink)}
@@ -1253,22 +1238,25 @@ body.in .rtab.show{transform:translate(0,-50%);opacity:1;pointer-events:auto}
 .bqbtns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:6px}
 </style>
 <style>
-.rxin{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));left:12px;z-index:131;border:1px solid var(--t-glass-b);background:var(--t-pill);color:var(--t-ink);border-radius:20px;padding:6px 12px;font:700 .8rem var(--f-body);cursor:pointer}
-.rxin b{margin-left:6px;background:var(--t-accent);color:var(--t-btn-ink);border-radius:10px;padding:0 7px;font-size:.72rem}
+.rxin{position:fixed;top:calc(64px + env(safe-area-inset-top,0px));right:14px;z-index:131;border:1px solid var(--t-glass-b);background:var(--t-pill);color:var(--t-ink);border-radius:20px;padding:6px 11px;font:700 .95rem var(--f-body);cursor:pointer;line-height:1}
+.rxin b{margin-left:5px;background:var(--t-accent);color:var(--t-btn-ink);border-radius:10px;padding:1px 7px;font-size:.72rem}
 .rxsh{position:fixed;inset:0;z-index:9700;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.5)}
 .rxsh[hidden]{display:none}
 .rxsc{width:min(460px,100%);max-height:86vh;overflow:auto;background:var(--t-sheet);color:var(--t-ink);border-radius:26px 26px 0 0;padding:20px 18px calc(22px + env(safe-area-inset-bottom,0px));box-shadow:0 -30px 80px -20px var(--t-o1);text-align:center}
 .rxsc h3{margin:0;font:italic 400 1.6rem var(--f-display)}
-.rxbig{font:italic 400 2.3rem/1.15 var(--f-display);margin:8px 0 2px;color:var(--t-gold)}
+.rxbig{font:italic 400 2.2rem/1.15 var(--f-display);margin:8px 0 2px;color:var(--t-gold)}
 .rxsub{margin:0;color:var(--t-soft);font-weight:600}
 .rxgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
 .rxgrid div{padding:10px 4px;border-radius:16px;background:var(--t-glass);border:1px solid var(--t-glass-b);font-size:1.3rem}
 .rxgrid small{display:block;font:700 .75rem var(--f-body);color:var(--t-soft)}
 .rxlog{list-style:none;margin:8px 0 0;padding:0;text-align:left}
-.rxlog li{padding:9px 4px;border-top:1px solid var(--t-glass-b);font-weight:600;display:flex;justify-content:space-between;gap:10px}
-.rxlog span{color:var(--t-soft);font-weight:600;white-space:nowrap}
+.rxlog li{padding:9px 4px;border-top:1px solid var(--t-glass-b);display:flex;align-items:center;gap:12px}
+.rxlog .e{font-size:1.5rem;min-width:2.2rem;text-align:center}
+.rxlog strong{display:block;font-weight:700}
+.rxlog small{display:block;color:var(--t-soft);font-weight:600;font-variant-numeric:tabular-nums}
+.rxlog li.o strong{color:var(--t-soft)}
 .rxrow{display:flex;gap:10px;justify-content:center;margin-top:14px}
-.rxtoast{position:fixed;top:calc(56px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:9800;max-width:90vw;padding:12px 18px;border-radius:22px;background:var(--t-pill);color:var(--t-ink);border:1px solid var(--t-accent);font-weight:700;box-shadow:0 14px 40px -12px var(--t-accent2);animation:gin .5s var(--ease) both}
+.rxtoast{position:fixed;top:calc(56px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:9800;max-width:90vw;padding:12px 18px;border-radius:22px;background:var(--t-pill);color:var(--t-ink);border:1px solid var(--t-accent);font-weight:700;box-shadow:0 14px 40px -12px var(--t-accent2);animation:gin .5s var(--ease) both;text-align:center}
 </style>
 </head>
 <body class="wl"><div id="wlc" role="dialog" aria-modal="true" aria-label="Welcome"><i class="ws" style="left:59%;top:73%;width:4px;height:4px;animation-delay:-1.4s;opacity:0.82"></i><i class="ws" style="left:26%;top:25%;width:4px;height:4px;animation-delay:-1.9s;opacity:0.79"></i><i class="ws" style="left:14%;top:59%;width:3px;height:3px;animation-delay:-0.4s;opacity:0.65"></i><i class="ws" style="left:90%;top:83%;width:2px;height:2px;animation-delay:-1.8s;opacity:0.57"></i><i class="ws" style="left:59%;top:85%;width:2px;height:2px;animation-delay:-1.9s;opacity:0.81"></i><i class="ws" style="left:10%;top:9%;width:2px;height:2px;animation-delay:-0.6s;opacity:0.48"></i><i class="ws" style="left:5%;top:61%;width:3px;height:3px;animation-delay:-1.3s;opacity:0.81"></i><i class="ws" style="left:68%;top:31%;width:3px;height:3px;animation-delay:-1.5s;opacity:0.71"></i><i class="ws" style="left:60%;top:85%;width:3px;height:3px;animation-delay:-1.2s;opacity:0.65"></i><i class="ws" style="left:12%;top:92%;width:3px;height:3px;animation-delay:-0.9s;opacity:0.48"></i><i class="ws" style="left:38%;top:5%;width:2px;height:2px;animation-delay:-1.7s;opacity:0.41"></i><i class="ws" style="left:15%;top:39%;width:4px;height:4px;animation-delay:-0.2s;opacity:0.36"></i><i class="ws" style="left:89%;top:2%;width:2px;height:2px;animation-delay:-0.6s;opacity:0.85"></i><i class="ws" style="left:62%;top:50%;width:4px;height:4px;animation-delay:-1.3s;opacity:0.66"></i><i class="ws" style="left:27%;top:88%;width:3px;height:3px;animation-delay:-1.0s;opacity:0.52"></i><i class="ws" style="left:3%;top:54%;width:2px;height:2px;animation-delay:-0.4s;opacity:0.74"></i><i class="ws" style="left:3%;top:9%;width:4px;height:4px;animation-delay:-2.4s;opacity:0.45"></i><i class="ws" style="left:73%;top:26%;width:4px;height:4px;animation-delay:-1.5s;opacity:0.89"></i><i class="ws" style="left:18%;top:55%;width:4px;height:4px;animation-delay:-0.3s;opacity:0.58"></i><i class="ws" style="left:29%;top:2%;width:3px;height:3px;animation-delay:-2.6s;opacity:0.89"></i><i class="ws" style="left:77%;top:40%;width:2px;height:2px;animation-delay:-0.6s;opacity:0.57"></i><i class="ws" style="left:79%;top:84%;width:2px;height:2px;animation-delay:-0.1s;opacity:0.43"></i><i class="ws" style="left:58%;top:35%;width:2px;height:2px;animation-delay:-2.3s;opacity:0.53"></i><i class="ws" style="left:39%;top:51%;width:2px;height:2px;animation-delay:-0.2s;opacity:0.46"></i><i class="ws" style="left:83%;top:33%;width:2px;height:2px;animation-delay:-1.8s;opacity:0.55"></i><i class="ws" style="left:60%;top:18%;width:4px;height:4px;animation-delay:-2.5s;opacity:0.42"></i><i class="ws" style="left:51%;top:25%;width:2px;height:2px;animation-delay:-0.9s;opacity:0.48"></i><i class="ws" style="left:80%;top:33%;width:2px;height:2px;animation-delay:-0.5s;opacity:0.70"></i><i class="ws" style="left:72%;top:27%;width:4px;height:4px;animation-delay:-2.6s;opacity:0.68"></i><i class="ws" style="left:55%;top:8%;width:2px;height:2px;animation-delay:-0.3s;opacity:0.63"></i><i class="ws" style="left:34%;top:32%;width:4px;height:4px;animation-delay:-0.8s;opacity:0.80"></i><i class="ws" style="left:78%;top:64%;width:3px;height:3px;animation-delay:-1.6s;opacity:0.86"></i><i class="ws" style="left:10%;top:18%;width:2px;height:2px;animation-delay:-1.4s;opacity:0.71"></i><i class="ws" style="left:80%;top:80%;width:2px;height:2px;animation-delay:-0.8s;opacity:0.85"></i>
@@ -1341,7 +1329,7 @@ body.in .rtab.show{transform:translate(0,-50%);opacity:1;pointer-events:auto}
  <div class="cue" aria-hidden="true"><span>keep going</span><i></i></div>
 </section>
 
-<section>
+<section id="ch-hug">
  <h2>Come here</h2>
  <p>Press and hold your name. Keep holding until I'm squeezing you back.</p>
  <button class="hug" id="hug" aria-label="Hold to hug">Aaradhya</button>
@@ -1349,27 +1337,27 @@ body.in .rtab.show{transform:translate(0,-50%);opacity:1;pointer-events:auto}
  <div class="say" id="say" aria-live="polite">Waiting for you...</div>
 </section>
 
-<section>
+<section id="ch-count">
  <h2>Counting down to your day</h2>
  <p id="bd">Until 8 September, when the whole world gets to celebrate you.</p>
  <div class="count" id="count"></div>
  <p>Until then, I'm not letting go.</p>
 </section>
 
-<section>
+<section id="ch-why">
  <h2>Why you're my person</h2>
  <div class="mood" id="mood">💗</div>
  <div class="reasons" id="reason">Tap the button.</div>
  <button class="btn" id="next">Tell me another</button>
 </section>
 
-<section class="pane moon">
+<section class="pane moon" id="ch-moon">
  <h2>When your mind gets loud</h2>
  <p>Come back here whenever your thoughts get too heavy. Take a breath, and walk with me for a minute. I'll be there on every step.</p>
  <button class="btn" id="nightbtn">Walk with me 🌙</button>
 </section>
 
-<section class="pane date">
+<section class="pane date" id="ch-date">
  <h2>Our dream date</h2>
  <p>A little world made only for you. Put your phone somewhere comfy, and take my hand.</p>
  <button class="btn" id="datebtn">Take my hand 🤍</button>
@@ -1401,20 +1389,10 @@ body.in .rtab.show{transform:translate(0,-50%);opacity:1;pointer-events:auto}
  <div class="uvfin" id="uvfin" hidden><p id="uvfint"></p><button class="btn" id="uvagain">see our little universe again</button></div>
 </section>
 
-<section>
+<section id="ch-coupons">
  <h2>Cuddle coupons</h2>
  <p>Tap one to redeem. They never expire, and I will never say no.</p>
  <div class="list" id="coupons"></div>
-</section>
-
-<section id="scrsec">
- <h2>One more thing…</h2>
- <p id="scrhint">Scratch the foggy glass with your finger ✨</p>
- <div class="scx" id="scr">
-  <div class="scx-un" id="scrun" aria-live="polite"></div>
-  <canvas id="scrcv" aria-label="Foggy glass. Scratch it to reveal a surprise."></canvas>
- </div>
- <button class="scx-skip" id="scrskip" type="button">or just show me</button>
 </section>
 
 <section id="daysec" aria-labelledby="dush">
@@ -1441,7 +1419,7 @@ body.in .rtab.show{transform:translate(0,-50%);opacity:1;pointer-events:auto}
   <p class="rtot" id="rtot"></p>
   <p class="rsend" id="rsend"></p>
  </div>
-</div><section id="lovesec" aria-labelledby="lmh">
+</div><section id="lmsec" aria-labelledby="lmh">
 <h2 id="lmh">Loves me, loves me not ♡</h2>
 <p>One last little game. Pluck the petals and see how it ends.</p>
 <div class="lmw"><div class="lmb"><span>🪶</span><b>Loves me, loves me not</b><i>–</i><i>▢</i><i>✕</i></div><canvas id="lmc" aria-label="A pixel daisy under a night sky. Tap to pluck a petal."></canvas></div>
@@ -4904,15 +4882,6 @@ new MutationObserver(()=>{const on=document.body.classList.contains('inw');if(on
 (function(){
 /* ============================ EDIT ME ============================ */
 const CFG={
- /* ---- 1. THE SCRATCH-OFF ---- */
- SCRATCH:{
-  hint:"Scratch the foggy glass with your finger ✨",
-  doneHint:"You found it 🤍",
-  emoji:"🎁",
-  title:"A real surprise is coming",
-  lines:["Not everything lives on a screen, you know. 🤍","Keep your eyes open. Something real is on its way to you."],
-  photo:""   /* optional: a photo link or data:image/... address. Leave empty for no photo. */
- },
  /* ---- 2. THE REAL-WORLD MOMENT (appears when the game opens at midnight) ---- */
  MOMENT:{
   enabled:true,
@@ -4933,65 +4902,6 @@ const RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
 const rain=U.rain||function(){},ding=U.ding||function(){},buzz=U.buzz||function(){};
 const ls={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
 
-/* ======================== SCRATCH-OFF ======================== */
-(function(){
- const box=$('scr'),cv=$('scrcv'),un=$('scrun'),hint=$('scrhint'),skip=$('scrskip');
- if(!box||!cv)return;
- const S=CFG.SCRATCH;
- hint.textContent=S.hint;
- un.innerHTML='';
- const e=document.createElement('div');e.className='e';e.textContent=S.emoji;un.appendChild(e);
- const h=document.createElement('h3');h.textContent=S.title;un.appendChild(h);
- if(S.photo){const im=document.createElement('img');im.alt='';im.src=S.photo;un.appendChild(im)}
- S.lines.forEach(t=>{const p=document.createElement('p');p.textContent=t;un.appendChild(p)});
- let revealed=false;
- function reveal(auto){
-  if(revealed)return;revealed=true;box.classList.add('done');hint.textContent=S.doneHint;
-  ls.set('ouScratch','1');
-  if(auto){rain(['💗','✨','🌸','🎁','🤍'],34);ding();buzz()}
- }
- skip.addEventListener('click',()=>reveal(true));
- if(ls.get('ouScratch')==='1'&&!/#scratch\b/.test(location.hash)){revealed=true;box.classList.add('done');hint.textContent=S.doneHint;return}
- const ctx=cv.getContext('2d'),mk=document.createElement('canvas'),mctx=mk.getContext('2d',{willReadFrequently:true});
- let W=0,H=0,dpr=1,last=null,touched=false,chk=0,sp=0;
- const BRUSH=26;
- function paint(){
-  const w=cv.width,h=cv.height;ctx.globalCompositeOperation='source-over';
-  const g=ctx.createLinearGradient(0,0,w,h);g.addColorStop(0,'#c9d2f0');g.addColorStop(.5,'#e3cdf0');g.addColorStop(1,'#f5cfe0');
-  ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
-  for(let i=0;i<46;i++){const x=Math.random()*w,y=Math.random()*h,r=(22+Math.random()*52)*dpr,rg=ctx.createRadialGradient(x,y,0,x,y,r);rg.addColorStop(0,'rgba(255,255,255,.38)');rg.addColorStop(1,'rgba(255,255,255,0)');ctx.fillStyle=rg;ctx.beginPath();ctx.arc(x,y,r,0,7);ctx.fill()}
-  for(let i=0;i<520;i++){ctx.fillStyle=Math.random()<.5?'rgba(255,255,255,.55)':'rgba(120,110,170,.16)';const s=dpr*(1+Math.random()*1.6);ctx.fillRect(Math.random()*w,Math.random()*h,s,s)}
-  ctx.font=(15*dpr)+'px serif';ctx.fillStyle='rgba(255,255,255,.6)';
-  for(let i=0;i<14;i++)ctx.fillText('♡',Math.random()*w,Math.random()*h);
-  ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='italic 600 '+(27*dpr)+'px "Cormorant Garamond",Georgia,serif';
-  ctx.fillStyle='rgba(70,58,120,.6)';ctx.fillText('scratch here ✨',w/2,h/2);
- }
- function size(){
-  if(touched||revealed)return;
-  const r=box.getBoundingClientRect();if(r.width<10)return;
-  dpr=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);
-  mk.width=60;mk.height=Math.max(20,Math.round(60*H/W));mctx.clearRect(0,0,mk.width,mk.height);
-  paint();
- }
- size();
- if(window.ResizeObserver)new ResizeObserver(size).observe(box);else addEventListener('resize',size);
- function pos(ev){const r=cv.getBoundingClientRect();return[(ev.clientX-r.left),(ev.clientY-r.top)]}
- function stroke(a,b){
-  const k=cv.width/W;ctx.globalCompositeOperation='destination-out';ctx.lineCap='round';ctx.lineJoin='round';ctx.lineWidth=BRUSH*2*k;
-  ctx.beginPath();ctx.moveTo(a[0]*k,a[1]*k);ctx.lineTo(b[0]*k,b[1]*k);ctx.stroke();
-  const s=mk.width/W;mctx.strokeStyle='#000';mctx.lineCap='round';mctx.lineWidth=BRUSH*2*s;mctx.beginPath();mctx.moveTo(a[0]*s,a[1]*s);mctx.lineTo(b[0]*s,b[1]*s);mctx.stroke();
- }
- function pct(){const d=mctx.getImageData(0,0,mk.width,mk.height).data;let n=0;for(let i=3;i<d.length;i+=4)if(d[i]>110)n++;return n/(d.length/4)}
- function check(){chk=0;if(revealed)return;if(pct()>=.46)reveal(true)}
- cv.addEventListener('pointerdown',ev=>{if(revealed)return;touched=true;last=pos(ev);try{cv.setPointerCapture(ev.pointerId)}catch(e){}stroke(last,[last[0]+.1,last[1]]);ev.preventDefault()});
- cv.addEventListener('pointermove',ev=>{
-  if(!last||revealed)return;const p=pos(ev);stroke(last,p);last=p;
-  const now=performance.now();if(now-sp>170&&!RM){sp=now;try{heart(ev.clientX,ev.clientY)}catch(e){}}
-  if(!chk)chk=setTimeout(check,140);ev.preventDefault();
- });
- const up=()=>{last=null;if(!chk)chk=setTimeout(check,60)};
- cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
-})();
 
 /* ======================== REAL-WORLD MOMENT ======================== */
 (function(){
@@ -5272,18 +5182,7 @@ var FX={
 "✨":function(x,y){var n=coarse?14:26;for(var i=0;i<n;i++){var a=rnd(0,6.283),d=rnd(60,230);sp(["✨","✦","✧","💫","⭐"][i%5],x,y,Math.cos(a)*d,Math.sin(a)*d,rnd(12,26),rnd(1000,1700),rnd(-180,180),i*18,.2)}}
 };
 function bears(){var c=document.querySelector(".cute svg");if(!c||!c.animate)return;c.animate([{transform:"translateY(0) scale(1)"},{transform:"translateY(-30px) scale(1.12)",offset:.35},{transform:"translateY(0) scale(.96)",offset:.7},{transform:"translateY(0) scale(1)"}],{duration:800,easing:"ease-out"})}
-var TOPIC="us-xg7qkkx5t2csmr-rx",SENDER="Aaradhya",out={},sending=false,flushT=0,rs=document.getElementById("rsend");
-try{out=JSON.parse(localStorage.getItem("ouRxOut")||"{}")||{}}catch(e){out={}}
-function osave(){try{localStorage.setItem("ouRxOut",JSON.stringify(out))}catch(e){}}
-function stat(t){if(rs)rs.textContent=t}
-function pend(){return Object.keys(out).filter(function(k){return out[k]>0})}
-function flush(){var ks=pend();if(!ks.length||sending)return;if(navigator.onLine===false){stat("Saved. I’ll send it when you’re online ♡");return}
-var snap={};ks.forEach(function(k){snap[k]=out[k]});var body=SENDER+" sent you: "+ks.map(function(k){return k+"×"+snap[k]}).join(" ");
-ks.forEach(function(k){delete out[k]});osave();sending=true;stat("Sending… 💌");
-fetch("https://ntfy.sh/"+TOPIC,{method:"POST",body:body,keepalive:true}).then(function(r){if(!r.ok)throw 0;stat("Sent to him 💌")}).catch(function(){for(var k in snap)out[k]=(out[k]||0)+snap[k];osave();stat("Saved. I’ll send it when you’re online ♡");setTimeout(flush,60000)}).then(function(){sending=false})}
-function queue(k){out[k]=(out[k]||0)+1;osave();stat("Sending in a moment… 💌");clearTimeout(flushT);flushT=setTimeout(function(){flushT=0;flush()},5000)}
-addEventListener("online",flush);addEventListener("pagehide",function(){if(pend().length)flush()});
-if(pend().length)setTimeout(flush,2500);
+function queue(k){window.__rx&&window.__rx.send(k)}
 grid.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".rb");if(!b)return;var k=b.dataset.e;cnt[k]=(cnt[k]||0)+1;save();paint();queue(k);
 try{navigator.vibrate&&navigator.vibrate(12)}catch(x){}
 if(RM)return;var r=b.getBoundingClientRect();FX[k](r.left+r.width/2,r.top+r.height/2);if(k!=="🤗")bears()});
@@ -5479,37 +5378,69 @@ window.__bq={load:load,t:function(){return T0===null?-1:performance.now()-T0}};
 
 <script>
 (function(){
-var TOPIC="us-xg7qkkx5t2csmr-rx",NAME="Aaradhya";
-var isMe=false;try{var qm=new URLSearchParams(location.search).get("me");isMe=(qm==="him")||(qm!=="her"&&localStorage.getItem("usRole")==="him")}catch(e){}
-if(!isMe)return;
+/* ---- EDIT THESE: names shown to each other ---- */
+var TOPIC="us-xg7qkkx5t2csmr-rx",HER="Aaradhya",HIM="Him";
+/* ----------------------------------------------- */
+var me="her";
+try{var qm=new URLSearchParams(location.search).get("me");if(qm==="him"||qm==="her")localStorage.setItem("usRole",qm);me=localStorage.getItem("usRole")==="him"?"him":"her"}catch(e){me=/[?&]me=him/.test(location.search)?"him":"her"}
+var NM={her:HER,him:HIM},TO=me==="him"?"her":"him",MY=NM[me],OT=NM[TO];
 var LAB={"💗":"love","🥰":"adores you","😘":"kisses","🤗":"hugs","🥺":"misses you","😂":"laughs","🔥":"is feeling spicy","✨":"magic"};
-var st={tot:{},log:[],ids:[],unseen:0};try{st=Object.assign(st,JSON.parse(localStorage.getItem("ouIn")||"{}"))}catch(e){}
-function save(){try{localStorage.setItem("ouIn",JSON.stringify(st))}catch(e){}}
-function parse(m){var o={},re=/(\S+?)×(\d+)/g,x;while(x=re.exec(m||""))o[x[1]]=(o[x[1]]||0)+(+x[2]);return o}
+var st={ids:[],log:[],tot:{},unseen:0,out:[],last:""};
+try{var raw=JSON.parse(localStorage.getItem("ouRx2")||"null");if(raw)st=Object.assign(st,raw)}catch(e){}
+function save(){try{localStorage.setItem("ouRx2",JSON.stringify(st))}catch(e){}}
+function fmt(t){var d=new Date(t),n=new Date(),tm=d.toLocaleTimeString([],{hour:"numeric",minute:"2-digit",second:"2-digit"});
+return d.toDateString()===n.toDateString()?"Today "+tm:new Date(n-864e5).toDateString()===d.toDateString()?"Yesterday "+tm:d.toLocaleDateString([],{month:"short",day:"numeric"})+", "+tm}
+function ago(t){var s=Math.max(0,Math.round((Date.now()-t)/1000));if(s<5)return"just now";if(s<60)return s+"s ago";var m=Math.round(s/60);if(m<60)return m+" min ago";var h=Math.round(m/60);return h<24?h+" h ago":Math.round(h/24)+" d ago"}
 function sum(o){var n=0;for(var k in o)n+=o[k];return n}
-function line(o){return Object.keys(o).map(function(k){return k+"×"+o[k]}).join("  ")}
-function ago(ms){var m=Math.round((Date.now()-ms)/6e4);if(m<1)return"just now";if(m<60)return m+" min ago";var h=Math.round(m/60);return h<24?h+" h ago":Math.round(h/24)+" d ago"}
-var btn=document.createElement("button");btn.className="rxin";btn.type="button";btn.innerHTML='💌 Inbox<b id="rxbd" hidden></b>';document.body.appendChild(btn);
-var sh=document.createElement("div");sh.className="rxsh";sh.hidden=true;sh.innerHTML='<div class="rxsc" role="dialog" aria-label="Reactions from Aaradhya"><h3>From '+NAME+' 💌</h3><div class="rxbig" id="rxbig"></div><p class="rxsub" id="rxsub"></p><div class="rxgrid" id="rxgrid"></div><ul class="rxlog" id="rxlog"></ul><p class="rxsub" id="rxst"></p><div class="rxrow"><button class="btn" id="rxref" type="button">Check now</button><button class="bq2" id="rxcl" type="button">Close</button></div></div>';document.body.appendChild(sh);
+var rs=document.getElementById("rsend"),rh=document.querySelector(".rhd");
+if(rh)rh.textContent="Tap to send a feeling to "+(TO==="her"?"her":"him")+" 💌";
+function stat(t){if(rs)rs.textContent=t}
+/* ---------- UI ---------- */
+var btn=document.createElement("button");btn.className="rxin";btn.type="button";btn.setAttribute("aria-label","Inbox");btn.innerHTML='💌<b id="rxbd" hidden></b>';document.body.appendChild(btn);
+var sh=document.createElement("div");sh.className="rxsh";sh.hidden=true;sh.innerHTML='<div class="rxsc" role="dialog" aria-label="Inbox"><h3>'+OT+' ↔ '+MY+' 💌</h3><div class="rxbig" id="rxbig"></div><p class="rxsub" id="rxsub"></p><div class="rxgrid" id="rxgrid"></div><ul class="rxlog" id="rxlog"></ul><div class="rxrow"><button class="bq2" id="rxcl" type="button">Close</button></div></div>';document.body.appendChild(sh);
 var bd=document.getElementById("rxbd");
 function badge(){bd.hidden=!st.unseen;bd.textContent=st.unseen}
-function render(note){var miss=st.tot["🥺"]||0,all=sum(st.tot);
-document.getElementById("rxbig").textContent=miss?NAME+" misses you "+miss+" time"+(miss===1?"":"s")+" 🥺":all?all+" feelings from "+NAME+" ♡":"Nothing yet ♡";
-document.getElementById("rxsub").textContent=all?all+" feelings in total":"When she taps a reaction, it shows up here, even if you were offline.";
+function render(){var miss=st.tot["🥺"]||0,all=sum(st.tot);
+document.getElementById("rxbig").textContent=miss?OT+" misses you "+miss+" time"+(miss===1?"":"s")+" 🥺":all?all+" feeling"+(all===1?"":"s")+" from "+OT+" ♡":"Nothing yet ♡";
+document.getElementById("rxsub").textContent=all?all+" feeling"+(all===1?"":"s")+" received in total":"Everything you two send shows up here, live, with the exact time.";
 document.getElementById("rxgrid").innerHTML=Object.keys(LAB).map(function(k){return'<div>'+k+'<small>'+(st.tot[k]||0)+'</small></div>'}).join("");
-document.getElementById("rxlog").innerHTML=st.log.slice(0,12).map(function(e){return"<li>"+line(e.c)+"<span>"+ago(e.t)+"</span></li>"}).join("");
-document.getElementById("rxst").textContent=note||""}
-function toast(t){var e=document.createElement("div");e.className="rxtoast";e.textContent=t;document.body.appendChild(e);setTimeout(function(){e.remove()},6500)}
-function poll(quiet){return fetch("https://ntfy.sh/"+TOPIC+"/json?poll=1&since=all").then(function(r){if(!r.ok)throw 0;return r.text()}).then(function(t){var nw={};
-t.split("\n").forEach(function(l){if(!l.trim())return;var m;try{m=JSON.parse(l)}catch(e){return}if(m.event!=="message"||st.ids.indexOf(m.id)>-1)return;var c=parse(m.message);if(!sum(c))return;
-st.ids.push(m.id);st.log.unshift({t:m.time*1000,c:c});for(var k in c){st.tot[k]=(st.tot[k]||0)+c[k];nw[k]=(nw[k]||0)+c[k]}st.unseen+=sum(c)});
-st.ids=st.ids.slice(-80);st.log=st.log.slice(0,40);save();badge();
-if(sum(nw)&&!quiet&&sh.hidden)toast("💌 "+NAME+" sent you "+line(nw));if(!sh.hidden)render("Updated just now");return sum(nw)})}
-function openSh(){sh.hidden=false;st.unseen=0;save();badge();render("Checking…");poll(true).then(function(){render("Up to date ♡")}).catch(function(){render("Couldn’t reach the inbox (offline?). Showing what I have.")})}
+var L=st.log.slice().sort(function(a,b){return b.t-a.t}).slice(0,60);
+document.getElementById("rxlog").innerHTML=L.map(function(e){var n=e.n>1?"×"+e.n:"";
+return e.d==="i"?'<li><span class="e">'+e.k+n+'</span><div><strong>'+OT+' sent you '+(LAB[e.k]?'<span style="font-weight:600;opacity:.7">('+LAB[e.k]+')</span>':"")+'</strong><small>'+fmt(e.t)+' · '+ago(e.t)+'</small></div></li>'
+:'<li class="o"><span class="e">'+e.k+n+'</span><div><strong>You sent '+(TO==="her"?"her":"him")+'</strong><small>'+fmt(e.t)+' · '+(e.s==="ok"?"delivered ✓":"⏳ sending…")+'</small></div></li>'}).join("")}
+function toast(t){var e=document.createElement("div");e.className="rxtoast";e.textContent=t;document.body.appendChild(e);setTimeout(function(){e.remove()},6000)}
+function openSh(){sh.hidden=false;st.unseen=0;save();badge();render();poll()}
 btn.onclick=openSh;document.getElementById("rxcl").onclick=function(){sh.hidden=true};sh.addEventListener("click",function(e){if(e.target===sh)sh.hidden=true});
-document.getElementById("rxref").onclick=function(){render("Checking…");poll(true).then(function(){render("Up to date ♡")}).catch(function(){render("Couldn’t reach the inbox (offline?).")})};
-badge();poll(false).catch(function(){});setInterval(function(){if(!document.hidden)poll(false).catch(function(){})},45000);
-window.__rxin={poll:poll,st:function(){return st}};
+setInterval(function(){if(!sh.hidden)render()},15000);
+/* ---------- receive: live + polling fallback ---------- */
+function parse(m){var o={},re=/(\S+?)×(\d+)/g,x;while(x=re.exec(m||""))o[x[1]]=(o[x[1]]||0)+(+x[2]);return o}
+function handle(m){if(!m||m.event!=="message"||!m.message||st.ids.indexOf(m.id)>-1)return 0;
+st.ids.push(m.id);st.last=m.id;if(st.ids.length>700)st.ids=st.ids.slice(-500);
+var fm=/~(her|him)/.exec(m.message),from=fm?fm[1]:"her";if(from===me){save();return 0}
+var c=parse(m.message),tm=/@(\d{10,13})/.exec(m.message),t=tm?+tm[1]:m.time*1000,n=sum(c);if(!n){save();return 0}
+var first="";for(var k in c){if(!first)first=k;st.tot[k]=(st.tot[k]||0)+c[k];st.log.push({d:"i",k:k,n:c[k],t:t,id:m.id+k})}
+if(st.log.length>300)st.log=st.log.slice(-200);st.unseen+=n;save();badge();
+if(sh.hidden){toast("💌 "+OT+" sent you "+Object.keys(c).map(function(k){return k+(c[k]>1?"×"+c[k]:"")}).join(" ")+" · "+fmt(t));try{navigator.vibrate&&navigator.vibrate(30)}catch(e){}}else render();return n}
+var es=null,esT=0;
+function live(){if(es||!window.EventSource)return;try{es=new EventSource("https://ntfy.sh/"+TOPIC+"/sse?since="+(st.last||"all"));
+es.onmessage=function(e){try{handle(JSON.parse(e.data))}catch(x){}};
+es.onerror=function(){try{es.close()}catch(x){}es=null;clearTimeout(esT);esT=setTimeout(live,3000)}}catch(x){es=null}}
+var polling=false;
+function poll(){if(polling)return Promise.resolve();polling=true;return fetch("https://ntfy.sh/"+TOPIC+"/json?poll=1&since=all").then(function(r){if(!r.ok)throw 0;return r.text()}).then(function(t){t.split("\n").forEach(function(l){if(!l.trim())return;try{handle(JSON.parse(l))}catch(e){}})}).catch(function(){}).then(function(){polling=false})}
+/* ---------- send: instantly, every tap, with its own exact time ---------- */
+var fly={};
+function send(k){var ev={k:k,t:Date.now(),id:"o"+Date.now().toString(36)+Math.random().toString(36).slice(2,5)};
+st.out.push(ev);st.log.push({d:"o",k:k,n:1,t:ev.t,id:ev.id,s:"p"});save();stat("Sending to "+(TO==="her"?"her":"him")+"… 💌");if(!sh.hidden)render();post(ev)}
+function post(ev){if(fly[ev.id])return;fly[ev.id]=1;
+fetch("https://ntfy.sh/"+TOPIC,{method:"POST",body:MY+" sent you: "+ev.k+"×1 @"+ev.t+" ~"+me,keepalive:true}).then(function(r){if(!r.ok)throw 0;
+st.out=st.out.filter(function(x){return x.id!==ev.id});st.log.forEach(function(e){if(e.id===ev.id)e.s="ok"});delete fly[ev.id];save();stat("Sent to "+(TO==="her"?"her":"him")+" 💌 · "+fmt(ev.t));if(!sh.hidden)render()})
+.catch(function(){delete fly[ev.id];stat("Saved. I’ll send it as soon as you’re online ♡");setTimeout(flush,4000)})}
+function flush(){if(navigator.onLine===false)return;st.out.slice().forEach(post)}
+addEventListener("online",function(){flush();poll();live()});
+document.addEventListener("visibilitychange",function(){if(!document.hidden){flush();poll();live()}});
+addEventListener("pagehide",function(){flush()});
+badge();live();poll();flush();setInterval(function(){if(!document.hidden){poll();flush()}},10000);
+window.__rx={send:send,st:function(){return st},handle:handle,me:me};
 })();
 </script>
 </body>
