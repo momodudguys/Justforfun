@@ -5567,6 +5567,8 @@ seeds();mode();draw();setInterval(function(){if(!document.hidden)draw()},2000);
 </script>
 <script>
 (function(){
+var $=function(i){return document.getElementById(i)},LS=function(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||"null");localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}};
+var ME=(function(){try{return localStorage.getItem("usRole")==="him"?"Pratik":"Aaradhya"}catch(e){return"Aaradhya"}})();
 /* ===== WISHING WELL (same instant channel as the reactions) ===== */
 var OTH=ME==="Pratik"?"Aaradhya":"Pratik",W=(LS("usWishes2")||[]).filter(function(w){return Date.now()-w.ts<864e5}),CAT=[["💗","Love","#ff7ab8"],["✨","Dream","#ffd36b"],["🌍","Travel","#6fd6ff"],["🌱","Tiny","#8ff0a4"]],wc=0,wsk=$("wsk"),wst=$("wst");
 function ft(t){var d=new Date(t),h=d.getHours(),ap=h>=12?"PM":"AM",p=function(n){return(n<10?"0":"")+n};h=h%12||12;return h+":"+p(d.getMinutes())+":"+p(d.getSeconds())+" "+ap}
@@ -5590,6 +5592,8 @@ wdraw();setInterval(function(){if(!document.hidden)wdraw()},60000);
 </script>
 <script>
 (function(){
+var $=function(i){return document.getElementById(i)},LS=function(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k)||"null");localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}};
+var ME=(function(){try{return localStorage.getItem("usRole")==="him"?"Pratik":"Aaradhya"}catch(e){return"Aaradhya"}})();
 /* ===== RING ATELIER (3D) ===== */
 var O={kind:"Promise",metal:"Yellow gold",finish:"Polished",gem:"Royal blue",cut:"Oval",carat:1,head:"Four prongs",band:"Classic",thick:1,side:"None",init:"A ♡ P",size:6.5,lift:0,width:1,hmetal:"Same",halo:"White",font:"Italic serif"};
 var FONTS={"Italic serif":"italic @px Georgia","Script":"@px 'Brush Script MT','Segoe Script',cursive","Block":"bold @px Arial"};var MT={"Yellow gold":"#ffc94d","Rose gold":"#f0a58f","White gold":"#ececf0","Platinum":"#cfd3da","Champagne":"#f1dcae","Antique gold":"#c8962a","Black gold":"#35302a"},FN={"Polished":.08,"Satin":.3,"Brushed":.5},
