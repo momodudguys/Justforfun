@@ -812,7 +812,8 @@ body.oug #mps{z-index:150}
 .ln{position:absolute;width:46px;transform:translate(-50%,-50%);border:0;background:none;padding:0;cursor:pointer;animation:lfl 6s ease-in-out infinite;filter:drop-shadow(0 0 12px var(--c))}.ln svg{position:static;width:100%;transform:none}
 @keyframes lfl{50%{transform:translate(-50%,-62%)}}
 .rip{position:absolute;bottom:42px;left:50%;width:30px;height:10px;margin-left:-15px;border:2px solid #9ec0ff;border-radius:50%;animation:rp 1.2s ease-out forwards;opacity:0}@keyframes rp{0%{opacity:.9;transform:scale(.4)}100%{opacity:0;transform:scale(4)}}
-.cn{position:absolute;left:50%;top:0;font-size:1.5rem;animation:cdr 1s cubic-bezier(.4,0,1,1) forwards;pointer-events:none}@keyframes cdr{to{transform:translateY(240px) rotate(540deg);opacity:.2}}
+.wn{position:absolute;left:50%;top:26px;z-index:3;max-width:82%;padding:7px 14px;border-radius:16px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);color:#fff;font-size:.88rem;text-align:center;box-shadow:0 0 22px rgba(255,214,107,.55);animation:wnf 1.9s ease forwards;pointer-events:none}@keyframes wnf{0%{opacity:0;transform:translate(-50%,14px) scale(.9)}20%{opacity:1;transform:translate(-50%,0) scale(1)}65%{opacity:1;transform:translate(-50%,0) scale(1)}100%{opacity:0;transform:translate(-50%,110px) scale(.3)}}
+.cn{z-index:3;position:absolute;left:50%;top:0;font-size:1.5rem;animation:cdr 1s cubic-bezier(.4,0,1,1) forwards;pointer-events:none}@keyframes cdr{to{transform:translateY(240px) rotate(540deg);opacity:.2}}
 .wctl{padding:14px 16px 18px;background:rgba(0,0,0,.25)}.wctl input{width:100%;box-sizing:border-box;margin:8px 0;padding:13px 16px;border-radius:16px;border:1px solid rgba(255,255,255,.22);background:rgba(0,0,0,.3);color:#fff;font:inherit}
 .wch{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}.wch button{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.07);color:#fff;font:inherit;font-size:.82rem;padding:7px 12px;border-radius:999px;cursor:pointer}.wch .on{background:#fff;color:#16205a;font-weight:700}
 .wcard{margin:12px 14px 0;padding:14px;border-radius:18px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);text-align:left;color:#fff;animation:wp .5s both}@keyframes wp{from{opacity:0;transform:translateY(10px)}}.wcard small{display:block;opacity:.65;margin-top:6px}.wcard button{margin-top:10px;border:0;border-radius:999px;padding:8px 14px;font:inherit;cursor:pointer;background:#ffd6e8;color:#7a1d4b;font-weight:700}
@@ -3770,7 +3771,7 @@ ${locs}
 
 /* ===================== 3D ROOM (Pudding's cottage) ===================== */
 const R3K = ["bed", "rug", "lamp", "plant", "wall", "shelf"], R3WALL = { wall: 1, shelf: 1 };
-const R3DEF = { bed: [1.7, -1.7], rug: [0, .6], lamp: [.6, -2.4], plant: [-2.2, -2.2], wall: [-1.9, 2.5], shelf: [1.65, 2.1] };
+const R3DEF = { bed: [2.6, -1.7], rug: [0, .9], lamp: [1.15, -2.45], plant: [-3, -2.35], wall: [-2.6, 2.6], shelf: [2.5, 2.5] };
 const R3HALF = { bed: [.9, 1.2], rug: [1.2, .95], lamp: [.3, .3], plant: [.35, .35] };
 const R3SW = {
   wall: [["Blush", "#f6c9da"], ["Cream", "#f8ecd8"], ["Lavender", "#cdbff3"], ["Mint", "#c3ecd9"], ["Sky", "#bcd9f7"], ["Peach", "#ffd0b8"], ["Butter", "#fbe9a6"], ["Midnight", "#5a60a8"]],
@@ -3780,10 +3781,10 @@ const R3SW = {
 const R3LT = { warm: ["Warm", 0xfff0d8, 0xffd9a0], dream: ["Dreamy", 0xffd9ee, 0xff9ccf], moon: ["Moonlit", 0xcfe0ff, 0x9bbcff] };
 const R3ST = (() => {
   const d = { wall: "#f6c9da", floor: "#d9a066", curt: "#ff9ec7", light: "warm", pos: {} };
-  try { const o = JSON.parse(localStorage.getItem("ouRoom4") || "null"); if (o && typeof o === "object") { ["wall", "floor", "curt"].forEach(k => { if (/^#[0-9a-f]{6}$/i.test(o[k])) d[k] = o[k] }); if (R3LT[o.light]) d.light = o.light; if (o.pos && typeof o.pos === "object") d.pos = o.pos } } catch (e) { }
+  try { const raw5 = localStorage.getItem("ouRoom5"), o = JSON.parse(raw5 || localStorage.getItem("ouRoom4") || "null"); if (o && typeof o === "object") { ["wall", "floor", "curt"].forEach(k => { if (/^#[0-9a-f]{6}$/i.test(o[k])) d[k] = o[k] }); if (R3LT[o.light]) d.light = o.light; if (raw5 && o.pos && typeof o.pos === "object") d.pos = o.pos } } catch (e) { }
   return d
 })();
-const r3save = () => { try { localStorage.setItem("ouRoom4", JSON.stringify(R3ST)) } catch (e) { } };
+const r3save = () => { try { localStorage.setItem("ouRoom5", JSON.stringify(R3ST)) } catch (e) { } };
 function r3load(ok, bad) { if (window.THREE) return ok(); const s = document.createElement("script"); s.src = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"; s.crossOrigin = "anonymous"; s.onload = ok; s.onerror = bad; document.head.appendChild(s) }
 
 function r3mount(rm, cb) {
@@ -3810,10 +3811,10 @@ function r3mount(rm, cb) {
     const fc = document.createElement("canvas"); fc.width = fc.height = 256; const ftx = new TH.CanvasTexture(fc);
     function planks() { const c = fc.getContext("2d"); c.fillStyle = R3ST.floor; c.fillRect(0, 0, 256, 256); for (let i = 0; i < 8; i++) { c.fillStyle = i % 2 ? "rgba(255,255,255,.07)" : "rgba(0,0,0,.05)"; c.fillRect(0, i * 32, 256, 32); c.fillStyle = "rgba(70,35,10,.22)"; c.fillRect(0, i * 32, 256, 2); c.fillRect((i * 83) % 256, i * 32, 2, 32) } ftx.needsUpdate = true }
     const wallM = MT(R3ST.wall, { roughness: 1 }), floorM = new TH.MeshStandardMaterial({ map: ftx, roughness: .85 }), trimM = MT("#fff3e6");
-    const floor = M(new TH.PlaneGeometry(6, 6), floorM, 0, 0, 0, 1); floor.rotation.x = -Math.PI / 2; floor.castShadow = false;
-    scene.add(floor, box(MT("#e8d6c4"), 0, -.18, 0, 6.3, .34, 6.3));
-    scene.add(box(wallM, 0, 2.5, -3.1, 6.4, 5, .2), box(wallM, -3.1, 2.5, .1, .2, 5, 6.2), box(wallM, 3.1, 2.5, .1, .2, 5, 6.2));
-    scene.add(box(trimM, 0, .12, -2.97, 6, .24, .06), box(trimM, -2.97, .12, 0, .06, .24, 6), box(trimM, 2.97, .12, 0, .06, .24, 6));
+    const floor = M(new TH.PlaneGeometry(8, 6), floorM, 0, 0, 0, 1); floor.rotation.x = -Math.PI / 2; floor.castShadow = false;
+    scene.add(floor, box(MT("#e8d6c4"), 0, -.18, 0, 8.3, .34, 6.3));
+    scene.add(box(wallM, 0, 2.5, -3.1, 8.4, 5, .2), box(wallM, -4.1, 2.5, .1, .2, 5, 6.2), box(wallM, 4.1, 2.5, .1, .2, 5, 6.2));
+    scene.add(box(trimM, 0, .12, -2.97, 8, .24, .06), box(trimM, -3.97, .12, 0, .06, .24, 6), box(trimM, 3.97, .12, 0, .06, .24, 6));
     /* window on the back wall */
     const skyM = new TH.MeshBasicMaterial({ color: 0xbfe6ff }), orbM = new TH.MeshBasicMaterial({ color: 0xffe9a0 });
     const win = grp(); win.position.set(0, 2.45, -2.97);
@@ -3827,7 +3828,7 @@ function r3mount(rm, cb) {
     scene.add(cyl(gold, 0, 3.55, -2.86, .03, 3).rotateZ(Math.PI / 2));
     /* lights */
     const hemi = new TH.HemisphereLight(0xffffff, 0xd9b8a0, .85), dir = new TH.DirectionalLight(0xfff0d8, .85), glow = new TH.PointLight(0xffd9a0, .25, 12);
-    dir.position.set(-4, 7, 5); dir.castShadow = true; dir.shadow.mapSize.set(1024, 1024); Object.assign(dir.shadow.camera, { left: -5, right: 5, top: 5, bottom: -5, near: 1, far: 20 }); dir.shadow.camera.updateProjectionMatrix(); dir.shadow.bias = -.0008; glow.position.set(0, 3, 1);
+    dir.position.set(-4, 7, 5); dir.castShadow = true; dir.shadow.mapSize.set(1024, 1024); Object.assign(dir.shadow.camera, { left: -6, right: 6, top: 5, bottom: -5, near: 1, far: 20 }); dir.shadow.camera.updateProjectionMatrix(); dir.shadow.bias = -.0008; glow.position.set(0, 3, 1);
     scene.add(hemi, dir, dir.target, glow);
 
     /* ---- furniture ---- */
@@ -3906,7 +3907,7 @@ function r3mount(rm, cb) {
     /* ---- items / sync ---- */
     const items = {};
     function pos(k) { const p = R3ST.pos[k]; return Array.isArray(p) && p.length === 2 && p.every(Number.isFinite) ? p : R3DEF[k] }
-    function clampP(k, x, z) { if (R3WALL[k]) return [Math.max(-2.4, Math.min(2.4, x)), Math.max(1.3, Math.min(3.1, z))]; const h = R3HALF[k]; return [Math.max(-3 + h[0], Math.min(3 - h[0], x)), Math.max(-3 + h[1], Math.min(3 - h[1], z))] }
+    function clampP(k, x, z) { if (R3WALL[k]) return [Math.max(-3.4, Math.min(3.4, x)), Math.max(1.3, Math.min(3.1, z))]; const h = R3HALF[k]; return [Math.max(-4 + h[0], Math.min(4 - h[0], x)), Math.max(-3 + h[1], Math.min(3 - h[1], z))] }
     function put(k) { const i = items[k]; if (!i) return; const v = clampP(k, pos(k)[0], pos(k)[1]); if (R3WALL[k]) i.g.position.set(v[0], v[1], k === "shelf" ? -2.78 : -2.93); else i.g.position.set(v[0], 0, v[1]) }
     function sync() { R3K.forEach(k => { const id = S.room[k] || "", cur = items[k]; if (cur && cur.id === id) return; if (cur) scene.remove(cur.g); const g0 = cur; const g = id && IT[id] ? make(IT[id], k) : ghost(k); g.userData.k = k; g.traverse(o => { o.userData.k = k }); items[k] = { g, id }; scene.add(g); put(k); if (g0 && api.ready && api.visit) api.visit(k) }) }
     function apply() { wallM.color.set(R3ST.wall); curtM.color.set(R3ST.curt); planks(); const L = R3LT[R3ST.light]; dir.color.set(L[1]); hemi.color.set(L[1]); glow.color.set(L[2]) }
@@ -3916,7 +3917,7 @@ function r3mount(rm, cb) {
     /* ---- input: the room follows what you do ---- */
     const ray = new TH.Raycaster(), pt = new TH.Vector2(), flP = new TH.Plane(new TH.Vector3(0, 1, 0), 0), bwP = new TH.Plane(new TH.Vector3(0, 0, 1), 3), lookP = new TH.Plane(new TH.Vector3(0, 0, 1), -1), hv = new TH.Vector3();
     let dn = null, ptr = null, lookT = 0, sq = 0, spinT = -9, fd = null, visitK = null, visitT = 0;
-    const cx = v => Math.max(-2.3, Math.min(2.3, v)), cz = v => Math.max(-1, Math.min(2, v));
+    const cx = v => Math.max(-3.2, Math.min(3.2, v)), cz = v => Math.max(-1, Math.min(2, v));
     const aim = e => { const r = cv.getBoundingClientRect(); pt.set((e.clientX - r.left) / r.width * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1); ray.setFromCamera(pt, cam) };
     function hit(e) { aim(e); const objs = [petG]; R3K.forEach(k => items[k] && objs.push(items[k].g)); const h = ray.intersectObjects(objs, true); for (const x of h) { let o = x.object; while (o && !(o.userData && o.userData.k)) o = o.parent; if (o) return o.userData.k } return null }
     function ground(e, k) { aim(e); return ray.ray.intersectPlane(R3WALL[k] ? bwP : flP, hv) ? hv : null }
@@ -3933,7 +3934,7 @@ function r3mount(rm, cb) {
     cv.addEventListener("pointerup", up); cv.addEventListener("pointercancel", () => { dn = null });
 
     /* ---- camera: close, front-on, like a pet-game stage ---- */
-    function place() { const d = 8 * (cam.aspect < 1 ? .95 / cam.aspect : 1), a = yaw, el = .3; cam.position.set(tgt.x + Math.sin(a) * Math.cos(el) * d, tgt.y + Math.sin(el) * d, tgt.z + Math.cos(a) * Math.cos(el) * d); cam.lookAt(tgt) }
+    function place() { const d = 9.4 * (cam.aspect < 1 ? .95 / cam.aspect : 1), a = yaw, el = .3; cam.position.set(tgt.x + Math.sin(a) * Math.cos(el) * d, tgt.y + Math.sin(el) * d, tgt.z + Math.cos(a) * Math.cos(el) * d); cam.lookAt(tgt) }
     function fit() { W = rm.clientWidth || 300; H = rm.clientHeight || 300; R.setSize(W, H, false); cam.aspect = W / H; cam.updateProjectionMatrix(); place() }
     if (window.ResizeObserver) { const ro = new ResizeObserver(fit); ro.observe(rm); onLeave(() => ro.disconnect()) } else window.addEventListener("resize", fit);
 
@@ -3950,7 +3951,7 @@ function r3mount(rm, cb) {
       else g.add(sph(C("#ffb3d1"), 0, 0, 0, .16));
       g.scale.setScalar(1.2); return g }
     api.food = s => { if (fd) scene.remove(fd.m); const m = snackMesh(s && s.e); m.position.set(px + Math.sin(face) * .65, 3, pz + Math.cos(face) * .65); scene.add(m); fd = { m, t: 0 } };
-    function prop(el, m) { if (el && !el.hidden) { const br = el.getBoundingClientRect(); if (br.width) { aim({ clientX: br.left + br.width / 2, clientY: br.top + br.height / 2 }); if (ray.ray.intersectPlane(flP, hv)) { m.visible = true; m.position.x = Math.max(-2.6, Math.min(2.6, hv.x)); m.position.z = Math.max(-1.4, Math.min(2.4, hv.z)); return m.position } } } m.visible = false; return null }
+    function prop(el, m) { if (el && !el.hidden) { const br = el.getBoundingClientRect(); if (br.width) { aim({ clientX: br.left + br.width / 2, clientY: br.top + br.height / 2 }); if (ray.ray.intersectPlane(flP, hv)) { m.visible = true; m.position.x = Math.max(-3.6, Math.min(3.6, hv.x)); m.position.z = Math.max(-1.4, Math.min(2.4, hv.z)); return m.position } } } m.visible = false; return null }
 
     /* ---- loop ---- */
     const petEl = rm.querySelector(".pet"), pb = rm.querySelector(".pet-b"), bEl = rm.querySelector(".ball"), tEl = rm.querySelector(".toy"), dayC = new TH.Color(0xbfe6ff), nightC = new TH.Color(0x0b1533), mix = (a, b, t) => a + (b - a) * t;
@@ -5840,10 +5841,12 @@ function add(w){if(W.some(function(x){return x.id===w.id}))return false;W.push(w
 var lastD=0;function drop(){if(Date.now()-lastD<500)return;lastD=Date.now();try{drop2()}catch(e){wst.textContent="Couldn't send: "+(e&&e.message||e)}}
 function drop2(){var t=$("wtx").value.trim();if(!t){wst.textContent="Write your wish in the box first ✨";$("wtx").focus();return}wst.textContent="Sending… 🪙";
 var id=Date.now().toString(36)+Math.random().toString(36).slice(2,5),w={id:id,n:ME,t:t.slice(0,90),c:wc,ts:Date.now()};
-var coin=document.createElement("span");coin.className="cn";coin.textContent="🪙";wsk.appendChild(coin);var r=document.createElement("i");r.className="rip";wsk.appendChild(r);setTimeout(function(){coin.remove();r.remove();add(w);show(w)},800);$("wtx").value="";
-if(window.__rx){wst.textContent="Sending to "+OTH+"… 🪙";window.__rx.send("🪙",enc({id:id,t:w.t,c:wc}),function(tt){wst.textContent="Delivered to "+OTH+" ✓ · "+ft(tt)})}else wst.textContent="Saved here only. Messaging isn't ready, reload the page."}
+try{wsk.scrollIntoView({behavior:"smooth",block:"center"});$("wtx").blur()}catch(e){}
+wfx(w.t,wc);setTimeout(function(){add(w);show(w)},1900);$("wtx").value="";var done=0;
+if(window.__rx){wst.textContent="Sending to "+OTH+"… 🪙";setTimeout(function(){if(!done)wst.textContent="Still trying to reach "+OTH+"… it keeps retrying and sends as soon as you're online ♡"},7000);window.__rx.send("🪙",enc({id:id,t:w.t,c:wc}),function(tt){done=1;wst.textContent="Delivered to "+OTH+" ✓ · "+ft(tt)})}else wst.textContent="Saved here only. Messaging isn't ready, reload the page."}
+function wfx(txt,cat){var n=document.createElement("div");n.className="wn";n.textContent=CAT[cat||0][0]+" "+txt;wsk.appendChild(n);var coin=document.createElement("span");coin.className="cn";coin.textContent="🪙";coin.style.animationDelay=".7s";coin.style.animationFillMode="both";wsk.appendChild(coin);var r=document.createElement("i");r.className="rip";r.style.animationDelay="1.6s";wsk.appendChild(r);setTimeout(function(){n.remove();coin.remove();r.remove()},2800)}
 $("wgo").onclick=drop;$("wtx").addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();drop()}});
-window.__rxw=function(o){if(o.r){react(o.r,o.n,true);return}if(o.id&&o.t){var w={id:o.id,n:o.n,t:String(o.t).slice(0,90),c:(o.c|0)%4,ts:o.ts||Date.now()};if(add(w)){wst.textContent=o.n+" dropped a wish ✨ "+ft(w.ts);show(w)}}};
+window.__rxw=function(o){if(o.r){react(o.r,o.n,true);return}if(o.id&&o.t){var w={id:o.id,n:o.n,t:String(o.t).slice(0,90),c:(o.c|0)%4,ts:o.ts||Date.now()};if(add(w)){wst.textContent=o.n+" dropped a wish ✨ "+ft(w.ts);var rc=wsk.getBoundingClientRect();if(rc.bottom>0&&rc.top<innerHeight){wfx(w.t,w.c);setTimeout(function(){show(w)},1900)}else show(w)}}};
 (window.__rxq||[]).forEach(window.__rxw);window.__rxq=[];
 wdraw();setInterval(function(){if(!document.hidden)wdraw()},60000);
 })();
