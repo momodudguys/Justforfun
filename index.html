@@ -528,6 +528,17 @@ body.oug #mps{z-index:150}
 .pname b{font:italic 600 1.5rem "Cormorant Garamond",Georgia,serif}
 .pname span{display:block;font-size:.74rem;color:#b9c3e6;max-width:340px;margin:0 auto}
 .pbar{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;max-width:440px;margin:0 auto}
+.pbar{grid-template-columns:repeat(auto-fit,minmax(48px,1fr))}
+.rm canvas.r3c{position:absolute;inset:0;width:100%;height:100%;z-index:1;touch-action:none;display:block;cursor:grab}
+.rm.r3d{background:radial-gradient(circle at 50% 25%,#3a2f7a,#14173f)}
+.rm.r3d::before,.rm.r3d.night::after{display:none}
+.rm.r3d>.rm-win,.rm.r3d>.rm-slots,.rm.r3d>.rug,.rm.r3d>.bed{display:none}
+.rm.r3d .pet{pointer-events:none;aspect-ratio:200/220}.rm.r3d .pet-b{opacity:0;pointer-events:none}
+.rm.r3d .ball,.rm.r3d .toy{opacity:.02}
+.r3hint{display:none;text-align:center;font-size:.72rem;color:#b9c3e6;margin:6px 0 0}.rm.r3d+.r3hint{display:block}
+.sw-h{margin:10px 0 2px;font-size:.8rem;opacity:.85}.sw-row{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 10px}
+.sw-row button:not(.ou-btn){width:34px;height:34px;border-radius:50%;border:3px solid rgba(255,255,255,.35);cursor:pointer;padding:0}
+.sw-row button.sel:not(.ou-btn){border-color:#fff;box-shadow:0 0 0 2px #ff8fc0}.sw-row .ou-btn.sel{outline:2px solid #ff8fc0}
 .pbar button{display:flex;flex-direction:column;align-items:center;gap:2px;min-height:58px;padding:6px 2px;border-radius:16px;border:1.5px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);font-size:.7rem;font-weight:800}
 .pbar button span{font-size:1.45rem;line-height:1.1}
 .wd-prev{width:120px;margin:0 auto 4px}.wd-prev .pet-svg{width:100%}
@@ -3757,26 +3768,263 @@ ${locs}
   moon.onclick = mact; moon.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); mact() } };
 };
 
+/* ===================== 3D ROOM (Pudding's cottage) ===================== */
+const R3K = ["bed", "rug", "lamp", "plant", "wall", "shelf"], R3WALL = { wall: 1, shelf: 1 };
+const R3DEF = { bed: [1.7, -1.7], rug: [0, .6], lamp: [.6, -2.4], plant: [-2.2, -2.2], wall: [-1.9, 2.5], shelf: [1.65, 2.1] };
+const R3HALF = { bed: [.9, 1.2], rug: [1.2, .95], lamp: [.3, .3], plant: [.35, .35] };
+const R3SW = {
+  wall: [["Blush", "#f6c9da"], ["Cream", "#f8ecd8"], ["Lavender", "#cdbff3"], ["Mint", "#c3ecd9"], ["Sky", "#bcd9f7"], ["Peach", "#ffd0b8"], ["Butter", "#fbe9a6"], ["Midnight", "#5a60a8"]],
+  floor: [["Honey", "#d9a066"], ["Birch", "#ecd2a6"], ["Walnut", "#8a5a3c"], ["Rose", "#e9b7c0"], ["Stone", "#b9bcc8"], ["Cloud", "#f3eef8"]],
+  curt: [["Pink", "#ff9ec7"], ["Lilac", "#b79cff"], ["Sage", "#9fd8b4"], ["Sky", "#8fc4ff"], ["Cream", "#fff1d6"], ["Wine", "#b3416b"]]
+};
+const R3LT = { warm: ["Warm", 0xfff0d8, 0xffd9a0], dream: ["Dreamy", 0xffd9ee, 0xff9ccf], moon: ["Moonlit", 0xcfe0ff, 0x9bbcff] };
+const R3ST = (() => {
+  const d = { wall: "#f6c9da", floor: "#d9a066", curt: "#ff9ec7", light: "warm", pos: {} };
+  try { const o = JSON.parse(localStorage.getItem("ouRoom4") || "null"); if (o && typeof o === "object") { ["wall", "floor", "curt"].forEach(k => { if (/^#[0-9a-f]{6}$/i.test(o[k])) d[k] = o[k] }); if (R3LT[o.light]) d.light = o.light; if (o.pos && typeof o.pos === "object") d.pos = o.pos } } catch (e) { }
+  return d
+})();
+const r3save = () => { try { localStorage.setItem("ouRoom4", JSON.stringify(R3ST)) } catch (e) { } };
+function r3load(ok, bad) { if (window.THREE) return ok(); const s = document.createElement("script"); s.src = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"; s.crossOrigin = "anonymous"; s.onload = ok; s.onerror = bad; document.head.appendChild(s) }
+
+function r3mount(rm, cb) {
+  let dead = false, raf = 0, R = null;
+  const api = { ready: false, sync() { }, mood() { }, apply() { }, resetPos() { } };
+  onLeave(() => { dead = true; cancelAnimationFrame(raf); if (R) { try { R.dispose(); R.forceContextLoss() } catch (e) { } } });
+  r3load(() => { if (!dead) try { build() } catch (e) { rm.classList.remove("r3d"); api.ready = false; console.warn("3D room off:", e) } }, () => { });
+  return api;
+
+  function build() {
+    const TH = window.THREE, cv = document.createElement("canvas"); cv.className = "r3c"; rm.insertBefore(cv, rm.firstChild);
+    R = new TH.WebGLRenderer({ canvas: cv, antialias: true, alpha: true }); R.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2)); R.shadowMap.enabled = true; R.shadowMap.type = TH.PCFSoftShadowMap;
+    const scene = new TH.Scene(), cam = new TH.PerspectiveCamera(40, 1, .1, 80), tgt = new TH.Vector3(0, 1.5, -.4); let yaw = 0, pit = 0, W = 300, H = 300;
+    const MT = (c, o) => new TH.MeshStandardMaterial(Object.assign({ color: c, roughness: .78, metalness: 0 }, o || {}));
+    const EM = (c, i) => new TH.MeshStandardMaterial({ color: c, emissive: c, emissiveIntensity: i || .8, roughness: .5, side: TH.DoubleSide });
+    const SP = new TH.SphereGeometry(1, 20, 14), BX = new TH.BoxGeometry(1, 1, 1), CY = new TH.CylinderGeometry(1, 1, 1, 24), CN = new TH.ConeGeometry(1, 1, 12);
+    function M(geo, mat, x, y, z, a, b, c) { const m = new TH.Mesh(geo, mat); m.position.set(x || 0, y || 0, z || 0); a = a == null ? 1 : a; m.scale.set(a, b == null ? a : b, c == null ? a : c); m.castShadow = m.receiveShadow = true; return m }
+    const sph = (m, x, y, z, a, b, c) => M(SP, m, x, y, z, a, b, c), box = (m, x, y, z, w, h, d) => M(BX, m, x, y, z, w, h, d), cyl = (m, x, y, z, r, h) => M(CY, m, x, y, z, r, h, r), cone = (m, x, y, z, r, h) => M(CN, m, x, y, z, r, h, r);
+    const tor = (r, t, m, arc, x, y, z, flat) => { const o = M(new TH.TorusGeometry(r, t, 8, 28, arc || Math.PI * 2), m, x, y, z, 1); if (flat) o.rotation.x = Math.PI / 2; return o };
+    const grp = (...k) => { const g = new TH.Group(); k.forEach(x => g.add(x)); return g };
+    const wood = MT("#c9955f"), white = MT("#fff7fb"), gold = MT("#ffd36b", { metalness: .5, roughness: .35 });
+
+    /* ---- room shell ---- */
+    const fc = document.createElement("canvas"); fc.width = fc.height = 256; const ftx = new TH.CanvasTexture(fc);
+    function planks() { const c = fc.getContext("2d"); c.fillStyle = R3ST.floor; c.fillRect(0, 0, 256, 256); for (let i = 0; i < 8; i++) { c.fillStyle = i % 2 ? "rgba(255,255,255,.07)" : "rgba(0,0,0,.05)"; c.fillRect(0, i * 32, 256, 32); c.fillStyle = "rgba(70,35,10,.22)"; c.fillRect(0, i * 32, 256, 2); c.fillRect((i * 83) % 256, i * 32, 2, 32) } ftx.needsUpdate = true }
+    const wallM = MT(R3ST.wall, { roughness: 1 }), floorM = new TH.MeshStandardMaterial({ map: ftx, roughness: .85 }), trimM = MT("#fff3e6");
+    const floor = M(new TH.PlaneGeometry(6, 6), floorM, 0, 0, 0, 1); floor.rotation.x = -Math.PI / 2; floor.castShadow = false;
+    scene.add(floor, box(MT("#e8d6c4"), 0, -.18, 0, 6.3, .34, 6.3));
+    scene.add(box(wallM, 0, 2.5, -3.1, 6.4, 5, .2), box(wallM, -3.1, 2.5, .1, .2, 5, 6.2), box(wallM, 3.1, 2.5, .1, .2, 5, 6.2));
+    scene.add(box(trimM, 0, .12, -2.97, 6, .24, .06), box(trimM, -2.97, .12, 0, .06, .24, 6), box(trimM, 2.97, .12, 0, .06, .24, 6));
+    /* window on the back wall */
+    const skyM = new TH.MeshBasicMaterial({ color: 0xbfe6ff }), orbM = new TH.MeshBasicMaterial({ color: 0xffe9a0 });
+    const win = grp(); win.position.set(0, 2.45, -2.97);
+    const glass = M(new TH.PlaneGeometry(1.5, 1.4), skyM, 0, 0, 0, 1); glass.castShadow = false; win.add(glass);
+    const orb = M(new TH.CircleGeometry(.2, 20), orbM, .35, .28, .01, 1); orb.castShadow = false; win.add(orb);
+    const sp = []; for (let i = 0; i < 14; i++)sp.push((Math.random() - .5) * 1.3, (Math.random() - .5) * 1.2, .015);
+    const sg = new TH.BufferGeometry(); sg.setAttribute("position", new TH.Float32BufferAttribute(sp, 3)); const starM = new TH.PointsMaterial({ color: 0xffffff, size: .07, transparent: true, opacity: 0 }); win.add(new TH.Points(sg, starM));
+    win.add(box(trimM, 0, .75, .02, 1.7, .08, .07), box(trimM, 0, -.75, .02, 1.7, .08, .07), box(trimM, -.8, 0, .02, .08, 1.5, .07), box(trimM, .8, 0, .02, .08, 1.5, .07), box(trimM, 0, 0, .02, .04, 1.4, .04), box(trimM, 0, 0, .02, 1.5, .04, .04), box(trimM, 0, -.78, .1, 1.9, .06, .2));
+    scene.add(win);
+    const curtM = MT(R3ST.curt, { roughness: 1 }); [-1.05, 1.05].forEach(x => scene.add(box(curtM, x, 2.4, -2.86, .5, 2.1, .12)));
+    scene.add(cyl(gold, 0, 3.55, -2.86, .03, 3).rotateZ(Math.PI / 2));
+    /* lights */
+    const hemi = new TH.HemisphereLight(0xffffff, 0xd9b8a0, .85), dir = new TH.DirectionalLight(0xfff0d8, .85), glow = new TH.PointLight(0xffd9a0, .25, 12);
+    dir.position.set(-4, 7, 5); dir.castShadow = true; dir.shadow.mapSize.set(1024, 1024); Object.assign(dir.shadow.camera, { left: -5, right: 5, top: 5, bottom: -5, near: 1, far: 20 }); dir.shadow.camera.updateProjectionMatrix(); dir.shadow.bias = -.0008; glow.position.set(0, 3, 1);
+    scene.add(hemi, dir, dir.target, glow);
+
+    /* ---- furniture ---- */
+    const bedB = (it, cloud) => { const g = grp(), c1 = MT(it.col[0]), c2 = MT(it.col[1]);
+      if (cloud) { g.add(sph(c1, 0, .42, 0, 1, .42, 1.35), sph(c2, 0, .72, .35, .85, .2, .85), sph(white, 0, .9, -.65, .5, .16, .3)); [[-.8, .5, -.6], [.8, .5, -.6], [-.75, .5, .7], [.75, .5, .7], [0, .55, -1]].forEach(p => g.add(sph(c1, p[0], p[1], p[2], .4, .32, .4))) }
+      else g.add(box(wood, 0, .15, 0, 1.7, .3, 2.3), box(c1, 0, .42, 0, 1.55, .26, 2.15), box(c2, 0, .55, .45, 1.58, .2, 1.3), sph(white, 0, .68, -.8, .6, .16, .36), box(wood, 0, .6, -1.15, 1.7, 1, .12), box(wood, 0, .2, 1.12, 1.7, .3, .1));
+      g.userData.top = cloud ? .95 : .72; return g };
+    const rugB = it => { const g = grp(cyl(MT(it.col[1]), 0, .03, 0, 1.5, .06), cyl(MT(it.col[0]), 0, .06, 0, 1.15, .06)); if (it.id === "dec_rugstar") for (let i = 0; i < 10; i++) { const a = i * .628; g.add(sph(EM("#ffe9a8", .9), Math.cos(a) * 1.32, .08, Math.sin(a) * 1.32, .05, .02, .05)) } g.scale.z = .78; return g };
+    const lampB = k => { const g = grp(), L = new TH.PointLight(0xffd9a0, 1, 8); L.position.set(0, 1.2, 0);
+      if (k === "dec_lamp") { g.add(cyl(MT("#e8d7c3"), 0, .05, 0, .3, .1), cyl(MT("#d8b46a"), 0, .55, 0, .04, 1), M(new TH.CylinderGeometry(.2, .34, .4, 20, 1, true), EM("#ffe3a6", .55), 0, 1.25, 0, 1)) }
+      else if (k === "dec_lantern") { L.color.set(0xffb070); L.position.y = .5; g.add(cyl(MT("#7a4a6a"), 0, .04, 0, .26, .08), M(new TH.CylinderGeometry(.22, .22, .55, 6), EM("#ff9a5a", .8), 0, .38, 0, 1), cone(MT("#7a4a6a"), 0, .8, 0, .3, .22), tor(.08, .015, gold, 0, 0, .98, 0)) }
+      else { L.color.set(0xcfe0ff); L.position.y = .7; g.add(cyl(MT("#9aa3d8"), 0, .08, 0, .25, .16), cyl(MT("#9aa3d8"), 0, .25, 0, .05, .3), sph(EM("#fff2c2", .7), 0, .65, 0, .36)) }
+      g.add(L); g.userData.lt = L; g.userData.lt0 = L.intensity; return g };
+    const potB = () => grp(cyl(MT("#e8946a"), 0, .2, 0, .28, .4), cyl(MT("#d98258"), 0, .42, 0, .32, .06), cyl(MT("#6b4a3a"), 0, .45, 0, .27, .02));
+    const plantB = k => { const g = potB(), lf = MT("#62c27a");
+      if (k === "dec_sprout") for (let i = 0; i < 6; i++) { const a = i * 1.047, l = sph(i % 2 ? lf : MT("#4fb36b"), Math.cos(a) * .14, .72 + (i % 2) * .1, Math.sin(a) * .14, .1, .3, .05); l.rotation.set(Math.sin(a) * .7, 0, -Math.cos(a) * .7); g.add(l) }
+      else if (k === "dec_cactus") { const c = MT("#5fb36b"); g.add(cyl(c, 0, .85, 0, .2, .85), sph(c, 0, 1.28, 0, .2), cyl(c, .26, .85, 0, .07, .3).rotateZ(1.2), sph(c, .38, 1.02, 0, .08, .2, .08), sph(MT("#ff7fb0"), 0, 1.45, 0, .09, .06, .09)) }
+      else { g.add(cyl(MT("#8a5a3c"), 0, .95, 0, .07, 1), cyl(MT("#8a5a3c"), .15, 1.3, 0, .035, .5).rotateZ(-.7)); ["#ffb7d0", "#ffc9de", "#ff9fc2"].forEach((c, i) => { for (let j = 0; j < 3; j++)g.add(sph(MT(c), Math.cos(j * 2.1 + i) * .32, 1.55 + i * .1 + j * .05, Math.sin(j * 2.1 + i) * .32, .24)) }) }
+      return g };
+    const wallB = k => { const g = grp();
+      if (k === "dec_poster") { const c = document.createElement("canvas"); c.width = 96; c.height = 128; const x = c.getContext("2d"), gr = x.createLinearGradient(0, 0, 0, 128); gr.addColorStop(0, "#1d2a6b"); gr.addColorStop(1, "#6b4ab0"); x.fillStyle = gr; x.fillRect(0, 0, 96, 128); x.fillStyle = "#fff"; for (let i = 0; i < 26; i++)x.fillRect(Math.random() * 94, Math.random() * 126, 2, 2); x.fillStyle = "#ffe9a0"; x.beginPath(); x.arc(64, 36, 13, 0, 6.3); x.fill(); x.fillStyle = "#3b2d85"; x.beginPath(); x.arc(70, 32, 11, 0, 6.3); x.fill(); const pl = M(new TH.PlaneGeometry(.85, 1.15), new TH.MeshBasicMaterial({ map: new TH.CanvasTexture(c) }), 0, 0, .04, 1); g.add(box(wood, 0, 0, 0, 1, 1.3, .06), pl) }
+      else if (k === "dec_polaroids") { g.add(box(MT("#c9a27a"), 0, .35, 0, 1.8, .02, .02)); ["#ffb3d1", "#bcd9f7", "#fbe9a6", "#c3ecd9"].forEach((c, i) => { const p = grp(box(white, 0, 0, 0, .34, .42, .02), box(MT(c), 0, .03, .012, .26, .26, .01)); p.position.set(-.65 + i * .43, .12 - (i % 2) * .08, .02); p.rotation.z = (i % 2 ? -.1 : .12); g.add(p) }) }
+      else { const sw = grp(); g.add(sph(gold, 0, .9, 0, .04)); sw.position.y = .9; sw.add(box(wood, 0, -.15, 0, 1.1, .03, .03)); [-.5, 0, .5].forEach((x, i) => { sw.add(cyl(white, x, -.45 - i % 2 * .12, 0, .008, .5 + i % 2 * .24), sph(EM("#ffe9a0", .7), x, -.75 - i % 2 * .24, 0, .12 + (i === 1 ? .03 : 0))) }); g.add(sw); g.userData.sway = sw }
+      return g };
+    const shelfB = k => { const g = grp(box(wood, 0, 0, 0, 1.6, .08, .4), box(wood, -.6, -.15, -.07, .06, .24, .26), box(wood, .6, -.15, -.07, .06, .24, .26));
+      if (k === "dec_books") [.38, .3, .42, .34, .28].forEach((h, i) => { const b = box(MT(["#ff8fb8", "#7aa8ff", "#ffd36b", "#8fe0b0", "#b79cff"][i]), -.55 + i * .13, .04 + h / 2, 0, .1, h, .26); if (i === 4) { b.rotation.z = .3; b.position.x += .05 } g.add(b) });
+      else if (k === "dec_teacups") ["#fff7fb", "#ffc2dc", "#bcd9f7"].forEach((c, i) => g.add(cyl(MT("#ffffff"), -.45 + i * .45, .06, 0, .17, .03), cyl(MT(c), -.45 + i * .45, .14, 0, .11, .14), tor(.06, .015, MT(c), 3.2, -.45 + i * .45 + .13, .15, 0)));
+      else g.add(cyl(gold, 0, .08, 0, .12, .06), sph(MT("#b79cff", { emissive: "#7a5cff", emissiveIntensity: .5, transparent: true, opacity: .85, roughness: .1 }), 0, .3, 0, .22));
+      return g };
+    function ghost(k) { const big = k === "bed" || k === "rug", r = big ? .75 : .42, m = new TH.MeshBasicMaterial({ color: 0xffb3d9, transparent: true, opacity: .7 }), hit = new TH.MeshBasicMaterial({ transparent: true, opacity: .01, depthWrite: false }), f = grp(tor(r, .035, m), box(m, 0, 0, 0, r * .8, .07, .07), box(m, 0, 0, 0, .07, r * .8, .07), M(new TH.CircleGeometry(r * 1.2, 16), hit, 0, 0, 0, 1));
+      f.children.forEach(o => { o.castShadow = false }); const g = grp(f); if (!R3WALL[k]) f.rotation.x = -Math.PI / 2, f.position.y = .05; g.userData.ghost = f; return g }
+    function make(it, k) { const id = it.id; if (k === "bed") return bedB(it, id === "dec_bedcloud"); if (k === "rug") return rugB(it); if (k === "lamp") return lampB(id); if (k === "plant") return plantB(id); if (k === "wall") return wallB(id); return shelfB(id) }
+
+    /* ---- Pudding ---- */
+    const fur = MT("#fff6fa", { roughness: .95 }), pk = MT("#ffb7d0"), ink = MT("#3a2a5c", { roughness: .3 }), cheekM = MT("#ff9fc0", { transparent: true, opacity: .5 });
+    const petG = new TH.Group(), body = sph(fur, 0, .62, 0, .62, .56, .6), head = new TH.Group(), ears = [], eyes = [], cheeks = [], tears = [], accH = new TH.Group(), accF = new TH.Group(), accN = new TH.Group();
+    head.position.set(0, 1.22, .08); head.add(sph(fur, 0, 0, 0, .56, .5, .52), accH, accF, accN);
+    [-1, 1].forEach(s => { const e = grp(sph(fur, 0, .4, 0, .17, .46, .1), sph(pk, 0, .38, .07, .09, .34, .04)); e.position.set(s * .24, .38, -.02); e.rotation.z = -s * .12; head.add(e); ears.push(e);
+      const ey = sph(ink, s * .2, .06, .46, .07, .095, .05); ey.add(sph(white, .3, .4, .9, .3)); head.add(ey); eyes.push(ey); const ch = sph(cheekM, s * .34, -.1, .4, .11, .07, .04); head.add(ch); cheeks.push(ch);
+      const tr = sph(MT("#8fd3ff"), s * .27, -.12, .5, .04, .07, .03); tr.visible = false; head.add(tr); tears.push(tr); petG.add(sph(fur, s * .3, .12, .25, .17, .12, .26), sph(fur, s * .24, .3, .5, .12, .1, .12)) });
+    head.add(sph(pk, 0, -.02, .5, .045, .035, .03)); petG.add(body, head, sph(white, 0, .5, -.58, .2)); petG.scale.setScalar(1); petG.userData.k = "pet"; petG.traverse(o => { o.castShadow = true }); scene.add(petG);
+    accN.position.y = -.42; accN.position.z = .05;
+    const AH = {
+      acc_bow: () => { const m = MT("#ff6fa8"), g = grp(sph(m, -.14, 0, 0, .15, .1, .08), sph(m, .14, 0, 0, .15, .1, .08), sph(MT("#ff9cc4"), 0, 0, .02, .06)); g.position.set(.3, .5, .18); g.rotation.z = -.4; return g },
+      acc_flowercrown: () => { const g = new TH.Group(), c = ["#ffd36b", "#ff9fc2", "#fff7fb"]; g.add(tor(.44, .04, MT("#6cbf6f"), 0, 0, 0, 0)); for (let i = 0; i < 8; i++)g.add(sph(MT(c[i % 3]), Math.cos(i * .785) * .44, Math.sin(i * .785) * .44, 0, .08)); g.rotation.x = Math.PI / 2; g.position.y = .34; return g },
+      acc_beanie: () => { const g = grp(M(new TH.SphereGeometry(1, 18, 10, 0, Math.PI * 2, 0, Math.PI / 2), MT("#cfe0ff"), 0, .3, .02, .56, .42, .54), sph(white, 0, .74, 0, .12)); return g },
+      acc_crown: () => { const g = grp(M(new TH.CylinderGeometry(.3, .26, .2, 5, 1, true), Object.assign(gold.clone(), { side: TH.DoubleSide }), 0, 0, 0, 1)); for (let i = 0; i < 5; i++) { const a = i * 1.257; g.add(cone(gold, Math.cos(a) * .29, .17, Math.sin(a) * .29, .06, .2)) } g.position.set(0, .52, .05); return g },
+      acc_starhat: () => { const g = grp(cone(MT("#5a5fc4"), 0, .3, 0, .38, .9), sph(MT("#fff3b0"), 0, .78, -.05, .09), sph(EM("#ffe27a", .8), .16, .2, .28, .05)); g.position.set(0, .42, -.05); g.rotation.x = -.3; return g },
+      acc_halo: () => grp(Object.assign(tor(.3, .035, EM("#ffe27a", .9), 0, 0, .95, 0, 1), {})),
+      acc_basket: () => { const g = grp(cyl(MT("#c48a4a"), 0, .6, 0, .3, .2)); ["#ff6fa8", "#ff9cc4", "#ffd36b"].forEach((c, i) => g.add(sph(MT(c), -.12 + i * .12, .74, 0, .09))); return g },
+      acc_bubbles: () => { const m = MT("#cfe9ff", { transparent: true, opacity: .5, roughness: .1 }), g = new TH.Group(); [[-.2, .7, 0, .18], [.15, .8, .05, .14], [.32, .62, .1, .1], [0, .95, 0, .1], [-.38, .55, .1, .08]].forEach(p => g.add(sph(m, p[0], p[1], p[2], p[3]))); return g },
+      acc_moonband: () => grp(tor(.5, .025, gold, Math.PI, 0, 0, .02), sph(EM("#ffe9a0", .7), 0, .56, .04, .11)),
+      acc_rainbow: () => { const g = new TH.Group(); ["#ff6b6b", "#ffb44d", "#ffe45c", "#6fd68a", "#6fa8ff"].forEach((c, i) => g.add(tor(.54 - i * .03, .018, MT(c), Math.PI, 0, 0, .02))); return g },
+      acc_tiara: () => { const g = grp(tor(.34, .02, MT("#e8f0ff", { metalness: .6, roughness: .2 }), Math.PI, 0, 0, 0), sph(EM("#ff8fc0", .9), 0, .35, 0, .06), sph(EM("#9fe7ff", .9), -.2, .27, 0, .04), sph(EM("#9fe7ff", .9), .2, .27, 0, .04)); g.position.set(0, .3, .3); g.rotation.x = -.6; return g }
+    };
+    const AF = {
+      acc_glasses: () => { const m = MT("#3a2a5c"); return grp(tor(.13, .02, m, 0, -.2, .06, .5), tor(.13, .02, m, 0, .2, .06, .5), box(m, 0, .07, .5, .1, .02, .02)) },
+      acc_heartglasses: () => { const m = MT("#ff6fa8"), d = MT("#ffb3d1", { transparent: true, opacity: .45 }); return grp(tor(.13, .025, m, 0, -.2, .06, .5), tor(.13, .025, m, 0, .2, .06, .5), sph(d, -.2, .06, .5, .12, .12, .01), sph(d, .2, .06, .5, .12, .12, .01), box(m, 0, .07, .5, .1, .02, .02)) },
+      acc_stargoggles: () => grp(tor(.14, .03, gold, 0, -.2, .06, .5), tor(.14, .03, gold, 0, .2, .06, .5), sph(EM("#fff3b0", .6), -.2, .06, .5, .12, .12, .01), sph(EM("#fff3b0", .6), .2, .06, .5, .12, .12, .01), box(gold, 0, .07, .5, .1, .02, .02)),
+      acc_monocle: () => grp(tor(.14, .02, gold, 0, .2, .06, .5), cyl(gold, .34, -.2, .46, .006, .5).rotateZ(.2)),
+      acc_stickers: () => grp(sph(EM("#ffe27a", .7), .38, -.02, .36, .06, .06, .02), sph(EM("#ff8fc0", .7), -.38, 0, .36, .06, .06, .02), sph(EM("#9fe7ff", .7), .3, -.2, .42, .035, .035, .015))
+    };
+    const AN = {
+      acc_ribbon: () => grp(tor(.4, .04, MT("#ff7fb0"), 0, 0, 0, 0, 1), sph(MT("#ff7fb0"), -.1, 0, .42, .1, .07, .04), sph(MT("#ff7fb0"), .1, 0, .42, .1, .07, .04)),
+      acc_scarf: () => grp(tor(.42, .09, MT("#ff8fa8"), 0, 0, 0, 0, 1), box(MT("#ff8fa8"), .2, -.22, .4, .14, .4, .05)),
+      acc_bell: () => grp(tor(.4, .02, MT("#d94a6a"), 0, 0, 0, 0, 1), sph(gold, 0, -.1, .4, .08)),
+      acc_pearls: () => { const g = new TH.Group(), m = MT("#fffaf4", { roughness: .2 }); for (let i = 0; i < 16; i++) { const a = i * .393; g.add(sph(m, Math.sin(a) * .42, 0, Math.cos(a) * .42, .045)) } return g },
+      acc_giftbow: () => grp(tor(.4, .035, MT("#e0455f"), 0, 0, 0, 0, 1), sph(MT("#e0455f"), -.1, 0, .42, .1, .07, .04), sph(MT("#e0455f"), .1, 0, .42, .1, .07, .04), sph(MT("#ff7a8c"), 0, 0, .43, .045)),
+      acc_gempendant: () => grp(tor(.4, .012, gold, 0, 0, 0, 0, 1), M(new TH.OctahedronGeometry(.09), EM("#6fe7ff", .9), 0, -.14, .42, 1)),
+      acc_bowtie: () => { const m = MT("#6a3fb5"); return grp(cone(m, -.1, 0, .44, .08, .16).rotateZ(Math.PI / 2), cone(m, .1, 0, .44, .08, .16).rotateZ(-Math.PI / 2), sph(m, 0, 0, .44, .045)) }
+    };
+    let accKey = "", dressInit = false, spinReq = false;
+    function clr(g) { while (g.children.length) g.remove(g.children[0]) }
+    function dress() { const A = S.pet.acc || {}, key = [A.head, A.face, A.neck].join("|"); if (key === accKey) return; accKey = key; if (dressInit) spinReq = true; dressInit = true; clr(accH); clr(accF); clr(accN); const a = AH[A.head], b = AF[A.face], c = AN[A.neck]; if (a) accH.add(a()); if (b) accF.add(b()); if (c) accN.add(c()); [accH, accF, accN].forEach(g => g.traverse(o => { o.castShadow = true })) }
+
+    /* ---- items / sync ---- */
+    const items = {};
+    function pos(k) { const p = R3ST.pos[k]; return Array.isArray(p) && p.length === 2 && p.every(Number.isFinite) ? p : R3DEF[k] }
+    function clampP(k, x, z) { if (R3WALL[k]) return [Math.max(-2.4, Math.min(2.4, x)), Math.max(1.3, Math.min(3.1, z))]; const h = R3HALF[k]; return [Math.max(-3 + h[0], Math.min(3 - h[0], x)), Math.max(-3 + h[1], Math.min(3 - h[1], z))] }
+    function put(k) { const i = items[k]; if (!i) return; const v = clampP(k, pos(k)[0], pos(k)[1]); if (R3WALL[k]) i.g.position.set(v[0], v[1], k === "shelf" ? -2.78 : -2.93); else i.g.position.set(v[0], 0, v[1]) }
+    function sync() { R3K.forEach(k => { const id = S.room[k] || "", cur = items[k]; if (cur && cur.id === id) return; if (cur) scene.remove(cur.g); const g0 = cur; const g = id && IT[id] ? make(IT[id], k) : ghost(k); g.userData.k = k; g.traverse(o => { o.userData.k = k }); items[k] = { g, id }; scene.add(g); put(k); if (g0 && api.ready && api.visit) api.visit(k) }) }
+    function apply() { wallM.color.set(R3ST.wall); curtM.color.set(R3ST.curt); planks(); const L = R3LT[R3ST.light]; dir.color.set(L[1]); hemi.color.set(L[1]); glow.color.set(L[2]) }
+    api.sync = sync; api.apply = apply; api.resetPos = () => { R3K.forEach(put) };
+    let mood = "normal"; api.mood = m => { mood = m };
+
+    /* ---- input: the room follows what you do ---- */
+    const ray = new TH.Raycaster(), pt = new TH.Vector2(), flP = new TH.Plane(new TH.Vector3(0, 1, 0), 0), bwP = new TH.Plane(new TH.Vector3(0, 0, 1), 3), lookP = new TH.Plane(new TH.Vector3(0, 0, 1), -1), hv = new TH.Vector3();
+    let dn = null, ptr = null, lookT = 0, sq = 0, spinT = -9, fd = null, visitK = null, visitT = 0;
+    const cx = v => Math.max(-2.3, Math.min(2.3, v)), cz = v => Math.max(-1, Math.min(2, v));
+    const aim = e => { const r = cv.getBoundingClientRect(); pt.set((e.clientX - r.left) / r.width * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1); ray.setFromCamera(pt, cam) };
+    function hit(e) { aim(e); const objs = [petG]; R3K.forEach(k => items[k] && objs.push(items[k].g)); const h = ray.intersectObjects(objs, true); for (const x of h) { let o = x.object; while (o && !(o.userData && o.userData.k)) o = o.parent; if (o) return o.userData.k } return null }
+    function ground(e, k) { aim(e); return ray.ray.intersectPlane(R3WALL[k] ? bwP : flP, hv) ? hv : null }
+    function lookAt(e) { aim(e); lookP.constant = -(pz + .9); if (ray.ray.intersectPlane(lookP, hv)) { ptr = { x: hv.x, y: hv.y, z: pz + .9 }; lookT = 2 } }
+    function follow(e) { aim(e); if (ray.ray.intersectPlane(flP, hv)) { tx = cx(hv.x); tz = cz(hv.z); wt = 6 } }
+    function visit(k) { const g = items[k] && items[k].g; if (!g || !tx && tx !== 0) return; visitK = k; visitT = 3.5; tx = cx(g.position.x); tz = cz(R3WALL[k] ? 1.1 : g.position.z + 1.3); wt = 7 }
+    api.visit = visit;
+    cv.addEventListener("pointerdown", e => { try { cv.setPointerCapture(e.pointerId) } catch (_) { } lookAt(e); const k = hit(e); dn = { k, sx: e.clientX, sy: e.clientY, moved: 0, off: [0, 0] };
+      if (k && k !== "pet") { const p = ground(e, k), g = items[k].g; if (p) dn.off = [g.position.x - p.x, R3WALL[k] ? g.position.y - p.y : g.position.z - p.z] } else if (!k) follow(e) });
+    cv.addEventListener("pointermove", e => { if (!dn) return; lookAt(e); const dx = e.clientX - dn.sx, dy = e.clientY - dn.sy; if (!dn.moved && Math.hypot(dx, dy) > 7) dn.moved = 1; if (!dn.moved) return;
+      const k = dn.k; if (k && k !== "pet" && !items[k].g.userData.ghost) { const p = ground(e, k); if (!p) return; const v = clampP(k, p.x + dn.off[0], (R3WALL[k] ? p.y : p.z) + dn.off[1]), g = items[k].g; g.position.x = v[0]; if (R3WALL[k]) g.position.y = v[1]; else { g.position.z = v[1]; g.position.y = .14 } dn.mv = v }
+      else if (!k) follow(e) });
+    const up = e => { if (!dn) return; const d = dn; dn = null; const k = d.k; if (!d.moved) { if (k === "pet") { sq = 1; cb.pet(e) } else if (k) cb.pick(k); return } if (k && k !== "pet" && d.mv && !items[k].g.userData.ghost) { R3ST.pos[k] = d.mv; r3save(); items[k].g.position.y = 0; cb.moved && cb.moved(k); visit(k) } };
+    cv.addEventListener("pointerup", up); cv.addEventListener("pointercancel", () => { dn = null });
+
+    /* ---- camera: close, front-on, like a pet-game stage ---- */
+    function place() { const d = 8 * (cam.aspect < 1 ? .95 / cam.aspect : 1), a = yaw, el = .3; cam.position.set(tgt.x + Math.sin(a) * Math.cos(el) * d, tgt.y + Math.sin(el) * d, tgt.z + Math.cos(a) * Math.cos(el) * d); cam.lookAt(tgt) }
+    function fit() { W = rm.clientWidth || 300; H = rm.clientHeight || 300; R.setSize(W, H, false); cam.aspect = W / H; cam.updateProjectionMatrix(); place() }
+    if (window.ResizeObserver) { const ro = new ResizeObserver(fit); ro.observe(rm); onLeave(() => ro.disconnect()) } else window.addEventListener("resize", fit);
+
+    /* ---- props: ball, teddy, snacks ---- */
+    const brown = MT("#b98a64"), ballM = grp(sph(MT("#d8f24a"), 0, 0, 0, .2), tor(.2, .012, white, 0, 0, 0, 0)), toyM = grp(sph(brown, 0, .28, 0, .26, .3, .22), sph(brown, 0, .7, 0, .2), sph(brown, -.17, .86, 0, .08), sph(brown, .17, .86, 0, .08), sph(MT("#e8c8a8"), 0, .67, .17, .09, .07, .06), sph(ink, -.07, .74, .17, .025), sph(ink, .07, .74, .17, .025));
+    ballM.visible = toyM.visible = false; ballM.scale.setScalar(1.3); ballM.traverse(o => { o.renderOrder = 10; if (o.material) o.material.depthTest = false }); scene.add(ballM, toyM);
+    function snackMesh(e) { const g = grp(), C = c => MT(c);
+      if (e === "🍰") g.add(cyl(C("#fff3f8"), 0, 0, 0, .22, .22), cyl(C("#ff9cc4"), 0, .13, 0, .23, .05), sph(C("#e0283f"), 0, .22, 0, .06));
+      else if (e === "🥮") g.add(tor(.15, .07, C("#d99a5a"), 0, 0, 0, 0, 1), tor(.08, .05, C("#f0b878"), 0, 0, .05, 0, 1));
+      else if (e === "🍪") { g.add(cyl(C("#c98f5a"), 0, 0, 0, .22, .07)); [[-.08, .05, .05], [.07, .05, -.06], [.1, .05, .08]].forEach(p => g.add(box(C("#5a3a24"), p[0], p[1], p[2], .05, .03, .05))) }
+      else if (e === "🍡") g.add(cyl(wood, 0, 0, 0, .015, .7), sph(C("#ffb3d1"), 0, .22, 0, .12), sph(C("#fff7fb"), 0, 0, 0, .12), sph(C("#a8e6a1"), 0, -.22, 0, .12));
+      else if (e === "🥞") { for (let i = 0; i < 4; i++)g.add(cyl(C("#f0c27a"), 0, i * .06, 0, .24, .06)); g.add(box(C("#ffe27a"), 0, .27, 0, .1, .04, .1)) }
+      else if (e === "🍓") g.add(sph(C("#ff3d5e"), 0, 0, 0, .15, .18, .15), sph(C("#4fb36b"), 0, .17, 0, .09, .03, .09));
+      else g.add(sph(C("#ffb3d1"), 0, 0, 0, .16));
+      g.scale.setScalar(1.2); return g }
+    api.food = s => { if (fd) scene.remove(fd.m); const m = snackMesh(s && s.e); m.position.set(px + Math.sin(face) * .65, 3, pz + Math.cos(face) * .65); scene.add(m); fd = { m, t: 0 } };
+    function prop(el, m) { if (el && !el.hidden) { const br = el.getBoundingClientRect(); if (br.width) { aim({ clientX: br.left + br.width / 2, clientY: br.top + br.height / 2 }); if (ray.ray.intersectPlane(flP, hv)) { m.visible = true; m.position.x = Math.max(-2.6, Math.min(2.6, hv.x)); m.position.z = Math.max(-1.4, Math.min(2.4, hv.z)); return m.position } } } m.visible = false; return null }
+
+    /* ---- loop ---- */
+    const petEl = rm.querySelector(".pet"), pb = rm.querySelector(".pet-b"), bEl = rm.querySelector(".ball"), tEl = rm.querySelector(".toy"), dayC = new TH.Color(0xbfe6ff), nightC = new TH.Color(0x0b1533), mix = (a, b, t) => a + (b - a) * t;
+    let nv = 0, t0 = performance.now(), last = t0, px = 0, pz = 1, tx = px, tz = pz, wt = 12, ph = 0, face = 0, jt = -1, wg = -1, blink = 4, py = 0;
+    const tmp = new TH.Vector3();
+    function frame(now) {
+      raf = requestAnimationFrame(frame); if (dead || document.hidden) return; const dt = Math.min(.05, (now - last) / 1000); last = now; const t = (now - t0) / 1000;
+      const night = rm.classList.contains("night"); nv += ((night ? 1 : 0) - nv) * Math.min(1, dt * 3);
+      skyM.color.copy(dayC).lerp(nightC, nv); orbM.color.set(night ? 0xfff6d8 : 0xffd978); starM.opacity = nv; dir.intensity = mix(.85, .16, nv); hemi.intensity = mix(.85, .34, nv); glow.intensity = mix(.25, .5, nv);
+      const ls = items.lamp && items.lamp.g.userData.lt; if (ls) ls.intensity = mix(.35, 1.3, nv);
+      const sw = items.wall && items.wall.g.userData.sway; if (sw) sw.rotation.z = Math.sin(t * 1.2) * .08;
+      R3K.forEach(k => { const g = items[k] && items[k].g.userData.ghost; if (g) g.scale.setScalar(1 + Math.sin(t * 2.5) * .06) });
+      dress(); if (spinReq) { spinT = t; spinReq = false }
+      /* what is Pudding paying attention to? */
+      const bd = items.bed && !items.bed.g.userData.ghost ? items.bed.g : null; let top = 0, spd = 1.9, lk = null;
+      if (lookT > 0) { lookT -= dt; lk = ptr }
+      if (visitT > 0) { visitT -= dt; const g = items[visitK] && items[visitK].g; if (g) lk = { x: g.position.x, y: g.position.y + (R3WALL[visitK] ? 0 : .6), z: g.position.z } }
+      const bp = prop(bEl, ballM), tp = prop(tEl, toyM);
+      if (bp) ballM.position.y = .22 + Math.abs(Math.sin(t * 5)) * .3;
+      const chase = p => { const sd = px < p.x ? -1 : 1; tx = cx(p.x + sd * 1.0); tz = cz(p.z - .35); lk = { x: p.x, y: .3, z: p.z } };
+      if (night) { if (bd) { tx = bd.position.x; tz = bd.position.z + .15; top = bd.userData.top - .06 } else { const r = items.rug.g; tx = r.position.x; tz = r.position.z } }
+      else if (bp) { chase(bp); spd = 3.6 }
+      else if (fd) lk = { x: fd.m.position.x, y: fd.m.position.y, z: fd.m.position.z }
+      else if (tp) { chase(tp); spd = 2.6 }
+      else { if (dn && !dn.k && dn.moved) spd = 2.8 }
+      if (fd) { fd.t += dt; const m = fd.m; if (fd.t < .6) m.position.y = Math.max(.3, 3 - fd.t * fd.t * 14); else { m.scale.setScalar(1.2 * Math.max(.01, 1 - (fd.t - .6) / 1.2)); m.position.y = .32 + Math.sin(t * 18) * .02 } if (fd.t > 1.8) { scene.remove(m); fd = null } }
+      if (!lk && !night) lk = { x: 0, y: 1.7, z: 8 };
+      const dx = tx - px, dz = tz - pz, dist = Math.hypot(dx, dz), mv = dist > .08;
+      if (mv) { const s = Math.min(dist, dt * spd); px += dx / dist * s; pz += dz / dist * s; ph += dt * (spd > 3 ? 15 : 11); let d = Math.atan2(dx, dz) - face; d = Math.atan2(Math.sin(d), Math.cos(d)); face += d * Math.min(1, dt * 8) }
+      else if (night) face += (0 - face) * Math.min(1, dt * 4);
+      else if (lk && lk !== ptr) { const a = Math.atan2(lk.x - px, lk.z - pz) - face; face += Math.atan2(Math.sin(a), Math.cos(a)) * Math.min(1, dt * 2.5) }
+      const cls = pb ? pb.classList : null; if (cls && cls.contains("jump") && jt < 0) jt = t; if (!(cls && cls.contains("jump"))) jt = -1; if (cls && cls.contains("wig") && wg < 0) wg = t; if (!(cls && cls.contains("wig"))) wg = -1;
+      const sleeping = mood === "sleep" || night, sp = spinT > 0 && t - spinT < .9 ? (t - spinT) / .9 : -1;
+      const hop = mv ? Math.abs(Math.sin(ph)) * (spd > 3 ? .3 : .1) : 0, jump = (jt >= 0 ? Math.sin(Math.min(1, (t - jt) / .6) * Math.PI) * .7 : 0) + (sp >= 0 ? Math.sin(sp * Math.PI) * .35 : 0);
+      py += (top - py) * Math.min(1, dt * 5); sq = Math.max(0, sq - dt * 3);
+      petG.position.set(px, py + hop + jump, pz); petG.rotation.y = face + (sp >= 0 ? (1 - Math.cos(sp * Math.PI)) * Math.PI : 0); petG.rotation.z = wg >= 0 ? Math.sin((t - wg) * 14) * .07 * Math.max(0, 1 - (t - wg) / .6) : 0;
+      const br = 1 + Math.sin(t * (sleeping ? 1.4 : 1.2)) * (sleeping ? .02 : .006); body.scale.set(.62 * (1 + .12 * sq), .56 * br * (1 - .2 * sq), .6 * (1 + .12 * sq)); petG.scale.set(1, sleeping ? .88 : 1, 1);
+      head.position.y = sleeping ? 1.0 : 1.22;
+      let yT = 0, pT = 0; if (lk && !sleeping) { const ddx = lk.x - px, ddz = lk.z - pz, a = Math.atan2(ddx, ddz) - face, d = Math.atan2(Math.sin(a), Math.cos(a)); yT = Math.max(-.9, Math.min(.9, d)); pT = Math.max(-.35, Math.min(.4, Math.atan2(py + 1.22 - lk.y, Math.hypot(ddx, ddz) + .01))) }
+      head.rotation.y += (yT - head.rotation.y) * Math.min(1, dt * 8);
+      if (mood === "eat") head.rotation.x = .3 + Math.sin(t * 14) * .12; else head.rotation.x += ((sleeping ? .35 : pT) - head.rotation.x) * Math.min(1, dt * 8);
+      blink -= dt; let bl = 1; if (blink < 0) { bl = .1; if (blink < -.12) blink = 3 + Math.random() * 3 }
+      const sad = mood === "sad" || mood === "cry" || mood === "lonely", happy = mood === "happy" || mood === "blush" || mood === "eat", es = sleeping ? .1 : happy ? .3 : mood === "spark" ? 1.3 : sad ? 1.1 : bl;
+      eyes.forEach(e => { e.scale.set(.07, .095 * es, .05); e.position.y = .06 + (happy ? .02 : 0) });
+      cheeks.forEach(c => { c.material.opacity = mood === "blush" ? .95 : .5 }); tears.forEach(x => { x.visible = mood === "cry"; if (x.visible) x.position.y = -.12 - (t * .4 % 1) * .2 });
+      ears.forEach((e, i) => { const s = i ? 1 : -1; e.rotation.x = sad || sleeping ? .75 : mv && spd > 3 ? -.4 : 0; e.rotation.z = -s * (sad ? .35 : .12) + (mood === "spark" ? Math.sin(t * 12 + i) * .1 : 0) });
+      cam.updateMatrixWorld(); R.render(scene, cam);
+      if (petEl) { tmp.set(px, py, pz).project(cam); const sx = (tmp.x * .5 + .5) * W, sy = (-tmp.y * .5 + .5) * H; tmp.set(px, py + 2.2, pz).project(cam); const sy2 = (-tmp.y * .5 + .5) * H, ph2 = Math.max(60, sy - sy2), pw = ph2 / 1.1; petEl.style.width = pw + "px"; petEl.style.left = (sx - pw / 2) + "px"; petEl.style.top = (sy - ph2 + 4) + "px" }
+    }
+    planks(); apply(); fit(); sync(); rm.classList.add("r3d"); api.ready = true; raf = requestAnimationFrame(frame);
+  }
+}
+
 /* ===================== COTTAGE ===================== */
 const RS = [
   { k: "wall", x: 6, y: 7, w: 24, h: 20, l: "wall decoration" }, { k: "shelf", x: 68, y: 17, w: 26, h: 16, l: "shelf" },
   { k: "lamp", x: 82, y: 42, w: 14, h: 18, l: "lamp" }, { k: "plant", x: 3, y: 42, w: 17, h: 22, l: "plant" }
 ];
 scenes.cottage = function (sc) {
-  let night = false, mood = "normal", moodT = 0, playing = 0, balls = 0, dressed = 0, hurt = false;
+  let night = false, mood = "normal", moodT = 0, playing = 0, balls = 0, dressed = 0, hurt = false, r3 = null;
   sc.innerHTML = `<div class="rm" id="rm"><div class="rm-win"><i></i><i></i><i></i><b>🌙</b></div><div class="rm-slots" id="rm-slots"></div><button type="button" class="rug" id="rm-rug" aria-label="Change the rug"></button><button type="button" class="bed" id="rm-bed" aria-label="Change the bed"></button><div class="pet" id="pet"><div class="pbub" id="pbub"></div><button type="button" class="pet-b" id="pet-b" aria-label="Pet ${esc(S.pet.name)}"></button><div class="zzz" aria-hidden="true">z<i>z</i><i>Z</i></div></div><button type="button" class="toy" id="toy" hidden aria-label="A toy!">${OU.toyEmoji}</button><button type="button" class="ball" id="ball" hidden aria-label="Ball">🎾</button></div>
+<p class="r3hint">Drag on the floor and Pudding follows · drag furniture to move it · tap it to change it</p>
 <div class="pname"><b id="pnm"></b><span>${esc(OU.petBio)}</span><div class="pbond"><em id="pmoodl"></em><u><i id="pbfill"></i></u><small id="pblv"></small></div></div>
-<div class="pbar"><button type="button" data-a="feed"><span>🍓</span>Feed</button><button type="button" data-a="play"><span>🎾</span>Play</button><button type="button" data-a="dress"><span>👗</span>Dress</button><button type="button" data-a="note"><span>💌</span>Note</button><button type="button" data-a="name"><span>✏️</span>Name</button><button type="button" data-a="sleep"><span>🌙</span>Sleep</button></div>`;
+<div class="pbar"><button type="button" data-a="feed"><span>🍓</span>Feed</button><button type="button" data-a="play"><span>🎾</span>Play</button><button type="button" data-a="dress"><span>👗</span>Dress</button><button type="button" data-a="note"><span>💌</span>Note</button><button type="button" data-a="name"><span>✏️</span>Name</button><button type="button" data-a="style"><span>🎨</span>Style</button><button type="button" data-a="sleep"><span>🌙</span>Sleep</button></div>`;
   const rmEl = $("#rm", sc), pb = $("#pet-b", sc), bub = $("#pbub", sc);
   const say = (t, ms) => { bub.textContent = t; bub.classList.add("on"); clearTimeout(bub._t); bub._t = setTimeout(() => bub.classList.remove("on"), ms || 2200) }; onLeave(() => clearTimeout(bub._t));
-  const setMood = (m, ms) => { mood = m; pb.innerHTML = petSVG(m); moodLabel(m); clearTimeout(moodT); if (ms) moodT = setTimeout(() => setMood(night ? "sleep" : "normal"), ms) }; onLeave(() => clearTimeout(moodT));
+  const setMood = (m, ms) => { mood = m; pb.innerHTML = petSVG(m); moodLabel(m); r3 && r3.mood(m); clearTimeout(moodT); if (ms) moodT = setTimeout(() => setMood(night ? "sleep" : "normal"), ms) }; onLeave(() => clearTimeout(moodT));
   const anim = c => { pb.classList.remove("jump", "wig"); void pb.offsetWidth; pb.classList.add(c) };
   function slots() {
     const bx = $("#rm-slots", sc); bx.innerHTML = RS.map(s => { const it = IT[S.room[s.k]]; return `<button type="button" class="slot ${it ? "has" : ""} sl-${s.k}" data-k="${s.k}" style="left:${s.x}%;top:${s.y}%;width:${s.w}%;height:${s.h}%" aria-label="Change ${s.l}">${it ? `<span>${it.e}</span>` : `<i>＋</i>`}</button>` }).join("");
     const rg = IT[S.room.rug], bd = IT[S.room.bed], rb = $("#rm-rug", sc), bb = $("#rm-bed", sc);
     rb.style.background = rg ? `radial-gradient(ellipse,${rg.col[0]} 0 45%,${rg.col[1]} 46% 100%)` : "transparent"; rb.classList.toggle("empty", !rg); rb.innerHTML = rg ? "" : "<i>＋ rug</i>";
     bb.style.setProperty("--b1", bd ? bd.col[0] : "#ffd9e6"); bb.style.setProperty("--b2", bd ? bd.col[1] : "#ff9ec7"); bb.classList.toggle("empty", !bd); bb.innerHTML = bd ? `<s></s><em>${bd.id === "dec_bedcloud" ? "☁️" : ""}</em>` : "<i>＋ bed</i>";
-    $$(".slot", bx).forEach(b => b.onclick = () => { sfx("tap"); pickDecor(b.dataset.k) });
+    r3 && r3.sync(); $$(".slot", bx).forEach(b => b.onclick = () => { sfx("tap"); pickDecor(b.dataset.k) });
   }
   function pickDecor(k) {
     const list = ITEMS.filter(i => i.cat === "dec" && i.slot === k && own(i.id)); const nm = { wall: "wall", shelf: "shelf", lamp: "lamp", plant: "plant", rug: "rug", bed: "bed" }[k];
@@ -3787,9 +4035,9 @@ scenes.cottage = function (sc) {
   }
   const pickRug = () => pickDecor("rug"), pickBed = () => pickDecor("bed"); $("#rm-rug", sc).onclick = () => { sfx("tap"); pickRug() }; $("#rm-bed", sc).onclick = () => { sfx("tap"); pickBed() };
   const nameUp = () => { $("#pnm", sc).textContent = S.pet.name + " 🐰"; pb.setAttribute("aria-label", "Pet " + S.pet.name) };
-  slots(); setMood("normal"); nameUp(); onLeave(() => { });
+  slots(); setMood("normal"); nameUp(); r3 = r3mount(rmEl, { pick: pickDecor, pet: e => pb.dispatchEvent(new MouseEvent("click", { clientX: e.clientX, clientY: e.clientY, bubbles: true })), moved: () => { sfx("pop"); ev("place") } }); onLeave(() => { });
   /* blink-free idle: random tiny hop */
-  itv(() => { if (!night && !playing && !rm() && Math.random() < .35) anim("wig") }, 6000);
+  /* no idle fidgeting: Pudding only moves when you interact */
   function petNote() {
     if (!S.pet.nOrd.length) S.pet.nOrd = shuf(OU.petNotes.map((_, i) => i)); const i = S.pet.nOrd.shift(); const t = OU.petNotes[i];
     saveMsg("pet_" + i, "A note from " + S.pet.name, t); ev("petNote"); sfx("sparkle");
@@ -3805,6 +4053,15 @@ scenes.cottage = function (sc) {
   };
   const toyQ = activeQ("toyFound"), toy = $("#toy", sc);
   if (toyQ && toyQ.p.loc === "cottage") { toy.hidden = false; toy.onclick = () => { toy.hidden = true; sfx("coin"); setTimeout(() => sfx("happy"), 250); burstEl(toy, ["🧸", "💗"], 8); ev("toyFound"); setMood("spark", 2500); anim("jump"); say("MY TOY!! thank you!! ♡", 3000) } }
+  function styleRoom() {
+    if (!r3 || !r3.ready) { toast("The 3D room is still loading… try again in a moment ♡"); return }
+    const node = mk("div"), row = (title, key, list) => { node.appendChild(mk("h4", "sw-h", title)); const r = mk("div", "sw-row"); list.forEach(([n, c]) => { const b = mk("button"); b.type = "button"; b.title = n; b.setAttribute("aria-label", n); b.style.background = c; if (R3ST[key] === c) b.className = "sel"; b.onclick = () => { R3ST[key] = c; r3save(); r3.apply(); $$("button", r).forEach(x => x.classList.toggle("sel", x === b)); sfx("pop") }; r.appendChild(b) }); node.appendChild(r) };
+    row("Walls", "wall", R3SW.wall); row("Floor", "floor", R3SW.floor); row("Curtains", "curt", R3SW.curt);
+    node.appendChild(mk("h4", "sw-h", "Lighting")); const lr = mk("div", "sw-row");
+    Object.keys(R3LT).forEach(k => { const b = mk("button", "ou-btn g" + (R3ST.light === k ? " sel" : ""), R3LT[k][0]); b.type = "button"; b.onclick = () => { R3ST.light = k; r3save(); r3.apply(); $$("button", lr).forEach(x => x.classList.toggle("sel", x === b)); sfx("pop") }; lr.appendChild(b) }); node.appendChild(lr);
+    const rb = mk("button", "ou-btn g", "Reset furniture positions"); rb.type = "button"; rb.onclick = () => { R3ST.pos = {}; r3save(); r3.resetPos(); sfx("pop") }; node.appendChild(rb);
+    modal({ title: "Style the room 🎨", node, btns: [{ t: "Done ♡" }] });
+  }
   const acts = {
     feed() {
       const node = mk("div", "ou-pick"); OU.snacks.forEach(s => { const b = mk("button", "ou-opt", `<span>${s.e}</span><b>${esc(s.n)}</b>`); b.type = "button"; b.onclick = () => { m.close(); eat(s) }; node.appendChild(b) });
@@ -3830,6 +4087,7 @@ scenes.cottage = function (sc) {
       modal({ title: "Wardrobe", node, cls: "wide", btns: [{ t: "Done ♡", fn: () => { setMood("spark", 1500); if (dressed) say("Do I look cute?? ✨", 2400) } }], onClose: () => { pb.innerHTML = petSVG(mood) } });
     },
     note: petNote,
+    style: styleRoom,
     name() {
       const inp = mk("input", "ou-in"); inp.maxLength = 14; inp.value = S.pet.name; inp.setAttribute("aria-label", "Pet name");
       const m = modal({ title: "What's its name?", node: inp, btns: [{ t: "Save ♡", fn: () => { const v = inp.value.replace(/[<>]/g, "").trim().slice(0, 14); if (v) { S.pet.name = v; save(); nameUp(); say("That's me! " + v + "! ♡", 2600); sfx("sparkle") } } }, { t: "Cancel", cls: "g" }] });
@@ -3842,7 +4100,7 @@ scenes.cottage = function (sc) {
     }
   };
   function eat(s) {
-    sfx("nom"); S.pet.feeds++; ev("feed"); anim("wig"); setMood("eat", 1400); const fav = s.id === S.pet.fav;
+    sfx("nom"); r3 && r3.food(s); S.pet.feeds++; ev("feed"); anim("wig"); setMood("eat", 1400); const fav = s.id === S.pet.fav;
     say(fav ? pick(OU.petFavLines) : pick(OU.petFeedLines), 2400); burstEl(pb, [s.e, "💗"], 6);
     if (fav) { setTimeout(() => sfx("happy"), 600); setTimeout(() => setMood("spark", 1400), 1500); if (!S.daily.feed) { S.daily.feed = 1; S.hearts += 1; hud() } }
     if (night) { night = false; rmEl.classList.remove("night") } save();
