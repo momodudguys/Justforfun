@@ -364,7 +364,7 @@ body.inA #mus{display:none}
 .uvsky svg .sg{fill:none;stroke:rgba(242,166,192,.3);stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round;transition:stroke .9s,stroke-width .9s,filter .9s}
 .uvsky svg .sg.lit{stroke:#f8cfe0;stroke-width:1.9;filter:drop-shadow(0 0 4px rgba(242,166,192,.9))}
 .uvsky svg .hf{fill:#f2a6c0;opacity:0;transition:opacity 2.4s}.uvsky.done svg .hf{opacity:.13}
-.uvsky svg .mono{font:italic 500 96px "Cormorant Garamond",Georgia,serif;fill:rgba(244,236,243,.07);text-anchor:middle}
+.uvsky svg .uvmono{font:italic 500 78px "Cormorant Garamond",Georgia,serif;fill:rgba(244,236,243,.09);text-anchor:middle;dominant-baseline:central;stroke:none;-webkit-text-stroke:0;opacity:1;transform:none;filter:none}
 .uvs{position:absolute;width:48px;height:48px;transform:translate(-50%,-50%);border:0;padding:0;background:none;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent;border-radius:50%}
 .uvs:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
 .uvs::before{content:"";position:absolute;inset:6px;border-radius:50%;background:radial-gradient(circle,rgba(242,166,192,.55),transparent 68%);animation:uvhalo 3.2s ease-in-out var(--d,0s) infinite alternate;transition:transform .6s,opacity .6s}
@@ -1340,7 +1340,7 @@ body.in .tdock{transform:translate(0,-50%);opacity:1}
 #mpb.mpmini .mpi b::before{content:"♪  ";color:var(--t-accent)}
 #mpb.mpmini #mpp{opacity:0;width:0;min-width:0;margin:0;overflow:hidden;pointer-events:none}
 </style>
-<style>.mono{font-size:clamp(4rem,23vw,15rem)!important;white-space:nowrap}.uvsky svg .mono{font-size:70px}.hug{font-size:2rem}.hero .stage .mono{z-index:6!important;top:58%!important;font:italic 400 clamp(3.2rem,19vw,8rem)/1 var(--f-display)!important;opacity:.92!important;color:color-mix(in srgb,var(--t-accent) 14%,transparent)!important;-webkit-text-stroke:1.5px color-mix(in srgb,var(--t-accent) 80%,transparent)!important;text-shadow:0 0 22px color-mix(in srgb,var(--t-accent) 40%,transparent)!important;animation:none!important}
+<style>.mono{font-size:clamp(4rem,23vw,15rem)!important;white-space:nowrap}.hug{font-size:2rem}.hero .stage .mono{z-index:6!important;top:58%!important;font:italic 400 clamp(3.2rem,19vw,8rem)/1 var(--f-display)!important;opacity:.92!important;color:color-mix(in srgb,var(--t-accent) 14%,transparent)!important;-webkit-text-stroke:1.5px color-mix(in srgb,var(--t-accent) 80%,transparent)!important;text-shadow:0 0 22px color-mix(in srgb,var(--t-accent) 40%,transparent)!important;animation:none!important}
 .rtab{position:fixed;left:10px;top:50%;transform:translate(-120px,-50%);z-index:126;opacity:0;pointer-events:none;transition:transform .9s var(--ease) .3s,opacity .6s .3s}
 body.in .rtab.show{transform:translate(0,-50%);opacity:1;pointer-events:auto}
 .inw .rtab{display:none}
@@ -2739,9 +2739,9 @@ const tk=k=>P*k/N,path=(a,b,n)=>{let d='';for(let j=0;j<=n;j++){const t=a+(b-a)*
 let r=7,rnd=()=>{r=(r*16807)%2147483647;return r/2147483647},h='';
 for(let i=0;i<80;i++)h+=`<circle class="bs" cx="${(rnd()*400).toFixed(1)}" cy="${(rnd()*400).toFixed(1)}" r="${(.5+rnd()*1.1).toFixed(2)}" style="animation-delay:-${(rnd()*4).toFixed(1)}s;animation-duration:${(2.4+rnd()*3).toFixed(1)}s"${rnd()<.25?' fill="#f8cfe0"':''}/>`;
 h+=`<path class="hf" d="${path(0,P,90)}Z"/>`;
-if(UNIVERSE_NAME)h+=`<text class="mono" x="200" y="226">${UNIVERSE_NAME}</text>`;
+if(UNIVERSE_NAME)h+=`<text class="uvmono" x="200" y="194">${UNIVERSE_NAME}</text>`;
 for(let k=0;k<N;k++)h+=`<path class="sg" data-k="${k}" d="${path(tk(k),tk(k)+P/N,14)}"/>`;
-svg.innerHTML=h;
+svg.innerHTML=h;const mo=svg.querySelector(".uvmono"),fitN=()=>{try{mo.style.fontSize="78px";const w=mo.getBBox().width;if(w>250)mo.style.fontSize=(78*250/w).toFixed(1)+"px"}catch(e){}};if(mo){fitN();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitN)}
 M.forEach((m,k)=>{const b=document.createElement('button');b.className='uvs';b.type='button';b.dataset.k=k;b.style.cssText=`left:${(px(tk(k))/4).toFixed(2)}%;top:${(py(tk(k))/4).toFixed(2)}%;--d:${(k*.45).toFixed(2)}s`;b.setAttribute('aria-label','Star '+(k+1)+', touch to read what it says');b.innerHTML='<i></i>';sky.appendChild(b)});
 const stars=[...sky.querySelectorAll('.uvs')],segs=[...svg.querySelectorAll('.sg')];
 function say(t){clearTimeout(mt);if(RM){card.textContent=t;return}card.classList.add('out');mt=setTimeout(()=>{card.textContent=t;card.classList.remove('out')},350)}
