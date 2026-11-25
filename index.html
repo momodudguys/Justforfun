@@ -839,7 +839,7 @@ body.oug #mps{z-index:150}
 @media(prefers-reduced-motion:reduce){.gx *{animation:none!important}}
 .gx-plot{pointer-events:none}.gx-plots{cursor:pointer}
 .gx-c3{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y;cursor:pointer}
-.gx3d::before,.gx3d::after,.gx3d .gx-ff{display:none}
+.gx3d::before,.gx3d::after,.gx3d .gx-ff,#gwf::before,#gwf::after{display:none!important}
 .gw-c{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab;outline:none}.gw-c:active{cursor:grabbing}
 .gx-ui{position:absolute;inset:0;pointer-events:none;z-index:6;user-select:none;-webkit-user-select:none}.gx-ui>*{pointer-events:auto}
 .gx-fs{position:absolute;top:10px;right:10px;width:42px;height:42px;border-radius:14px;border:1px solid rgba(255,255,255,.3);background:rgba(10,16,44,.55);color:#fff;font-size:1.2rem;cursor:pointer;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
@@ -6194,11 +6194,14 @@ function start3(){try{build3()}catch(e){g3=null;var c=fieldEl.querySelector(".gx
 if(window.IntersectionObserver){var io3=new IntersectionObserver(function(en){if(en[0].isIntersecting){io3.disconnect();g3load(start3)}},{rootMargin:"500px"});io3.observe(fieldEl)}else g3load(start3);
  /* ================= GARDEN WORLD: two lands, live together ================= */
  var gw=null;
+ /* STUN finds a direct path; TURN relays when a direct path is impossible (mobile data / CGNAT / strict routers).
+    Without TURN the game silently falls back to the slow relay = teleporting every ~5s. To use your own free TURN, replace this list. */
+ var GW_ICE=[{urls:"stun:stun.l.google.com:19302"},{urls:"stun:stun1.l.google.com:19302"},{urls:["turn:openrelay.metered.ca:80","turn:openrelay.metered.ca:443","turn:openrelay.metered.ca:443?transport=tcp"],username:"openrelayproject",credential:"openrelayproject"}];
  function gb(){if(g3)g3.burst.apply(g3,arguments);if(gw)gw.burst.apply(gw,arguments)}
  var MP=(function(){var role="her";try{role=localStorage.getItem("usRole")==="him"?"him":"her"}catch(e){}
   var OTR=role==="him"?"her":"him",NMS={her:"Aaradhya",him:"Pratik"},TOPG="us-xg7qkkx5t2csmr-rx-g";
   var M={role:role,OTR:OTR,MYN:NMS[role],OTN:NMS[OTR],curLand:role,visiting:false,remote:null,ls:{},me:{x:0,z:12,y:0,ry:Math.PI,sp:0,tool:"",em:"",w:0},peer:{on:false,last:0,x:0,z:12,y:0,ry:0,sp:0,tx:0,tz:12,ty:0,tr:0,land:OTR,w:0,act:0,tool:"",em:"",emt:0,snap:true,air:false,prevLand:OTR,vis0:false}};
-  var peer=M.peer,NET={pc:null,dc:null,open:false,slow:false,sid:Math.random().toString(36).slice(2,10),psid:null,state:"idle",helloT:0,helloR:null,ct:0,fails:0,seen:[],es:null,esD:3000},giftT=[],started=false,snT=0,sLast=0,sx=0,sz=0,sry=0,sy=0,sSig="";
+  var peer=M.peer,NET={pc:null,dc:null,open:false,slow:false,sid:Math.random().toString(36).slice(2,10),psid:null,state:"idle",helloT:0,helloR:null,ct:0,fails:0,seen:[],es:null,esD:3000,failT:0,openT:0},giftT=[],started=false,snT=0,sLast=0,sx=0,sz=0,sry=0,sy=0,sSig="";
   M.on=function(e,f){(M.ls[e]=M.ls[e]||[]).push(f)};function emit(e,a){(M.ls[e]||[]).forEach(function(f){try{f(a)}catch(x){console.warn(x)}})}
   try{var _rc=JSON.parse(localStorage.getItem("gwRemote")||"null");if(_rc&&_rc.o===OTR&&_rc.p)M.remote=_rc}catch(e){}
   M.online=function(){return peer.on&&Date.now()-peer.last<9000};
@@ -6207,26 +6210,26 @@ if(window.IntersectionObserver){var io3=new IntersectionObserver(function(en){if
   function sig(o){o.r=role;o.s=NET.sid;pub(o)}
   function send(o){if(NET.open&&NET.dc&&NET.dc.readyState==="open"){try{NET.dc.send(JSON.stringify(o))}catch(e){}}else if(NET.slow){pub({t:"m",r:role,s:NET.sid,d:o})}}
   M.send=send;
-  function slim(sdp){if(sdp.length<3300)return sdp;return sdp.split("\r\n").filter(function(l){return!(l.indexOf("a=candidate")===0&&l.indexOf(" typ host")>-1)}).join("\r\n")}
+  function slim(sdp){function cut(f){return sdp.split("\r\n").filter(f).join("\r\n")}if(sdp.length<3300)return sdp;sdp=cut(function(l){return!(l.indexOf("a=candidate")===0&&l.indexOf(" typ host")>-1)});if(sdp.length<3300)return sdp;sdp=cut(function(l){return!(l.indexOf("a=candidate")===0&&/ tcp /i.test(l)&&l.indexOf(" typ relay")<0)});if(sdp.length<3300)return sdp;var seen=0;return cut(function(l){if(l.indexOf("a=candidate")!==0)return true;return ++seen<=5})}
   function dropPeer(){clearTimeout(NET.ct);var pc=NET.pc,dc=NET.dc;NET.pc=NET.dc=null;NET.open=false;NET.state="idle";NET.psid=null;NET.helloT=0;try{dc&&dc.close()}catch(e){}try{pc&&pc.close()}catch(e){}}
   function waitICE(pc){return new Promise(function(res){if(pc.iceGatheringState==="complete")return res();var d=false,f=function(){if(!d){d=true;res()}};pc.onicegatheringstatechange=function(){if(pc.iceGatheringState==="complete")f()};setTimeout(f,3500)})}
-  function mkpc(){var pc=new RTCPeerConnection({iceServers:[{urls:"stun:stun.l.google.com:19302"},{urls:"stun:stun1.l.google.com:19302"}]});pc.onconnectionstatechange=function(){var s=pc.connectionState;if((s==="failed"||s==="closed"||s==="disconnected")&&NET.pc===pc)setTimeout(function(){if(NET.pc===pc&&pc.connectionState!=="connected"&&pc.connectionState!=="connecting")dropPeer()},3000)};return pc}
-  function armTimeout(){clearTimeout(NET.ct);NET.ct=setTimeout(function(){if(!NET.open){dropPeer();NET.fails++;NET.slow=true}},16000)}
-  function setupDC(dc){NET.dc=dc;dc.onopen=function(){clearTimeout(NET.ct);NET.open=true;NET.slow=false;NET.fails=0;NET.state="open";peer.on=true;peer.last=Date.now();send({t:"req"});snT=0;emit("open")};dc.onmessage=function(e){try{onMsg(JSON.parse(e.data))}catch(x){}};dc.onclose=function(){if(NET.dc===dc)dropPeer()}}
+  function mkpc(){var pc=new RTCPeerConnection({iceServers:GW_ICE});pc.onconnectionstatechange=function(){var s=pc.connectionState;if((s==="failed"||s==="closed"||s==="disconnected")&&NET.pc===pc)setTimeout(function(){if(NET.pc===pc&&pc.connectionState!=="connected"&&pc.connectionState!=="connecting")dropPeer()},3000)};return pc}
+  function armTimeout(){clearTimeout(NET.ct);NET.ct=setTimeout(function(){if(!NET.open){dropPeer();NET.fails++;NET.failT=Date.now();NET.slow=true}},16000)}
+  function setupDC(dc){NET.dc=dc;dc.onopen=function(){clearTimeout(NET.ct);NET.openT=Date.now();NET.open=true;NET.slow=false;NET.fails=0;NET.state="open";peer.on=true;peer.last=Date.now();send({t:"req"});snT=0;emit("open")};dc.onmessage=function(e){try{onMsg(JSON.parse(e.data))}catch(x){}};dc.onclose=function(){if(NET.dc===dc)dropPeer()}}
   function startOffer(psid){if(!window.RTCPeerConnection){NET.slow=true;return}dropPeer();NET.psid=psid;NET.state="offering";var pc=mkpc();NET.pc=pc;setupDC(pc.createDataChannel("g"));armTimeout();pc.createOffer().then(function(o){return pc.setLocalDescription(o)}).then(function(){return waitICE(pc)}).then(function(){if(NET.pc===pc)sig({t:"of",to:psid,sdp:slim(pc.localDescription.sdp)})}).catch(function(){})}
   function answerOffer(o){if(!window.RTCPeerConnection){NET.slow=true;return}dropPeer();NET.psid=o.s;NET.state="answering";var pc=mkpc();NET.pc=pc;pc.ondatachannel=function(e){setupDC(e.channel)};armTimeout();pc.setRemoteDescription({type:"offer",sdp:o.sdp}).then(function(){return pc.createAnswer()}).then(function(a){return pc.setLocalDescription(a)}).then(function(){return waitICE(pc)}).then(function(){if(NET.pc===pc)sig({t:"an",to:o.s,sdp:slim(pc.localDescription.sdp)})}).catch(function(){})}
   function onSig(o,mt){if(!o||!o.r||o.r===role||Date.now()-mt>90000)return;if(o.to&&o.to!==NET.sid)return;
-   if(o.t==="hi"){if(NET.open&&NET.psid===o.s)return;if(NET.fails>=2){NET.slow=true;if(NET.helloR!==o.s){NET.helloR=o.s;sig({t:"hi"})}return}
+   if(o.t==="hi"){if(NET.open&&NET.psid===o.s)return;if(NET.fails>=2&&Date.now()-NET.failT<45000){NET.slow=true;if(NET.helloR!==o.s){NET.helloR=o.s;sig({t:"hi"})}return}if(NET.fails>=2)NET.fails=1;
     if(role==="him"){if(NET.state==="offering"&&NET.psid===o.s)return;startOffer(o.s)}else if(NET.helloR!==o.s){NET.helloR=o.s;sig({t:"hi"})}}
    else if(o.t==="of"&&role==="her"){if(NET.state==="answering"&&NET.psid===o.s)return;answerOffer(o)}
    else if(o.t==="an"&&role==="him"&&NET.pc&&NET.psid===o.s){NET.pc.setRemoteDescription({type:"answer",sdp:o.sdp}).catch(function(){})}
-   else if(o.t==="m"){NET.slow=true;peer.on=true;peer.last=Date.now();onMsg(o.d)}}
+   else if(o.t==="m"){NET.slow=true;peer.on=true;peer.last=Date.now();onMsg(o.d,true)}}
   function live(){if(NET.es||!window.EventSource)return;try{var es=new EventSource("https://ntfy.sh/"+TOPG+"/sse?since=3m");NET.es=es;es.onmessage=function(e){try{var m=JSON.parse(e.data);if(m.event!=="message"||NET.seen.indexOf(m.id)>-1)return;NET.seen.push(m.id);if(NET.seen.length>200)NET.seen=NET.seen.slice(-100);onSig(JSON.parse(m.message),(m.time||0)*1000)}catch(x){}};es.onopen=function(){NET.esD=3000};es.onerror=function(){try{es.close()}catch(x){}NET.es=null;setTimeout(live,NET.esD);NET.esD=Math.min(NET.esD*2,60000)}}catch(x){NET.es=null}}
   function hello(){if(document.hidden||NET.open||NET.state==="offering"||NET.state==="answering")return;if(Date.now()-NET.helloT<22000)return;NET.helloT=Date.now();sig({t:"hi"})}
   function snap(){var n=G.n;return{t:"land",o:role,n:n,d:G.d.slice(),p:G.p.slice(0,n).map(function(c){return c?{k:c.k,t:c.t,m:c.m,z:c.z,wu:c.wu}:null})}}
   M.snapSoon=function(){snT=0};
-  function onMsg(o){if(!o)return;var now=Date.now();
-   if(o.t==="s"){peer.on=true;peer.last=now;peer.tx=o.x;peer.tz=o.z;peer.ty=o.y||0;peer.tr=o.ry||0;peer.sp=o.sp||0;peer.w=o.w|0;
+  function onMsg(o,viaRelay){if(!o)return;var now=Date.now();
+   if(o.t==="s"){peer.on=true;peer.last=now;peer.rel=!!viaRelay;peer.vt=now;peer.tx=o.x;peer.tz=o.z;peer.ty=o.y||0;peer.tr=o.ry||0;peer.sp=o.sp||0;peer.w=o.w|0;
     if(o.e==="sit"&&peer.em!=="sit")peer.em="sit";else if(o.e!=="sit"&&peer.em==="sit")peer.em="";
     if(o.l&&o.l!==peer.land){peer.land=o.l;peer.snap=true;if(o.l===role&&peer.prevLand!==role){toast("💞 "+M.OTN+" came to visit your garden");emit("arrive")}peer.prevLand=o.l;emit("peer")}}
    else if(o.t==="act"){peer.act=.6;peer.tool=o.tl||"can"}
@@ -6242,7 +6245,8 @@ if(window.IntersectionObserver){var io3=new IntersectionObserver(function(en){if
   function tick(){var now=Date.now(),open=NET.open&&NET.dc&&NET.dc.readyState==="open",slow=!open&&NET.slow&&!document.hidden,on=M.online();
    if(on!==peer.vis0){peer.vis0=on;toast(on?"💞 "+M.OTN+" is online":"💤 "+M.OTN+" went offline");emit("peer")}
    var sg=on+"|"+peer.land+"|"+peer.w;if(sg!==sSig){sSig=sg;emit("peer")}
-   if(!open&&!slow)return;var me=M.me,moved=Math.abs(me.x-sx)+Math.abs(me.z-sz)+Math.abs(me.ry-sry)+Math.abs(me.y-sy)>.02,gap=open?(me.w?(moved?80:400):2500):6000;
+   if(NET.open&&!document.hidden&&NET.openT&&now-NET.openT>20000&&now-peer.last>20000){dropPeer();NET.helloT=0;NET.fails=0;NET.slow=false}
+   if(!open&&!slow)return;var me=M.me,moved=Math.abs(me.x-sx)+Math.abs(me.z-sz)+Math.abs(me.ry-sry)+Math.abs(me.y-sy)>.02,gap=open?(me.w?(moved?80:400):2500):(moved?4500:6000);
    if(now-sLast>gap){sLast=now;sx=me.x;sz=me.z;sry=me.ry;sy=me.y;send({t:"s",x:r2(me.x),z:r2(me.z),y:r2(me.y),ry:r2(me.ry),sp:r2(me.sp),l:M.curLand,w:me.w,e:me.em})}
    if(now-snT>(open?(peer.w?2500:12000):20000)){snT=now;send(snap())}}
   M.go=function(owner){if(owner===M.curLand)return false;
@@ -6254,7 +6258,7 @@ if(window.IntersectionObserver){var io3=new IntersectionObserver(function(en){if
   return M})();
 
  /* ================= VOICE CHAT (audio goes straight phone to phone) ================= */
- var VC=(function(){var ICE=[{urls:"stun:stun.l.google.com:19302"},{urls:"stun:stun1.l.google.com:19302"}],st={on:false,muted:false,stream:null,out:null,inn:null,outOk:false,t0:0,peerMuted:false,anOut:null,anIn:null,mySpeaking:false,peerSpeaking:false,aud:null,ctx:null},cbs=[],lv=0;
+ var VC=(function(){var ICE=GW_ICE,st={on:false,muted:false,stream:null,out:null,inn:null,outOk:false,t0:0,peerMuted:false,anOut:null,anIn:null,mySpeaking:false,peerSpeaking:false,aud:null,ctx:null},cbs=[],lv=0;
   function fire(){cbs.forEach(function(f){try{f()}catch(e){}})}
   function ac(){if(!st.ctx){var AC=window.AudioContext||window.webkitAudioContext;if(AC)try{st.ctx=new AC()}catch(e){}}if(st.ctx&&st.ctx.state==="suspended")st.ctx.resume();return st.ctx}
   function meter(stream){var c=ac();if(!c)return null;try{var src=c.createMediaStreamSource(stream),an=c.createAnalyser();an.fftSize=512;src.connect(an);return an}catch(e){return null}}
@@ -6276,19 +6280,22 @@ if(window.IntersectionObserver){var io3=new IntersectionObserver(function(en){if
    else if(o.t==="vm"){st.peerMuted=!!o.m;fire()}
    else if(o.t==="vn"){toast(MP.OTN+" isn't in the garden world right now · voice connects when they join 🎙️")}}
   MP.on("voice",handle);
-  MP.on("open",function(){if(st.on&&st.stream)startOut()});
+  MP.on("open",function(){if(st.on&&st.stream){MP.send({t:"vm",m:st.muted?1:0});startOut()}});
+  /* phones block audio until a tap: retry playing her voice on the next touch/click */
+  function unlockAudio(){ac();if(st.aud&&st.aud.srcObject&&st.aud.paused){var p=st.aud.play();if(p&&p.catch)p.catch(function(){})}}
+  document.addEventListener("pointerdown",unlockAudio,true);document.addEventListener("keydown",unlockAudio,true);
+  setInterval(function(){if(st.inn&&st.aud&&st.aud.paused&&st.aud.srcObject){var p=st.aud.play();if(p&&p.catch)p.catch(function(){})}},2000);
   MP.on("peer",function(){if(st.on&&st.stream&&MP.peer.w&&MP.me.w&&!st.outOk&&Date.now()-st.t0>2500)startOut()});
   setInterval(function(){if(st.on&&st.stream&&MP.live()&&MP.peer.w&&MP.me.w&&!st.outOk&&Date.now()-st.t0>7000)startOut()},3000);
   function enable(){if(typeof navigator==="undefined"||!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){toast("Voice chat isn't supported in this browser 😢");return Promise.resolve(false)}
-   if(!MP.live()){toast("Voice connects once you and "+MP.OTN+" are linked up live 💞 (wait a moment, then try again)");return Promise.resolve(false)}
-   return navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true},video:false}).then(function(s){st.stream=s;st.on=true;st.muted=false;ac();st.anOut=meter(s);startOut();MP.send({t:"vm",m:0});toast("🎙️ Mic is on · headphones help avoid echo");fire();return true}).catch(function(){toast("Couldn't use the microphone. Please allow mic access 🎤");return false})}
+      return navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true},video:false}).then(function(s){st.stream=s;st.on=true;st.muted=false;ac();st.anOut=meter(s);startOut();MP.send({t:"vm",m:0});toast(MP.live()?"🎙️ Mic is on · headphones help avoid echo":"🎙️ Mic is ready · it connects by itself as soon as you and "+MP.OTN+" are linked up 💞");fire();return true}).catch(function(){toast("Couldn't use the microphone. Please allow mic access 🎤");return false})}
   return{state:function(){return st},onChange:function(f){cbs.push(f)},setVol:function(v){if(st.aud)st.aud.volume=v},
    toggle:function(){if(!st.on)return enable();st.muted=!st.muted;st.stream.getAudioTracks().forEach(function(t){t.enabled=!st.muted});MP.send({t:"vm",m:st.muted?1:0});toast(st.muted?"🤐 Mic muted":"🎙️ Mic on");fire();return Promise.resolve(true)},
    tick:function(dt){lv+=dt;if(lv<.1)return;lv=0;var my=st.on&&!st.muted&&level(st.anOut)>.02,ps=!!st.inn&&level(st.anIn)>.02;if(my!==st.mySpeaking||ps!==st.peerSpeaking){st.mySpeaking=my;st.peerSpeaking=ps;fire()}},
    stop:function(){if(!st.on&&!st.inn)return;if(st.stream)st.stream.getTracks().forEach(function(t){t.stop()});st.stream=null;closeOut();closeIn();if(st.on)MP.send({t:"vx"});st.on=false;st.muted=false;st.anOut=null;st.mySpeaking=false;fire()}}})();
 
 function buildW(){var TH=window.THREE,gx=$("gw"),fieldEl=$("gwf"),mob=!!(window.matchMedia&&matchMedia("(pointer:coarse)").matches),W=fieldEl.clientWidth||360,H=fieldEl.clientHeight||480;
- var cv=document.createElement("canvas");cv.className="gw-c";fieldEl.insertBefore(cv,fieldEl.firstChild);
+ fieldEl.classList.add("gx3d");var cv=document.createElement("canvas");cv.className="gw-c";fieldEl.insertBefore(cv,fieldEl.firstChild);
  var R=new TH.WebGLRenderer({canvas:cv,antialias:!mob,alpha:false,powerPreference:"high-performance"});
  R.setPixelRatio(Math.min(window.devicePixelRatio||1,mob?1.5:2));R.shadowMap.enabled=true;R.shadowMap.type=TH.PCFSoftShadowMap;R.setClearColor(0x16204f);
  var scene=new TH.Scene(),cam=new TH.PerspectiveCamera(55,W/H,.1,600),api={},vis=false,plots=[],parts=[],deco=null,decoKey="",obsD=[],obsS=[],clickables=[],STALLS=[],anim=[],lastW={};
@@ -6646,7 +6653,7 @@ function buildW(){var TH=window.THREE,gx=$("gw"),fieldEl=$("gwf"),mob=!!(window.
  MP.on("peer",updPeerUI);setInterval(updPeerUI,800);updPeerUI();
  anim.push(function(t,dt){var me=MP.me;me.x=pl.x;me.z=pl.z;me.y=pl.y;me.ry=pl.ry;me.sp=pl.sp;me.tool=pl.tool;me.em=pl.em==="sit"?"sit":"";
   var show=MP.online()&&peer.w;peer.av.visible=show;peer.av.userData.blob.visible=show;if(!show)return;
-  if(peer.snap){peer.snap=false;peer.x=peer.tx;peer.z=peer.tz;peer.y=peer.ty;peer.ry=peer.tr}var k=Math.min(1,dt*9);peer.x+=(peer.tx-peer.x)*k;peer.z+=(peer.tz-peer.z)*k;peer.y+=(peer.ty-peer.y)*k;peer.ry+=angd(peer.ry,peer.tr)*k;animAvatar(peer.av,peer,t,dt)});
+  if(peer.snap){peer.snap=false;peer.x=peer.tx;peer.z=peer.tz;peer.y=peer.ty;peer.ry=peer.tr}var ex=peer.tx,ez=peer.tz;if(peer.rel&&peer.sp>.3){var ag=Math.min(4.5,(Date.now()-peer.vt)/1000);ex+=Math.sin(peer.tr)*peer.sp*ag;ez+=Math.cos(peer.tr)*peer.sp*ag}var k=Math.min(1,dt*(peer.rel?2.4:9));peer.x+=(ex-peer.x)*k;peer.z+=(ez-peer.z)*k;peer.y+=(peer.ty-peer.y)*k;peer.ry+=angd(peer.ry,peer.tr)*k;animAvatar(peer.av,peer,t,dt)});
  /* ---- voice chat button, speaking rings, distance volume ---- */
  ui.insertAdjacentHTML("beforeend",'<button type="button" class="gx-b gx-mic" aria-label="Voice chat">🎤</button>');
  var micB=ui.querySelector(".gx-mic");
